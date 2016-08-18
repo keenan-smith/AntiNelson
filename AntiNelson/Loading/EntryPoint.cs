@@ -6,7 +6,6 @@ namespace AntiNelson
 {
     public class EntryPoint : MonoBehaviour
     {
-
         public static EntryPoint instance = null;
         public static Hack hackInstance = null;
 
@@ -15,29 +14,60 @@ namespace AntiNelson
 
         public static Thread runThread = null;
 
+        public static GameObject mainObject = null;
+
         public static void Launch()
         {
+            try
+            {
+                Thread runThread = new Thread(new ThreadStart(doHook));
+                runThread.Start();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
+        }
 
-            runThread = new Thread(Hack.reHook);
-            runThread.Start();
+        private static void doHook()
+        {
+            try
+            {
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    if (mainObject == null || instance == null)
+                    {
+                        mainObject = new GameObject();
+                        instance = mainObject.AddComponent<EntryPoint>();
+                        hackInstance = mainObject.AddComponent<Hack>();
+                        DontDestroyOnLoad(mainObject);
+                    }
 
+                    if (!waitForRelaunch)
+                        Thread.Sleep(5000);
+
+                    waitForRelaunch = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
         }
 
         public static void killAndRelaunch()
         {
-
-            DestroyImmediate(Hack.hookObj);
+            DestroyImmediate(mainObject);
             runThread.Abort();
-            hackInstance = new Hack();
             instance = null;
+            hackInstance = new Hack();
 
             Launch();
-
         }
 
         public void Update()
         {
-
             if (!waitForRelaunch && !hackCrashed)
                 try
                 {
@@ -45,19 +75,15 @@ namespace AntiNelson
                 }
                 catch (Exception e)
                 {
-
                     Debug.LogException(e);
 
                     if (!e.ToString().ToLower().Contains("repaint"))
                         hackCrashed = true;
-
                 }
-
         }
 
         public void OnGUI()
         {
-
             if (!waitForRelaunch && !hackCrashed)
                 try
                 {
@@ -65,17 +91,14 @@ namespace AntiNelson
                 }
                 catch (Exception e)
                 {
-
                     Debug.LogException(e);
 
                     if (!e.ToString().ToLower().Contains("repaint"))
                         hackCrashed = true;
-
                 }
 
             if (hackCrashed)
             {
-
                 GUILayout.BeginArea(new Rect(10F, 10F, 200F, Screen.height));
                 GUILayout.BeginVertical();
 
@@ -96,10 +119,7 @@ namespace AntiNelson
 
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
-
             }
-
         }
-
     }
 }

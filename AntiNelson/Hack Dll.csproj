@@ -155,6 +155,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIs\RedirectionHelper.cs" />
     <Compile Include="Hack.cs" />
     <Compile Include="Loading\EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
