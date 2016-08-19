@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AntiNelson")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("PointBlank")]
+[assembly: AssemblyDescription("An unturned framework that allows you to use mods or plugins on servers and clients")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AntiNelson")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("AtiLion & Kunii")]
+[assembly: AssemblyProduct("PointBlank")]
+[assembly: AssemblyCopyright("Copyright © Atilion&Kunii 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

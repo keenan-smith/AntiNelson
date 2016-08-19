@@ -2,12 +2,12 @@
 using System.Threading;
 using UnityEngine;
 
-namespace AntiNelson
+namespace PointBlank
 {
     public class EntryPoint : MonoBehaviour
     {
         public static EntryPoint instance = null;
-        public static Hack hackInstance = null;
+        public static Framework hackInstance = null;
 
         public static bool waitForRelaunch = false;
         public static bool hackCrashed = false;
@@ -40,7 +40,7 @@ namespace AntiNelson
                     {
                         mainObject = new GameObject();
                         instance = mainObject.AddComponent<EntryPoint>();
-                        hackInstance = mainObject.AddComponent<Hack>();
+                        hackInstance = mainObject.AddComponent<Framework>();
                         DontDestroyOnLoad(mainObject);
                     }
 
@@ -61,7 +61,7 @@ namespace AntiNelson
             DestroyImmediate(mainObject);
             runThread.Abort();
             instance = null;
-            hackInstance = new Hack();
+            hackInstance = new Framework();
 
             Launch();
         }

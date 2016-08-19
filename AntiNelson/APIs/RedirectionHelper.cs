@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace AntiNelson
+namespace PointBlank
 {
 
     public static class RedirectionHelper
