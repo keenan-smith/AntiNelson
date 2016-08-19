@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace PointBlank
+namespace PointBlank.API
 {
 
     public static class RedirectionHelper

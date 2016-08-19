@@ -1,21 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hack Dll", "AntiNelson\Hack Dll.csproj", "{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointBlank", "AntiNelson\PointBlank.csproj", "{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointBlank GUI", "PointBlank GUI\PointBlank GUI.csproj", "{D7613D09-016B-470A-B4D7-7066F6DEA3C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Atilion|Any CPU = Atilion|Any CPU
 		Atilion|x64 = Atilion|x64
 		Atilion|x86 = Atilion|x86
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Kr4ken|Any CPU = Kr4ken|Any CPU
 		Kr4ken|x64 = Kr4ken|x64
 		Kr4ken|x86 = Kr4ken|x86
 		Kunii|Any CPU = Kunii|Any CPU
 		Kunii|x64 = Kunii|x64
 		Kunii|x86 = Kunii|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Atilion|Any CPU.ActiveCfg = Atilion|Any CPU
@@ -24,6 +32,12 @@ Global
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Atilion|x64.Build.0 = Atilion|x64
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Atilion|x86.ActiveCfg = Atilion|x86
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Atilion|x86.Build.0 = Atilion|x86
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Debug|x64.ActiveCfg = Debug|x64
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Debug|x64.Build.0 = Debug|x64
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Debug|x86.ActiveCfg = Debug|x86
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Debug|x86.Build.0 = Debug|x86
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Kr4ken|Any CPU.ActiveCfg = Kr4ken|Any CPU
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Kr4ken|Any CPU.Build.0 = Kr4ken|Any CPU
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Kr4ken|x64.ActiveCfg = Kr4ken|x64
@@ -36,6 +50,32 @@ Global
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Kunii|x64.Build.0 = Release|x64
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Kunii|x86.ActiveCfg = Debug|x86
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Kunii|x86.Build.0 = Release|x86
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Release|x64.ActiveCfg = Release|x64
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Release|x64.Build.0 = Release|x64
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Release|x86.ActiveCfg = Release|x86
+		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}.Release|x86.Build.0 = Release|x86
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Atilion|Any CPU.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Atilion|Any CPU.Build.0 = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Atilion|x64.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Atilion|x86.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kr4ken|Any CPU.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kr4ken|Any CPU.Build.0 = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kr4ken|x64.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kr4ken|x86.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kunii|Any CPU.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kunii|Any CPU.Build.0 = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kunii|x64.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Kunii|x86.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7613D09-016B-470A-B4D7-7066F6DEA3C3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
