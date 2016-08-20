@@ -156,8 +156,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\RedirectionHelper.cs" />
+    <Compile Include="ASSProxy.cs" />
     <Compile Include="Framework.cs" />
     <Compile Include="Loading\EntryPoint.cs" />
+    <Compile Include="Loading\HookAssembly.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Variables.cs" />
   </ItemGroup>
@@ -166,7 +168,9 @@
     <Content Include="lib\Assembly-CSharp.dll" />
     <Content Include="lib\UnityEngine.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Overridables\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
