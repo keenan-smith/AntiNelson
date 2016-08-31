@@ -18,6 +18,7 @@ namespace PointBlank
 
         public static AppDomainSetup ads = new AppDomainSetup();
         public static Dictionary<Assembly, AppDomain> plugins = new Dictionary<Assembly, AppDomain>();
+        public static Dictionary<Assembly, AppDomain> mods = new Dictionary<Assembly, AppDomain>();
 
         public static bool isServer = false;
     }
