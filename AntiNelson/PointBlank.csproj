@@ -7,9 +7,9 @@
     <ProjectGuid>{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AntiNelson</RootNamespace>
-    <AssemblyName>AntiNelson</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>PointBlank</RootNamespace>
+    <AssemblyName>PointBlank</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -156,11 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\RedirectionHelper.cs" />
-    <Compile Include="ASSProxy.cs" />
-    <Compile Include="Framework.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
-    <Compile Include="PB_Loading\HookAssembly.cs" />
+    <Compile Include="PB_Loading\Framework.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool.cs" />
     <Compile Include="Variables.cs" />

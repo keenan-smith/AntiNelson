@@ -108,7 +108,7 @@ namespace PointBlank.PB_Loading
                 GUI.skin.label.fixedHeight = 50;
                 GUI.color = Color.red;
 
-                GUILayout.Label("HACK CRASHED");
+                GUILayout.Label("CRASHED");
 
                 GUI.skin.label.fontSize = size;
                 GUI.skin.label.fixedHeight = height;
