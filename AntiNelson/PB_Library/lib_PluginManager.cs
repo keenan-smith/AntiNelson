@@ -38,6 +38,8 @@ namespace PointBlank.PB_Library
 
             String pluginPath = Variables.pluginsPathServer + name;
 
+            Console.WriteLine(pluginPath);
+
             try
             {
 

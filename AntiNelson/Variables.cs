@@ -9,7 +9,7 @@ namespace PointBlank
 {
     public static class Variables
     {
-        public static string serverPath = Directory.GetCurrentDirectory() + @"\Servers\" + Provider.serverName.ToUpper();
+        public static string serverPath = Directory.GetCurrentDirectory() + @"\Servers" /*+ Provider.serverName.ToUpper()*/;
 
         public static string modsPathServer = serverPath + @"\Mods\";
         public static string pluginsPathServer = serverPath + @"\Plugins\";
