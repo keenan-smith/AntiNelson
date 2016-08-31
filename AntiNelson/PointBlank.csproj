@@ -155,6 +155,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\PBPlugin.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
