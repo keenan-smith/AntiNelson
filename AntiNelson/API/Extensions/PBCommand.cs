@@ -15,6 +15,7 @@ namespace PointBlank.API.Extensions
         private string _permission;
         private int _maxUsage;
         protected Local localization;
+        private string[] _alias;
         #endregion
 
         #region Propertys
@@ -73,15 +74,24 @@ namespace PointBlank.API.Extensions
                 return localization.format("Usage");
             }
         }
+
+        public string[] alias
+        {
+            get
+            {
+                return _alias;
+            }
+        }
         #endregion
 
-        public PBCommand(string command, Local language, int cooldown = 1, string permission = "", int maxUsage = -1)
+        public PBCommand(string command, string[] alias, Local language, int cooldown = 1, string permission = "", int maxUsage = -1)
         {
             _command = command;
             _cooldown = cooldown;
             _permission = permission;
             localization = language;
             _maxUsage = maxUsage;
+            _alias = alias;
         }
 
         #region Abstract Functions

@@ -159,6 +159,7 @@
     <Compile Include="API\Extensions\PBCommand.cs" />
     <Compile Include="API\Extensions\PBCooldown.cs" />
     <Compile Include="API\Extensions\PBGroup.cs" />
+    <Compile Include="API\Localizator.cs" />
     <Compile Include="API\PBChat.cs" />
     <Compile Include="API\Enumerables\PrivacyState.cs" />
     <Compile Include="API\Extensions\PlayerProfile.cs" />
@@ -166,6 +167,8 @@
     <Compile Include="API\PBPlayer.cs" />
     <Compile Include="API\PBServer.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
+    <Compile Include="PB_Commands\CMD_Item.cs" />
+    <Compile Include="PB_Library\lib_CommandManager.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
     <Compile Include="PB_Loading\Framework.cs" />
