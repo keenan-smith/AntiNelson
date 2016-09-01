@@ -8,7 +8,7 @@ using PointBlank.API.Extensions;
 
 namespace PointBlank.API
 {
-    public class PointPlayer : MonoBehaviour
+    public class PBPlayer
     {
 
         #region RandomVars
@@ -80,7 +80,7 @@ namespace PointBlank.API
         }
         #endregion
 
-        public PointPlayer(SteamPlayer p)
+        public PBPlayer(SteamPlayer p)
         {
             _steamPlayer = p;
 
@@ -94,7 +94,6 @@ namespace PointBlank.API
         }
 
         #region Functions
-
         public bool ban(string reason, uint duration, bool IPBan, CSteamID judge)
         {
             try
@@ -146,7 +145,37 @@ namespace PointBlank.API
             }
         }
 
-        public bool testAntiSpy()
+        public bool teleportToPlayer(Player player)
+        {
+            try
+            {
+                this.player.transform.position = player.transform.position;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                Console.WriteLine("ERROR: Exception while attempting to teleport player!");
+                return false;
+            }
+        }
+
+        public bool teleportToPosition(Vector3 pos)
+        {
+            try
+            {
+                player.transform.position = pos;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                Console.WriteLine("ERROR: Exception while attempting to teleport player!");
+                return false;
+            }
+        }
+
+        public bool testAntiSpy() // NOT DONE!
         {
             try
             {
@@ -163,7 +192,7 @@ namespace PointBlank.API
         #endregion
 
         #region Events
-        private void onSpyReady(object sender, PlayerSpyReady args)
+        private void onSpyReady(object sender, PlayerSpyReady args) // NOT DONE!
         {
             if (testingAntiSpy)
             {

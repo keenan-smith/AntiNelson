@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System.Reflection;
+using PointBlank.API.Extensions;
 
 namespace PointBlank.PB_Library
 {
@@ -22,10 +23,10 @@ namespace PointBlank.PB_Library
         }
 
 
-        public Dictionary<String, PointBlank.API.PBPlugin> loadedPlugins = new Dictionary<String, API.PBPlugin>();
+        public Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
         private Dictionary<String, AppDomain> loadedPluginAppdomains = new Dictionary<String, AppDomain>();
 
-        public PointBlank.API.PBPlugin loadPlugin(String name)
+        public PBPlugin loadPlugin(String name)
         {
 
             if (loadedPlugins.ContainsKey(name))
@@ -46,7 +47,7 @@ namespace PointBlank.PB_Library
                 AppDomain ad = AppDomain.CreateDomain(name, null, domainSetup);
 
                 Assembly asm = ad.Load(readFile(pluginPath));
-                Type pluginType = typeof(PointBlank.API.PBPlugin);
+                Type pluginType = typeof(PBPlugin);
                 Type pluginBase = null;
 
                 foreach(Type t in asm.GetExportedTypes())
@@ -56,7 +57,7 @@ namespace PointBlank.PB_Library
                         break;
                     }
 
-                PointBlank.API.PBPlugin plugin = (PointBlank.API.PBPlugin)Activator.CreateInstance(pluginBase);
+                PBPlugin plugin = (PBPlugin)Activator.CreateInstance(pluginBase);
 
                 plugin.load();
 
@@ -87,8 +88,16 @@ namespace PointBlank.PB_Library
 
                     int i;
 
-                    while ((i = fs.Read(buffer, 0, buffer.Length)) > 0)
-                        ms.Write(buffer, 0, i);
+                    try
+                    {
+                        while ((i = fs.Read(buffer, 0, buffer.Length)) > 0)
+                            ms.Write(buffer, 0, i);
+                    }
+                    catch (InternalBufferOverflowException ex)
+                    {
+                        Debug.LogException(ex);
+                        Console.WriteLine("ERROR: Buffer overflow upon reading file!");
+                    }
 
                     fs.Close();
 
