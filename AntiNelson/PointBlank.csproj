@@ -155,7 +155,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Attributes\CommandAttribute.cs" />
     <Compile Include="API\Extensions\PBCommand.cs" />
+    <Compile Include="API\Extensions\PBCooldown.cs" />
+    <Compile Include="API\Extensions\PBGroup.cs" />
     <Compile Include="API\PBChat.cs" />
     <Compile Include="API\Enumerables\PrivacyState.cs" />
     <Compile Include="API\Extensions\PlayerProfile.cs" />

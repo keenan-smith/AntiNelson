@@ -20,9 +20,36 @@ namespace PointBlank.API
         private SteamPlayer _steamPlayer;
         private uint _IP;
         private PlayerProfile _profile;
+        private List<string> _permissions = new List<string>();
+        private List<PBGroup> _groups = new List<PBGroup>();
+        private List<PBCooldown> _cooldowns = new List<PBCooldown>();
         #endregion
 
         #region Propertys
+        public List<string> permissions
+        {
+            get
+            {
+                return _permissions;
+            }
+        }
+
+        public List<PBGroup> groups
+        {
+            get
+            {
+                return _groups;
+            }
+        }
+
+        public List<PBCooldown> cooldowns
+        {
+            get
+            {
+                return _cooldowns;
+            }
+        }
+
         public SteamPlayer steamPlayer
         {
             get
@@ -110,7 +137,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to ban player!");
+                CommandWindow.LogError("ERROR: Exception while attempting to ban player!");
                 return false;
             }
         }
@@ -125,7 +152,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to kick player!");
+                CommandWindow.LogError("ERROR: Exception while attempting to kick player!");
                 return false;
             }
         }
@@ -140,7 +167,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to open url for player!");
+                CommandWindow.LogError("ERROR: Exception while attempting to open url for player!");
                 return false;
             }
         }
@@ -155,7 +182,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to teleport player!");
+                CommandWindow.LogError("ERROR: Exception while attempting to teleport player!");
                 return false;
             }
         }
@@ -170,9 +197,32 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to teleport player!");
+                CommandWindow.LogError("ERROR: Exception while attempting to teleport player!");
                 return false;
             }
+        }
+
+        public bool hasPermission(string permission)
+        {
+            string[] sPerm = permission.Split('.');
+            bool pUser1 = Array.Exists(permissions.ToArray(), a => a == sPerm[0]);
+            bool pUser2 = Array.Exists(permissions.ToArray(), a => a == permission);
+            bool pGroup1 = Array.Exists(groups.ToArray(), a => Array.Exists(a.permissions.ToArray(), b => b == sPerm[0]));
+            bool pGroup2 = Array.Exists(groups.ToArray(), a => Array.Exists(a.permissions.ToArray(), b => b == permission));
+
+            return (pUser1 || pUser2 || pGroup1 || pGroup2);
+        }
+
+        public bool hasCooldown(PBCommand command)
+        {
+            PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
+            return (cDown != null && !cDown.cooldown);
+        }
+
+        public bool hasReachedLimit(PBCommand command, int maxUse)
+        {
+            PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
+            return (cDown != null && cDown.usage > maxUse);
         }
 
         public bool testAntiSpy() // NOT DONE!
@@ -185,7 +235,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to test player for antispy!");
+                CommandWindow.LogError("ERROR: Exception while attempting to test player for antispy!");
                 return false;
             }
         }

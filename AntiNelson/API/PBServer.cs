@@ -104,7 +104,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to broadcast chat message!");
+                CommandWindow.LogError("ERROR: Exception while attempting to broadcast chat message!");
                 return false;
             }
         }
@@ -118,7 +118,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to restart server!");
+                CommandWindow.LogError("ERROR: Exception while attempting to restart server!");
                 return false;
             }
         }
@@ -132,7 +132,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to reload plugins!");
+                CommandWindow.LogError("ERROR: Exception while attempting to reload plugins!");
                 return false;
             }
         }
@@ -146,7 +146,7 @@ namespace PointBlank.API
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                Console.WriteLine("ERROR: Exception while attempting to shutdown server!");
+                CommandWindow.LogError("ERROR: Exception while attempting to shutdown server!");
                 return false;
             }
         }

@@ -11,9 +11,8 @@ namespace PointBlank.API.Extensions
     {
         #region Variables
         private string _command;
-        private float _cooldown;
+        private int _cooldown;
         private string _permission;
-        private string _argumentPermission;
         private int _maxUsage;
         protected Local localization;
         #endregion
@@ -27,7 +26,7 @@ namespace PointBlank.API.Extensions
             }
         }
 
-        public float cooldown
+        public int cooldown
         {
             get
             {
@@ -40,22 +39,6 @@ namespace PointBlank.API.Extensions
             get
             {
                 return _permission;
-            }
-        }
-
-        public bool hasArgumentPermission
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(_argumentPermission);
-            }
-        }
-
-        public string argumentPermission
-        {
-            get
-            {
-                return _argumentPermission;
             }
         }
 
@@ -74,35 +57,81 @@ namespace PointBlank.API.Extensions
                 return _maxUsage;
             }
         }
+
+        public string help
+        {
+            get
+            {
+                return localization.format("Help");
+            }
+        }
+
+        public string usage
+        {
+            get
+            {
+                return localization.format("Usage");
+            }
+        }
         #endregion
 
-        public PBCommand()
+        public PBCommand(string command, Local language, int cooldown = 1, string permission = "", int maxUsage = -1)
         {
+            _command = command;
+            _cooldown = cooldown;
+            _permission = permission;
+            localization = language;
+            _maxUsage = maxUsage;
         }
 
         #region Abstract Functions
-        public abstract void onCall() {}
+        public abstract void onCall(PBPlayer player, string[] args) {}
         #endregion
 
         #region Virtual Functions
-        public virtual bool checkPermissions() // NOT DONE!
+        public virtual bool checkPermissions(PBPlayer player)
         {
-            return false;
+            return (string.IsNullOrEmpty(permission) || player.hasPermission(permission));
         }
 
-        public virtual bool hasCooldown() // NOT DONE!
+        public virtual bool hasCooldown(PBPlayer player)
         {
-            return false;
+            bool chk1 = player.hasPermission("no-command-cooldown");
+            bool chk2 = !player.hasCooldown(this);
+
+            return (chk1 || chk2);
         }
 
-        public virtual bool hasReachedLimit() // NOT DONE!
+        public virtual bool hasReachedLimit(PBPlayer player)
         {
-            return false;
+            bool chk1 = player.hasPermission("no-command-limit");
+            bool chk2 = !player.hasReachedLimit(this, maxUsage);
+
+            return (chk1 || chk2);
         }
 
-        public virtual void execute() // NOT DONE!
+        public virtual void execute(PBPlayer player, string args) // NOT DONE!
         {
-            return;
+            if (hasReachedLimit(player))
+            {
+                // Tell player that the command limit is reached!
+                return;
+            }
+
+            if (hasCooldown(player))
+            {
+                // Tell player that the command is in cooldown!
+                return;
+            }
+
+            PBCooldown cDown = Array.Find(player.cooldowns.ToArray(), a => a.command == this);
+            if (cDown == null)
+            {
+                cDown = new PBCooldown(this, DateTime.Now, cooldown);
+            }
+            if (maxUsage > -1)
+                cDown.usage++;
+            onCall(player, args.Split('/'));
         }
         #endregion
     }
