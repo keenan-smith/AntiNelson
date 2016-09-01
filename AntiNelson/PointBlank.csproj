@@ -155,7 +155,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Enumerables\PrivacyState.cs" />
+    <Compile Include="API\Extensions\PlayerProfile.cs" />
     <Compile Include="API\PBPlugin.cs" />
+    <Compile Include="API\PointPlayer.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
