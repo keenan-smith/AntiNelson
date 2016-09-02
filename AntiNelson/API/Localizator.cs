@@ -11,6 +11,7 @@ namespace PointBlank.API
     {
         public static bool exists(string path)
         {
+            path = Variables.currentPath + "\\" + path;
             return ReadWrite.fileExists(path, false, false);
         }
 
@@ -18,6 +19,7 @@ namespace PointBlank.API
         {
             if (exists(path))
             {
+                path = Variables.currentPath + "\\" + path;
                 return new Local(ReadWrite.readData(path, false, false));
             }
             return new Local();

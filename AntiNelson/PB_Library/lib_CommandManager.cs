@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PointBlank.API;
 using PointBlank.API.Extensions;
 using PointBlank.API.Attributes;
 using SDG.Unturned;
@@ -46,8 +47,9 @@ namespace PointBlank.PB_Library
                             if (att != null)
                             {
                                 PBCommand cmd = (PBCommand)Activator.CreateInstance(t);
-                                if (Array.Exists(commands, a => a == cmd))
+                                if (Array.Exists(commands, a => a.command == cmd.command))
                                     continue;
+                                cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
                                 _commands.Add(cmd);
                             }
                         }
@@ -75,8 +77,9 @@ namespace PointBlank.PB_Library
                         if (att != null)
                         {
                             PBCommand cmd = (PBCommand)Activator.CreateInstance(t);
-                            if (Array.Exists(commands, a => a == cmd))
+                            if (Array.Exists(commands, a => a.command == cmd.command))
                                 continue;
+                            cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
                             _commands.Add(cmd);
                         }
                     }

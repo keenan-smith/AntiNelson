@@ -10,36 +10,43 @@ namespace PointBlank.API.Extensions
     public abstract class PBCommand
     {
         #region Variables
-        private string _command;
-        private int _cooldown;
-        private string _permission;
-        private int _maxUsage;
-        protected Local localization;
-        private string[] _alias;
+        private Local _localization = new Local();
         #endregion
 
         #region Propertys
-        public string command
+        public Local localization
         {
             get
             {
-                return _command;
+                return _localization;
+            }
+            set
+            {
+                _localization = value;
             }
         }
 
-        public int cooldown
+        public abstract string command
         {
             get
             {
-                return _cooldown;
+                return "";
             }
         }
 
-        public string permission
+        public virtual int cooldown
         {
             get
             {
-                return _permission;
+                return 1;
+            }
+        }
+
+        public abstract string permission
+        {
+            get
+            {
+                return "";
             }
         }
 
@@ -47,15 +54,15 @@ namespace PointBlank.API.Extensions
         {
             get
             {
-                return (_maxUsage < 0);
+                return (maxUsage < 0);
             }
         }
 
-        public int maxUsage
+        public virtual int maxUsage
         {
             get
             {
-                return _maxUsage;
+                return -1;
             }
         }
 
@@ -75,24 +82,14 @@ namespace PointBlank.API.Extensions
             }
         }
 
-        public string[] alias
+        public abstract string[] alias
         {
             get
             {
-                return _alias;
+                return new string[0];
             }
         }
         #endregion
-
-        public PBCommand(string command, string[] alias, Local language, int cooldown = 1, string permission = "", int maxUsage = -1)
-        {
-            _command = command;
-            _cooldown = cooldown;
-            _permission = permission;
-            localization = language;
-            _maxUsage = maxUsage;
-            _alias = alias;
-        }
 
         #region Abstract Functions
         public abstract void onCall(PBPlayer player, string[] args) {}
@@ -120,17 +117,17 @@ namespace PointBlank.API.Extensions
             return (chk1 || chk2);
         }
 
-        public virtual void execute(PBPlayer player, string args) // NOT DONE!
+        public virtual void execute(PBPlayer player, string args)
         {
             if (hasReachedLimit(player))
             {
-                // Tell player that the command limit is reached!
+                PBChat.sendChatToPlayer(player, localization.format("CommandLimit"), Color.red);
                 return;
             }
 
             if (hasCooldown(player))
             {
-                // Tell player that the command is in cooldown!
+                PBChat.sendChatToPlayer(player, localization.format("CommandCooldown"), Color.red);
                 return;
             }
 

@@ -12,41 +12,32 @@ namespace PointBlank.API.Attributes
     public class CommandAttribute : Attribute
     {
         #region Variables
-        private string _localFile;
-        private Local _localization = null;
+        private string _pluginName;
+        private string _commandName;
         #endregion
 
         #region Propertys
-        public string localFile
+        public string pluginName
         {
             get
             {
-                return _localFile;
+                return _pluginName;
             }
         }
 
-        public bool hasLocalization
+        public string commandName
         {
             get
             {
-                return (_localization != null);
-            }
-        }
-
-        public Local localization
-        {
-            get
-            {
-                return _localization;
+                return _commandName;
             }
         }
         #endregion
 
-        public CommandAttribute(/*string localizationFile, */)
+        public CommandAttribute(string pluginName, string commandName)
         {
-            /*_localFile = localizationFile;
-            if (Localizator.exists(localizationFile))
-                _localization = Localizator.read(localizationFile);*/
+            _pluginName = pluginName;
+            _commandName = commandName;
         }
     }
 }

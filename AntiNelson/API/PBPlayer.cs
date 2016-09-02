@@ -202,6 +202,21 @@ namespace PointBlank.API
             }
         }
 
+        public bool giveItem(ushort id, byte amount = 1, byte quality = 255)
+        {
+            try
+            {
+                player.inventory.tryAddItem(new Item(id, amount, quality), true);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                CommandWindow.LogError("ERROR: Exception while attempting to give item to player!");
+                return false;
+            }
+        }
+
         public bool hasPermission(string permission)
         {
             string[] sPerm = permission.Split('.');
