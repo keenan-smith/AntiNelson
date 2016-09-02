@@ -28,10 +28,7 @@ namespace PointBlank.API.Extensions
 
         public abstract string command
         {
-            get
-            {
-                return "";
-            }
+            get;
         }
 
         public virtual int cooldown
@@ -44,10 +41,7 @@ namespace PointBlank.API.Extensions
 
         public abstract string permission
         {
-            get
-            {
-                return "";
-            }
+            get;
         }
 
         public bool hasMaxUsage
@@ -84,15 +78,12 @@ namespace PointBlank.API.Extensions
 
         public abstract string[] alias
         {
-            get
-            {
-                return new string[0];
-            }
+            get;
         }
         #endregion
 
         #region Abstract Functions
-        public abstract void onCall(PBPlayer player, string[] args) {}
+        public abstract void onCall(PBPlayer player, string[] args);
         #endregion
 
         #region Virtual Functions

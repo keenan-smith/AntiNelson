@@ -6,10 +6,9 @@ using UnityEngine;
 
 namespace PointBlank.API.Extensions
 {
-    public abstract class PBPlugin : MonoBehaviour
-    {
 
-        public PBPlugin() { }
+    public abstract class PBPlugin
+    {
 
         public abstract void load();
 

@@ -11,59 +11,64 @@ namespace PointBlank.PB_Library
     public class lib_PluginManager
     {
 
+        public Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
         private static AppDomainSetup domainSetup = new AppDomainSetup();
+        private static AppDomain pluginDomain = null;
+        private static PluginLoadingProxy pluginLoader = null;
 
         static lib_PluginManager()
         {
 
-            domainSetup.ApplicationBase = Variables.pluginsPathServer;
+            //domainSetup.ApplicationBase = Variables.pluginsPathServer;
             domainSetup.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
             domainSetup.DisallowBindingRedirects = !(domainSetup.DisallowCodeDownload = true);
+            pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
 
         }
 
+        public void unloadAllPlugins()
+        {
 
-        public Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
-        private Dictionary<String, AppDomain> loadedPluginAppdomains = new Dictionary<String, AppDomain>();
+            AppDomain.Unload(pluginDomain);
+            Console.WriteLine("Unloaded plugin domain!");
+
+        }
 
         public PBPlugin loadPlugin(String name)
         {
+            try {
+                if (loadedPlugins.ContainsKey(name))
+                {
 
-            if (loadedPlugins.ContainsKey(name))
-            {
+                    Console.WriteLine("Already loaded: " + name);
+                    return loadedPlugins[name];
 
-                Console.WriteLine("Already loaded: " + name);
-                return loadedPlugins[name];
+                }
 
-            }
+                String pluginPath = Variables.pluginsPathServer + name;
 
-            String pluginPath = Variables.pluginsPathServer + name;
+                //Console.WriteLine(pluginPath);
 
-            Console.WriteLine(pluginPath);
+                if (pluginLoader == null)
+                {
 
-            try
-            {
+                    pluginDomain.Load(typeof(PluginLoadingProxy).Assembly.FullName);
+                    pluginLoader = (PluginLoadingProxy)Activator.CreateInstance(pluginDomain, typeof(PluginLoadingProxy).Assembly.FullName, typeof(PluginLoadingProxy).FullName).Unwrap();
+                    Console.WriteLine("Initialized plugin loader");
 
-                AppDomain ad = AppDomain.CreateDomain(name, null, domainSetup);
+                }
 
-                Assembly asm = ad.Load(readFile(pluginPath));
-                Type pluginType = typeof(PBPlugin);
-                Type pluginBase = null;
+                if (pluginLoader != null)
+                {
 
-                foreach(Type t in asm.GetExportedTypes())
-                    if (t.IsAssignableFrom(pluginType))
-                    {
-                        pluginBase = t;
-                        break;
-                    }
+                    //PBPlugin plugin = pluginLoader.fetchPlugin(name);
+                    //plugin.load();
+                    //loadedPlugins.Add(name, plugin);
 
-                PBPlugin plugin = (PBPlugin)Activator.CreateInstance(pluginBase);
+                    //return plugin;
 
-                plugin.load();
-
-                loadedPlugins.Add(name, plugin);
-                loadedPluginAppdomains.Add(name, ad);
-
+                }
+                else Console.WriteLine("Plugin loader is not functioning!");
             } catch (Exception e)
             {
 
