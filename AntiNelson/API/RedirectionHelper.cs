@@ -22,7 +22,7 @@ namespace PointBlank.API
             PatchJumpTo(fptr1, fptr2);
         }
 
-        private static void RedirectCall(MethodInfo from, MethodInfo to)
+        public static void RedirectCall(MethodInfo from, MethodInfo to)
         {
             IntPtr methodPtr1 = from.MethodHandle.Value;
             IntPtr methodPtr2 = to.MethodHandle.Value;
@@ -106,7 +106,7 @@ namespace PointBlank.API
             }
         }
 
-        private static void RedirectCallIL(MethodInfo from, MethodInfo to)
+        public static void RedirectCallIL(MethodInfo from, MethodInfo to)
         {
             IntPtr methodPtr1 = from.MethodHandle.Value;
             IntPtr methodPtr2 = to.MethodHandle.Value;

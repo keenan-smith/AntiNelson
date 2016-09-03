@@ -154,6 +154,7 @@
   <ItemGroup>
     <Compile Include="API\Attributes\CommandAttribute.cs" />
     <Compile Include="API\Attributes\PluginAttribute.cs" />
+    <Compile Include="API\Attributes\ReplaceCodeAttribute.cs" />
     <Compile Include="API\Extensions\PBCommand.cs" />
     <Compile Include="API\Extensions\PBCooldown.cs" />
     <Compile Include="API\Extensions\PBGroup.cs" />
@@ -169,11 +170,13 @@
     <Compile Include="API\PB.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
+    <Compile Include="PB_Library\lib_CodeReplacer.cs" />
     <Compile Include="PB_Library\lib_CommandManager.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Library\PluginLoadingProxy.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
     <Compile Include="PB_Loading\Framework.cs" />
+    <Compile Include="PB_Overridables\Override_ChatManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool.cs" />
     <Compile Include="Variables.cs" />
@@ -183,9 +186,7 @@
     <Content Include="lib\Assembly-CSharp.dll" />
     <Content Include="lib\UnityEngine.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PB_Overridables\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
