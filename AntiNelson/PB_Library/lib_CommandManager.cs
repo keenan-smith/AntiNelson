@@ -6,6 +6,7 @@ using System.Text;
 using PointBlank.API;
 using PointBlank.API.Extensions;
 using PointBlank.API.Attributes;
+using PointBlank.PB_Library;
 using SDG.Unturned;
 using UnityEngine;
 
@@ -29,7 +30,10 @@ namespace PointBlank.PB_Library
 
         public lib_CommandManager()
         {
+            if (!PB.isServer()) // Eyy
+                return;
             loadCommands(AppDomain.CurrentDomain); // Don't forget to load our commands!
+            loadCommands(lib_PluginManager.pluginDomain); // Load the plugin commands!
         }
 
         #region Functions
@@ -59,8 +63,7 @@ namespace PointBlank.PB_Library
             }
             catch (Exception ex)
             {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to load commands from appdomain!");
+                PBLogging.logError("ERROR: Exception while attempting to load commands from appdomain!", ex);
                 return false;
             }
         }
@@ -88,8 +91,7 @@ namespace PointBlank.PB_Library
             }
             catch (Exception ex)
             {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to load commands from assembly!");
+                PBLogging.logError("ERROR: Exception while attempting to load commands from assembly!", ex);
                 return false;
             }
         }

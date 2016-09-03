@@ -3,8 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SDG.Unturned;
-using PointBlank.API.Extensions;
 
 namespace PointBlank.API.Attributes
 {

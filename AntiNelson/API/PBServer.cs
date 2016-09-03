@@ -39,6 +39,14 @@ namespace PointBlank.API
             }
         }
 
+        public static string serverSaveName
+        {
+            get
+            {
+                return serverName.ToUpper();
+            }
+        }
+
         public static string serverPassword
         {
             get
@@ -95,18 +103,8 @@ namespace PointBlank.API
         }
 
         #region Functions
-        public static bool broadcastChat(string message) // NOT DONE!
+        public static void broadcastChat(string message) // NOT DONE!
         {
-            try
-            {
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to broadcast chat message!");
-                return false;
-            }
         }
 
         public static bool restart() // NOT DONE!
@@ -117,8 +115,7 @@ namespace PointBlank.API
             }
             catch (Exception ex)
             {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to restart server!");
+                PBLogging.logError("ERROR: Exception while attempting to restart server!", ex);
                 return false;
             }
         }
@@ -131,8 +128,7 @@ namespace PointBlank.API
             }
             catch (Exception ex)
             {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to reload plugins!");
+                PBLogging.logError("ERROR: Exception while attempting to reload plugins!", ex);
                 return false;
             }
         }
@@ -145,8 +141,7 @@ namespace PointBlank.API
             }
             catch (Exception ex)
             {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to shutdown server!");
+                PBLogging.logError("ERROR: Exception while attempting to shutdown server!", ex);
                 return false;
             }
         }

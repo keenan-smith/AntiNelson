@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Attributes\CommandAttribute.cs" />
+    <Compile Include="API\Attributes\PluginAttribute.cs" />
     <Compile Include="API\Extensions\PBCommand.cs" />
     <Compile Include="API\Extensions\PBCooldown.cs" />
     <Compile Include="API\Extensions\PBGroup.cs" />
@@ -164,8 +165,10 @@
     <Compile Include="API\Enumerables\PrivacyState.cs" />
     <Compile Include="API\Extensions\PlayerProfile.cs" />
     <Compile Include="API\Extensions\PBPlugin.cs" />
+    <Compile Include="API\PBLogging.cs" />
     <Compile Include="API\PBPlayer.cs" />
     <Compile Include="API\PBServer.cs" />
+    <Compile Include="API\PB.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
     <Compile Include="PB_Library\lib_CommandManager.cs" />

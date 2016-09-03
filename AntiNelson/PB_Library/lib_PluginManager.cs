@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using System.Reflection;
 using PointBlank.API.Extensions;
+using PointBlank.API;
 
 namespace PointBlank.PB_Library
 {
@@ -13,8 +14,16 @@ namespace PointBlank.PB_Library
 
         public Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
         private static AppDomainSetup domainSetup = new AppDomainSetup();
-        private static AppDomain pluginDomain = null;
+        private static AppDomain _pluginDomain = null;
         private static PluginLoadingProxy pluginLoader = null;
+
+        public static AppDomain pluginDomain
+        {
+            get
+            {
+                return _pluginDomain;
+            }
+        }
 
         static lib_PluginManager()
         {
@@ -22,15 +31,15 @@ namespace PointBlank.PB_Library
             //domainSetup.ApplicationBase = Variables.pluginsPathServer;
             domainSetup.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
             domainSetup.DisallowBindingRedirects = !(domainSetup.DisallowCodeDownload = true);
-            pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
+            _pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
 
         }
 
         public void unloadAllPlugins()
         {
 
-            AppDomain.Unload(pluginDomain);
-            Console.WriteLine("Unloaded plugin domain!");
+            AppDomain.Unload(_pluginDomain);
+            PBLogging.log("Unloaded plugin domain!");
 
         }
 
@@ -40,7 +49,7 @@ namespace PointBlank.PB_Library
                 if (loadedPlugins.ContainsKey(name))
                 {
 
-                    Console.WriteLine("Already loaded: " + name);
+                    PBLogging.logWarning("Already loaded: " + name);
                     return loadedPlugins[name];
 
                 }
@@ -52,9 +61,9 @@ namespace PointBlank.PB_Library
                 if (pluginLoader == null)
                 {
 
-                    pluginDomain.Load(typeof(PluginLoadingProxy).Assembly.FullName);
-                    pluginLoader = (PluginLoadingProxy)Activator.CreateInstance(pluginDomain, typeof(PluginLoadingProxy).Assembly.FullName, typeof(PluginLoadingProxy).FullName).Unwrap();
-                    Console.WriteLine("Initialized plugin loader");
+                    _pluginDomain.Load(typeof(PluginLoadingProxy).Assembly.FullName);
+                    pluginLoader = (PluginLoadingProxy)Activator.CreateInstance(_pluginDomain, typeof(PluginLoadingProxy).Assembly.FullName, typeof(PluginLoadingProxy).FullName).Unwrap();
+                    PBLogging.log("Initialized plugin loader");
 
                 }
 
@@ -68,11 +77,11 @@ namespace PointBlank.PB_Library
                     //return plugin;
 
                 }
-                else Console.WriteLine("Plugin loader is not functioning!");
+                else PBLogging.logWarning("Plugin loader is not functioning!");
             } catch (Exception e)
             {
 
-                Console.WriteLine(e);
+                PBLogging.logError("ERROR: Failed to load plugin loader!", e);
 
             }
 
@@ -100,8 +109,7 @@ namespace PointBlank.PB_Library
                     }
                     catch (InternalBufferOverflowException ex)
                     {
-                        Debug.LogException(ex);
-                        Console.WriteLine("ERROR: Buffer overflow upon reading file!");
+                        PBLogging.logError("ERROR: Buffer overflow upon reading file!", ex);
                     }
 
                     fs.Close();

@@ -121,100 +121,40 @@ namespace PointBlank.API
         }
 
         #region Functions
-        public bool ban(string reason, uint duration, bool IPBan, CSteamID judge)
+        public void ban(string reason, uint duration, bool IPBan, CSteamID judge)
         {
-            try
-            {
-                SteamBlacklist.ban(
-                    steamID,
-                    (IPBan ? IP : 0u),
-                    judge,
-                    reason,
-                    duration
-                );
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to ban player!");
-                return false;
-            }
+            SteamBlacklist.ban(
+                steamID,
+                (IPBan ? IP : 0u),
+                judge,
+                reason,
+                duration
+            );
         }
 
-        public bool kick(string reason)
+        public void kick(string reason)
         {
-            try
-            {
-                Provider.kick(steamID, reason);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to kick player!");
-                return false;
-            }
+            Provider.kick(steamID, reason);
         }
 
-        public bool openURL(string url, string message)
+        public void openURL(string url, string message)
         {
-            try
-            {
-                player.sendBrowserRequest(message, url);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to open url for player!");
-                return false;
-            }
+            player.sendBrowserRequest(message, url);
         }
 
-        public bool teleportToPlayer(Player player)
+        public void teleportToPlayer(Player player)
         {
-            try
-            {
-                this.player.transform.position = player.transform.position;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to teleport player!");
-                return false;
-            }
+            this.player.transform.position = player.transform.position;
         }
 
-        public bool teleportToPosition(Vector3 pos)
+        public void teleportToPosition(Vector3 pos)
         {
-            try
-            {
-                player.transform.position = pos;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to teleport player!");
-                return false;
-            }
+            player.transform.position = pos;
         }
 
-        public bool giveItem(ushort id, byte amount = 1, byte quality = 255)
+        public void giveItem(ushort id, byte amount = 1, byte quality = 255)
         {
-            try
-            {
-                player.inventory.tryAddItem(new Item(id, amount, quality), true);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to give item to player!");
-                return false;
-            }
+            player.inventory.tryAddItem(new Item(id, amount, quality), true);
         }
 
         public bool hasPermission(string permission)
@@ -240,19 +180,8 @@ namespace PointBlank.API
             return (cDown != null && cDown.usage > maxUse);
         }
 
-        public bool testAntiSpy() // NOT DONE!
+        public void testAntiSpy() // NOT DONE!
         {
-            try
-            {
-                
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-                CommandWindow.LogError("ERROR: Exception while attempting to test player for antispy!");
-                return false;
-            }
         }
         #endregion
 

@@ -10,7 +10,7 @@ namespace PointBlank.API.Extensions
     public abstract class PBCommand
     {
         #region Variables
-        private Local _localization = new Local();
+        private Local _localization = null;
         #endregion
 
         #region Propertys
@@ -22,7 +22,8 @@ namespace PointBlank.API.Extensions
             }
             set
             {
-                _localization = value;
+                if(_localization == null)
+                    _localization = value;
             }
         }
 

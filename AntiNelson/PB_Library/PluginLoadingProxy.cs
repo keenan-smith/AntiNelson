@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using PointBlank.API.Extensions;
+using PointBlank.API;
+using PointBlank.API.Attributes;
 
 namespace PointBlank.PB_Library
 {
@@ -17,23 +19,31 @@ namespace PointBlank.PB_Library
                 Assembly asm = Assembly.LoadFile(path);
 
                 PBPlugin plugin = null;
+                PluginAttribute pa = null;
 
                 foreach (Type t in asm.GetTypes())
                 {
 
                     if (t.IsSubclassOf(typeof(PBPlugin)))
                     {
-
-                        plugin = (PBPlugin)asm.CreateInstance(t.FullName);
+                        pa = (PluginAttribute)Attribute.GetCustomAttribute(t, typeof(PluginAttribute));
+                        if(pa != null)
+                        {
+                            plugin = (PBPlugin)asm.CreateInstance(t.FullName);
+                        }
+                        else
+                        {
+                            PBLogging.logWarning("Failed to load plugin: " + path);
+                        }
 
                     }
 
                 }
 
-                if (plugin != null)
-                    Console.WriteLine("Loaded plugin: " + path);
+                if (plugin != null && pa != null)
+                    PBLogging.log("Loaded plugin: " + pa.pluginName);
                 else
-                    Console.WriteLine("Failed to load plugin: " + path);
+                    PBLogging.logWarning("Failed to load plugin: " + path);
 
                 return plugin;
 
@@ -41,7 +51,7 @@ namespace PointBlank.PB_Library
             catch (Exception e)
             {
 
-                Console.WriteLine(e);
+                PBLogging.logError("ERROR: Failed to load plugin!", e);
 
             }
 
