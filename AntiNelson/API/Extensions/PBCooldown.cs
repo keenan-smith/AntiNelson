@@ -14,7 +14,7 @@ namespace PointBlank.API.Extensions
         public int usage;
         #endregion
 
-        #region Propertys
+        #region Properties
         public PBCommand command
         {
             get

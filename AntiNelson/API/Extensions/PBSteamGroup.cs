@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SDG.Unturned;
+using UnityEngine;
+using Steamworks;
 
 namespace PointBlank.API.Extensions
 {
-    public class PBGroup
+    public class PBSteamGroup
     {
         #region Variables
         private string _name;
+        private Texture2D _icon;
+        private CSteamID _steamID;
         private List<string> _permissions = new List<string>();
-        private bool _isDefault;
         #endregion
 
         #region Properties
@@ -22,6 +26,22 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        public Texture2D icon
+        {
+            get
+            {
+                return _icon;
+            }
+        }
+
+        public CSteamID steamID
+        {
+            get
+            {
+                return _steamID;
+            }
+        }
+
         public List<string> permissions
         {
             get
@@ -29,21 +49,13 @@ namespace PointBlank.API.Extensions
                 return _permissions;
             }
         }
-
-        public bool isDefault
-        {
-            get
-            {
-                return _isDefault;
-            }
-        }
         #endregion
 
-        public PBGroup(string name, bool isDefault, string[] permissions)
+        public PBSteamGroup(string name, Texture2D icon, CSteamID steamID)
         {
             _name = name;
-            _isDefault = isDefault;
-            _permissions.AddRange(permissions);
+            _icon = icon;
+            _steamID = steamID;
         }
     }
 }

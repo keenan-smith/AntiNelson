@@ -5,6 +5,7 @@ using UnityEngine;
 using SDG.Unturned;
 using Steamworks;
 using PointBlank.API.Extensions;
+using SDG.SteamworksProvider;
 
 namespace PointBlank.API
 {
@@ -25,7 +26,7 @@ namespace PointBlank.API
         private List<PBCooldown> _cooldowns = new List<PBCooldown>();
         #endregion
 
-        #region Propertys
+        #region Properties
         public List<string> permissions
         {
             get
@@ -103,6 +104,14 @@ namespace PointBlank.API
             get
             {
                 return _profile;
+            }
+        }
+
+        public SteamGroup[] steamGroups
+        {
+            get
+            {
+                return Provider.provider.communityService.getGroups();
             }
         }
         #endregion

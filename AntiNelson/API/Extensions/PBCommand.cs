@@ -13,7 +13,7 @@ namespace PointBlank.API.Extensions
         private Local _localization = null;
         #endregion
 
-        #region Propertys
+        #region Properties
         public Local localization
         {
             get
@@ -88,9 +88,14 @@ namespace PointBlank.API.Extensions
         #endregion
 
         #region Virtual Functions
-        public virtual bool checkPermissions(PBPlayer player)
+        public virtual bool checkPermissions(PBPlayer player, string[] args)
         {
-            return (string.IsNullOrEmpty(permission) || player.hasPermission(permission));
+            string prm = permission;
+            foreach (string arg in args)
+            {
+                prm = prm + "." + arg;
+            }
+            return (string.IsNullOrEmpty(permission) || player.hasPermission(prm));
         }
 
         public virtual bool hasCooldown(PBPlayer player)
@@ -111,6 +116,14 @@ namespace PointBlank.API.Extensions
 
         public virtual void execute(PBPlayer player, string args)
         {
+            string[] sArgs = args.Split('/');
+
+            if (checkPermissions(player, sArgs))
+            {
+                PBChat.sendChatToPlayer(player, localization.format("CommandPermission"), Color.red);
+                return;
+            }
+
             if (hasReachedLimit(player))
             {
                 PBChat.sendChatToPlayer(player, localization.format("CommandLimit"), Color.red);
@@ -130,7 +143,7 @@ namespace PointBlank.API.Extensions
             }
             if (maxUsage > -1)
                 cDown.usage++;
-            onCall(player, args.Split('/'));
+            onCall(player, sArgs);
         }
         #endregion
     }

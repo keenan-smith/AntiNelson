@@ -138,12 +138,10 @@
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -151,7 +149,6 @@
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\UnityEngine.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +157,7 @@
     <Compile Include="API\Extensions\PBCommand.cs" />
     <Compile Include="API\Extensions\PBCooldown.cs" />
     <Compile Include="API\Extensions\PBGroup.cs" />
+    <Compile Include="API\Extensions\PBSteamGroup.cs" />
     <Compile Include="API\Localizator.cs" />
     <Compile Include="API\PBChat.cs" />
     <Compile Include="API\Enumerables\PrivacyState.cs" />

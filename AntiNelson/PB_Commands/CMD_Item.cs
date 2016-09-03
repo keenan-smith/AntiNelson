@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace PointBlank.PB_Commands
 {
-    [Command("Default", "ItemCommand")]
+    [Command("Default", "ItemCommand")] // Plugin Name, Command Name
     public class CMD_Item : PBCommand
     {
         #region Propertys

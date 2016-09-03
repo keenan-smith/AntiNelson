@@ -20,7 +20,7 @@ namespace PointBlank.API.Extensions
         private string _link;
         #endregion
 
-        #region Propertys
+        #region Properties
         public bool isVisible
         {
             get

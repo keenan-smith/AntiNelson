@@ -14,7 +14,7 @@ namespace PointBlank.API
         private static List<PBPlayer> _players = new List<PBPlayer>();
         #endregion
 
-        #region Propertys
+        #region Properties
         public static byte maxPlayers
         {
             get

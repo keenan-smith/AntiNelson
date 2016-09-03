@@ -14,7 +14,7 @@ namespace PointBlank.API.Attributes
         private string _commandName;
         #endregion
 
-        #region Propertys
+        #region Properties
         public string pluginName
         {
             get
