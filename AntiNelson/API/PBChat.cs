@@ -27,6 +27,14 @@ namespace PointBlank.API
         #endregion
 
         #region Event Functions
+        public static void ProcessCommands(CSteamID speaker, Chat args) // NOT DONE!
+        {
+            string prefix = args.text.Substring(0, 1);
+            if (prefix == "@" || prefix == "/")
+            {
+                // NEED FRAMEWORK TO FINISH!
+            }
+        }
         #endregion
 
         #region Override Functions
