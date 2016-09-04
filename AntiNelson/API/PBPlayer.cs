@@ -114,6 +114,14 @@ namespace PointBlank.API
                 return Provider.provider.communityService.getGroups();
             }
         }
+
+        public PBSKills[] skills
+        {
+            get
+            {
+                return PBSKills.getSkills(this);
+            }
+        }
         #endregion
 
         public PBPlayer(SteamPlayer p)

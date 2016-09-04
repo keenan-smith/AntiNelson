@@ -39,10 +39,11 @@ namespace PointBlank.API
 
         #region Variables
         private byte _maxLevel;
-        private ESkill _skill;
+        private ESkill _skillType;
         private string _name;
         private int _ID;
         private ESkillSet _skillset;
+        private Skill _skill;
         #endregion
 
         #region Properties
@@ -54,11 +55,11 @@ namespace PointBlank.API
             }
         }
 
-        public ESkill skill
+        public ESkill skillType
         {
             get
             {
-                return _skill;
+                return _skillType;
             }
         }
 
@@ -85,15 +86,33 @@ namespace PointBlank.API
                 return _skillset;
             }
         }
+
+        public Skill skill
+        {
+            get
+            {
+                return _skill;
+            }
+        }
         #endregion
 
-        public PBSKills(string name, int ID, ESkill skill, ESkillSet skillset, byte maxLevel)
+        public PBSKills(string name, int ID, ESkill skillType, ESkillSet skillset, byte maxLevel)
         {
             _name = name;
             _ID = ID;
-            _skill = skill;
+            _skillType = skillType;
             _skillset = skillset;
             _maxLevel = maxLevel;
+        }
+
+        public PBSKills(PBSKills pbskill, Skill skill)
+        {
+            _name = pbskill.name;
+            _ID = pbskill.ID;
+            _skillType = pbskill.skillType;
+            _skillset = pbskill.skillset;
+            _maxLevel = pbskill.maxLevel;
+            _skill = skill;
         }
 
         #region Functions
@@ -110,6 +129,42 @@ namespace PointBlank.API
         public void setLevel(PBPlayer player, byte level)
         {
             player.player.skills.skills[(int)skillset][ID].level = level;
+        }
+
+        public byte getLevel(PBPlayer player)
+        {
+            return player.player.skills.skills[(int)skillset][ID].level;
+        }
+
+        public static PBSKills[] getSkills(PBPlayer player)
+        {
+            List<PBSKills> skills = new List<PBSKills>();
+            PlayerSkills skill = player.player.skills;
+
+            skills.Add(new PBSKills(PBSKills.Agriculture, skill.skills[(byte)PBSKills.Agriculture.skillset][(int)PBSKills.Agriculture.ID]));
+            skills.Add(new PBSKills(PBSKills.Cardio, skill.skills[(byte)PBSKills.Cardio.skillset][(int)PBSKills.Cardio.ID]));
+            skills.Add(new PBSKills(PBSKills.Cooking, skill.skills[(byte)PBSKills.Cooking.skillset][(int)PBSKills.Cooking.ID]));
+            skills.Add(new PBSKills(PBSKills.Crafting, skill.skills[(byte)PBSKills.Crafting.skillset][(int)PBSKills.Crafting.ID]));
+            skills.Add(new PBSKills(PBSKills.Dexterity, skill.skills[(byte)PBSKills.Dexterity.skillset][(int)PBSKills.Dexterity.ID]));
+            skills.Add(new PBSKills(PBSKills.Diving, skill.skills[(byte)PBSKills.Diving.skillset][(int)PBSKills.Diving.ID]));
+            skills.Add(new PBSKills(PBSKills.Engineer, skill.skills[(byte)PBSKills.Engineer.skillset][(int)PBSKills.Engineer.ID]));
+            skills.Add(new PBSKills(PBSKills.Exercise, skill.skills[(byte)PBSKills.Exercise.skillset][(int)PBSKills.Exercise.ID]));
+            skills.Add(new PBSKills(PBSKills.Fishing, skill.skills[(byte)PBSKills.Fishing.skillset][(int)PBSKills.Fishing.ID]));
+            skills.Add(new PBSKills(PBSKills.Healing, skill.skills[(byte)PBSKills.Healing.skillset][(int)PBSKills.Healing.ID]));
+            skills.Add(new PBSKills(PBSKills.Immunity, skill.skills[(byte)PBSKills.Immunity.skillset][(int)PBSKills.Immunity.ID]));
+            skills.Add(new PBSKills(PBSKills.Mechanic, skill.skills[(byte)PBSKills.Mechanic.skillset][(int)PBSKills.Mechanic.ID]));
+            skills.Add(new PBSKills(PBSKills.Outdoors, skill.skills[(byte)PBSKills.Outdoors.skillset][(int)PBSKills.Outdoors.ID]));
+            skills.Add(new PBSKills(PBSKills.Overkill, skill.skills[(byte)PBSKills.Overkill.skillset][(int)PBSKills.Overkill.ID]));
+            skills.Add(new PBSKills(PBSKills.Parkour, skill.skills[(byte)PBSKills.Parkour.skillset][(int)PBSKills.Parkour.ID]));
+            skills.Add(new PBSKills(PBSKills.SharpShooter, skill.skills[(byte)PBSKills.SharpShooter.skillset][(int)PBSKills.SharpShooter.ID]));
+            skills.Add(new PBSKills(PBSKills.SneakyBeaky, skill.skills[(byte)PBSKills.SneakyBeaky.skillset][(int)PBSKills.SneakyBeaky.ID]));
+            skills.Add(new PBSKills(PBSKills.Strength, skill.skills[(byte)PBSKills.Strength.skillset][(int)PBSKills.Strength.ID]));
+            skills.Add(new PBSKills(PBSKills.Survival, skill.skills[(byte)PBSKills.Survival.skillset][(int)PBSKills.Survival.ID]));
+            skills.Add(new PBSKills(PBSKills.Toughness, skill.skills[(byte)PBSKills.Toughness.skillset][(int)PBSKills.Toughness.ID]));
+            skills.Add(new PBSKills(PBSKills.Vitality, skill.skills[(byte)PBSKills.Vitality.skillset][(int)PBSKills.Vitality.ID]));
+            skills.Add(new PBSKills(PBSKills.WarmBlooded, skill.skills[(byte)PBSKills.WarmBlooded.skillset][(int)PBSKills.WarmBlooded.ID]));
+
+            return skills.ToArray();
         }
         #endregion
     }

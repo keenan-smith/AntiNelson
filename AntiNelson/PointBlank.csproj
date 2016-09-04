@@ -173,10 +173,12 @@
     <Compile Include="API\PBSKills.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
     <Compile Include="PB_Commands\CMD_Freeze.cs" />
+    <Compile Include="PB_Commands\CMD_GodMode.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
     <Compile Include="PB_Commands\CMD_MaxSkills.cs" />
     <Compile Include="PB_Library\lib_CodeReplacer.cs" />
     <Compile Include="PB_Library\lib_CommandManager.cs" />
+    <Compile Include="PB_Library\lib_EventInitalizer.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Library\PluginLoadingProxy.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
