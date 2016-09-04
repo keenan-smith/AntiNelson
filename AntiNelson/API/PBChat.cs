@@ -19,7 +19,7 @@ namespace PointBlank.API
         #endregion
 
         #region Handlers
-        public static delegate void ChatMessageHandler(CSteamID speaker, Chat args);
+        public delegate void ChatMessageHandler(CSteamID speaker, Chat args);
         #endregion
 
         #region Events

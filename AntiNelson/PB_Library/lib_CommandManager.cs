@@ -37,6 +37,42 @@ namespace PointBlank.PB_Library
         }
 
         #region Functions
+        public void loadCommand(Type t)
+        {
+            CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
+            if (att != null)
+            {
+                PBCommand cmd = (PBCommand)Activator.CreateInstance(t);
+                if (Array.Exists(commands, a => a.command == cmd.command))
+                    return;
+                cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
+                string path = Variables.currentPath + "\\Settings\\" + att.pluginName + "\\" + att.commandName + ".dat";
+                if (ReadWrite.fileExists(path, false, false))
+                {
+                    PBConfig cConfig = new PBConfig(path);
+                    if (cConfig.getText("enabled") != "true")
+                        return;
+                    cmd.alias = cConfig.getChildNodesText("aliases");
+                    cmd.command = cConfig.getText("command");
+                    cmd.cooldown = int.Parse(cConfig.getText("cooldown"));
+                    cmd.maxUsage = int.Parse(cConfig.getText("maxusage"));
+                    cmd.permission = cConfig.getText("permission");
+                }
+                else
+                {
+                    PBConfig cConfig = new PBConfig();
+                    cConfig.addTextElement("enabled", "true");
+                    cConfig.addTextElements("aliases", "alias", cmd.alias);
+                    cConfig.addTextElement("command", cmd.command);
+                    cConfig.addTextElement("cooldown", cmd.cooldown.ToString());
+                    cConfig.addTextElement("maxusage", cmd.maxUsage.ToString());
+                    cConfig.addTextElement("permission", cmd.permission);
+                    cConfig.save(path);
+                }
+                _commands.Add(cmd);
+            }
+        }
+
         public bool loadCommands(AppDomain appd)
         {
             try
@@ -47,15 +83,7 @@ namespace PointBlank.PB_Library
                     {
                         if (t.IsClass && typeof(PBCommand).IsAssignableFrom(t))
                         {
-                            CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
-                            if (att != null)
-                            {
-                                PBCommand cmd = (PBCommand)Activator.CreateInstance(t);
-                                if (Array.Exists(commands, a => a.command == cmd.command))
-                                    continue;
-                                cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
-                                _commands.Add(cmd);
-                            }
+                            loadCommand(t);
                         }
                     }
                 }
@@ -76,15 +104,7 @@ namespace PointBlank.PB_Library
                 {
                     if (t.IsClass && typeof(PBCommand).IsAssignableFrom(t))
                     {
-                        CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
-                        if (att != null)
-                        {
-                            PBCommand cmd = (PBCommand)Activator.CreateInstance(t);
-                            if (Array.Exists(commands, a => a.command == cmd.command))
-                                continue;
-                            cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
-                            _commands.Add(cmd);
-                        }
+                        loadCommand(t);
                     }
                 }
                 return true;

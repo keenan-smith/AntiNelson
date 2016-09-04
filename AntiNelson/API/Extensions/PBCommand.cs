@@ -27,38 +27,36 @@ namespace PointBlank.API.Extensions
             }
         }
 
-        public abstract string command
+        public virtual string command
         {
             get;
+            set;
         }
 
         public virtual int cooldown
         {
-            get
-            {
-                return 1;
-            }
+            get;
+            set;
         }
 
-        public abstract string permission
+        public virtual string permission
         {
             get;
+            set;
         }
 
         public bool hasMaxUsage
         {
             get
             {
-                return (maxUsage < 0);
+                return (maxUsage != null);
             }
         }
 
         public virtual int maxUsage
         {
-            get
-            {
-                return -1;
-            }
+            get;
+            set;
         }
 
         public string help
@@ -77,9 +75,10 @@ namespace PointBlank.API.Extensions
             }
         }
 
-        public abstract string[] alias
+        public virtual string[] alias
         {
             get;
+            set;
         }
         #endregion
 

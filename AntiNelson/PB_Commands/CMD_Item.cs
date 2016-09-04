@@ -13,34 +13,15 @@ namespace PointBlank.PB_Commands
     [Command("Default", "ItemCommand")]
     public class CMD_Item : PBCommand
     {
-        #region Propertys
-        public override string command
+        public CMD_Item()
         {
-            get
+            permission = "item";
+            command = "item";
+            alias = new string[]
             {
-                return "item";
-            }
+                "i",
+            };
         }
-
-        public override string[] alias
-        {
-            get
-            {
-                return new string[]
-                {
-                    "i",
-                };
-            }
-        }
-
-        public override string permission
-        {
-            get
-            {
-                return "i";
-            }
-        }
-        #endregion
 
         #region Functions
         public override void onCall(PBPlayer player, string[] args)

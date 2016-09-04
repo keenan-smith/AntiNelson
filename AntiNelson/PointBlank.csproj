@@ -166,6 +166,7 @@
     <Compile Include="API\Enumerables\PrivacyState.cs" />
     <Compile Include="API\Extensions\PlayerProfile.cs" />
     <Compile Include="API\Extensions\PBPlugin.cs" />
+    <Compile Include="API\PBConfig.cs" />
     <Compile Include="API\PBLogging.cs" />
     <Compile Include="API\PBPlayer.cs" />
     <Compile Include="API\PBServer.cs" />
@@ -176,10 +177,12 @@
     <Compile Include="PB_Commands\CMD_GodMode.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
     <Compile Include="PB_Commands\CMD_MaxSkills.cs" />
+    <Compile Include="PB_GameObjects\RCON.cs" />
     <Compile Include="PB_Library\lib_CodeReplacer.cs" />
     <Compile Include="PB_Library\lib_CommandManager.cs" />
     <Compile Include="PB_Library\lib_EventInitalizer.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
+    <Compile Include="PB_Library\lib_RCON.cs" />
     <Compile Include="PB_Library\PluginLoadingProxy.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
     <Compile Include="PB_Loading\Framework.cs" />

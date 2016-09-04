@@ -13,34 +13,15 @@ namespace PointBlank.PB_Commands
     [Command("Default", "MaxSkills")]
     public class CMD_MaxSkills : PBCommand
     {
-        #region Properties
-        public override string command
+        public CMD_MaxSkills()
         {
-            get
+            permission = "maxskills";
+            command = "maxskills";
+            alias = new string[]
             {
-                return "maxskills";
-            }
+                "skills",
+            };
         }
-
-        public override string[] alias
-        {
-            get
-            {
-                return new string[]
-                {
-                    "skills",
-                };
-            }
-        }
-
-        public override string permission
-        {
-            get
-            {
-                return "maxskills";
-            }
-        }
-        #endregion
 
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
