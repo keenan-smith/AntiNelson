@@ -7,7 +7,7 @@ using SDG.Unturned;
 
 namespace PointBlank.API.Extensions
 {
-    public abstract class PBCommand
+    public abstract class PBCommand : MonoBehaviour
     {
         #region Variables
         private Local _localization = null;

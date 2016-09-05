@@ -23,7 +23,6 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
-            
         }
         #endregion
     }

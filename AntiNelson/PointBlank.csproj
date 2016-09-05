@@ -177,7 +177,9 @@
     <Compile Include="PB_Commands\CMD_GodMode.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
     <Compile Include="PB_Commands\CMD_MaxSkills.cs" />
+    <Compile Include="PB_GameObjects\AutoSave.cs" />
     <Compile Include="PB_GameObjects\RCON.cs" />
+    <Compile Include="PB_Library\lib_AutoSave.cs" />
     <Compile Include="PB_Library\lib_CodeReplacer.cs" />
     <Compile Include="PB_Library\lib_CommandManager.cs" />
     <Compile Include="PB_Library\lib_EventInitalizer.cs" />

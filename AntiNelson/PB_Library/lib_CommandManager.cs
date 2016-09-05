@@ -12,10 +12,11 @@ using UnityEngine;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_CommandManager
+    public class lib_CommandManager : MonoBehaviour
     {
         #region Variables
         private List<PBCommand> _commands = new List<PBCommand>();
+        private GameObject obj_Commands;
         #endregion
 
         #region Propertys
@@ -30,10 +31,12 @@ namespace PointBlank.PB_Library
 
         public lib_CommandManager()
         {
-            if (!PB.isServer()) // Eyy
+            if (!PB.isServer())
                 return;
-            loadCommands(AppDomain.CurrentDomain); // Don't forget to load our commands!
-            loadCommands(lib_PluginManager.pluginDomain); // Load the plugin commands!
+            obj_Commands = new GameObject();
+            DontDestroyOnLoad(obj_Commands);
+            loadCommands(AppDomain.CurrentDomain);
+            loadCommands(lib_PluginManager.pluginDomain);
         }
 
         #region Functions
@@ -42,7 +45,7 @@ namespace PointBlank.PB_Library
             CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
             if (att != null)
             {
-                PBCommand cmd = (PBCommand)Activator.CreateInstance(t);
+                PBCommand cmd = obj_Commands.AddComponent(t) as PBCommand;
                 if (Array.Exists(commands, a => a.command == cmd.command))
                     return;
                 cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");

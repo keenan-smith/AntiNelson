@@ -24,6 +24,7 @@ namespace PointBlank.API
         private List<string> _permissions = new List<string>();
         private List<PBGroup> _groups = new List<PBGroup>();
         private List<PBCooldown> _cooldowns = new List<PBCooldown>();
+        private Dictionary<string, object> _customVariables = new Dictionary<string, object>();
         #endregion
 
         #region Properties
@@ -120,6 +121,14 @@ namespace PointBlank.API
             get
             {
                 return PBSKills.getSkills(this);
+            }
+        }
+
+        public Dictionary<string, object> customVariables
+        {
+            get
+            {
+                return _customVariables;
             }
         }
         #endregion

@@ -27,7 +27,8 @@ namespace PointBlank.PB_Library
 
         static lib_PluginManager()
         {
-
+            if (!PB.isServer())
+                return;
             //domainSetup.ApplicationBase = Variables.pluginsPathServer;
             domainSetup.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
             domainSetup.DisallowBindingRedirects = !(domainSetup.DisallowCodeDownload = true);

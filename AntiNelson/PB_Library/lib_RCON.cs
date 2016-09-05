@@ -16,6 +16,8 @@ namespace PointBlank.PB_Library
         private RCON sys_RCON;
         private ushort _port;
         private string _password;
+        private bool _canSendCommands;
+        private bool _canReadLogs;
         #endregion
 
         #region Properties
@@ -34,10 +36,28 @@ namespace PointBlank.PB_Library
                 return _password;
             }
         }
+
+        public bool canSendCommands
+        {
+            get
+            {
+                return _canSendCommands;
+            }
+        }
+
+        public bool canReadLogs
+        {
+            get
+            {
+                return _canReadLogs;
+            }
+        }
         #endregion
 
         public lib_RCON()
         {
+            if (!PB.isServer())
+                return;
             string path = Variables.currentPath + "\\Settings\\RCON.dat";
             if (ReadWrite.fileExists(path, false, false))
             {
@@ -46,6 +66,8 @@ namespace PointBlank.PB_Library
                     return;
                 _port = ushort.Parse(rConfig.getText("port"));
                 _password = rConfig.getText("password");
+                _canReadLogs = (rConfig.getText("CanReadLogs") == "true");
+                _canSendCommands = (rConfig.getText("CanSendCommands") == "true");
             }
             else
             {
@@ -53,7 +75,10 @@ namespace PointBlank.PB_Library
                 rConfig.addTextElement("enabled", "false");
                 rConfig.addTextElement("port", "27115");
                 rConfig.addTextElement("password", Tool.GetRandomString());
+                rConfig.addTextElement("CanReadLogs", "true");
+                rConfig.addTextElement("CanSendCommands", "true");
                 rConfig.save(path);
+                return;
             }
             createGameObject();
         }

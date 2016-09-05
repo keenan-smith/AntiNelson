@@ -16,6 +16,8 @@ namespace PointBlank.PB_Library
         #region Init Functions
         private void initChat()
         {
+            if (!PB.isServer())
+                return;
             PBChat.OnMessageReceived += new PBChat.ChatMessageHandler(PBChat.ProcessCommands);
         }
         #endregion
