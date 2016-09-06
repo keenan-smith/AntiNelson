@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using SDG.Unturned;
 
-namespace PointBlank.API.Extensions
+namespace PointBlank.API.Server.Extensions
 {
     public abstract class PBCommand : MonoBehaviour
     {

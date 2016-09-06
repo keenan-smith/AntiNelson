@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using SDG.Unturned;
 
-namespace PointBlank.API
+namespace PointBlank.API.Server
 {
     public class PBServer
     {

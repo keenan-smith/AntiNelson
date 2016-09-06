@@ -1,6 +1,6 @@
 ﻿using System;
-using PointBlank.API.Extensions;
-using PointBlank.API.Attributes;
+using PointBlank.API.Server.Extensions;
+using PointBlank.API.Server.Attributes;
 
 namespace TestPlugin
 {

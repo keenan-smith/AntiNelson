@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System.Reflection;
-using PointBlank.API.Extensions;
+using PointBlank.API.Server.Extensions;
+using PointBlank.API.Server;
 using PointBlank.API;
 
 namespace PointBlank.PB_Library

@@ -6,7 +6,7 @@ using System.Text;
 using SDG.Unturned;
 using UnityEngine;
 using Steamworks;
-using PointBlank.API;
+using PointBlank.API.Server;
 using PointBlank.API.Attributes;
 
 namespace PointBlank.PB_Overridables

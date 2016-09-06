@@ -4,19 +4,14 @@ using System.Text;
 using UnityEngine;
 using SDG.Unturned;
 using Steamworks;
+using PointBlank.API.Server.Extensions;
 using PointBlank.API.Extensions;
 using SDG.SteamworksProvider;
 
-namespace PointBlank.API
+namespace PointBlank.API.Server
 {
     public class PBPlayer
     {
-
-        #region RandomVars
-        private byte[] prevHash = null;
-        private bool testingAntiSpy = false;
-        #endregion
-
         #region Variables
         private SteamPlayer _steamPlayer;
         private uint _IP;
@@ -116,11 +111,11 @@ namespace PointBlank.API
             }
         }
 
-        public PBSKills[] skills
+        public PBSkills[] skills
         {
             get
             {
-                return PBSKills.getSkills(this);
+                return PBSkills.getSkills(this);
             }
         }
 
@@ -204,23 +199,6 @@ namespace PointBlank.API
         {
             PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
             return (cDown != null && cDown.usage > maxUse);
-        }
-
-        public void testAntiSpy() // NOT DONE!
-        {
-        }
-        #endregion
-
-        #region Events
-        private void onSpyReady(object sender, PlayerSpyReady args) // NOT DONE!
-        {
-            if (testingAntiSpy)
-            {
-                if (prevHash == null)
-                {
-                    
-                }
-            }
         }
         #endregion
     }

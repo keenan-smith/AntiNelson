@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace PointBlank.API.Extensions
+namespace PointBlank.API.Server.Extensions
 {
 
     public abstract class PBPlugin

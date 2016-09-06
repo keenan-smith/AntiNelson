@@ -7,7 +7,7 @@ using SDG.Unturned;
 using UnityEngine;
 using Steamworks;
 
-namespace PointBlank.API
+namespace PointBlank.API.Server
 {
     public class PBChat
     {

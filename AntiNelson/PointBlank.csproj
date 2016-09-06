@@ -152,26 +152,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Attributes\CommandAttribute.cs" />
-    <Compile Include="API\Attributes\PluginAttribute.cs" />
+    <Compile Include="API\Client\Attributes\ModAttribute.cs" />
+    <Compile Include="API\Client\PBPlayer.cs" />
+    <Compile Include="API\Client\PBSkills.cs" />
+    <Compile Include="API\Server\Attributes\CommandAttribute.cs" />
+    <Compile Include="API\Server\Attributes\PluginAttribute.cs" />
     <Compile Include="API\Attributes\ReplaceCodeAttribute.cs" />
     <Compile Include="API\Enumerables\ESkill.cs" />
     <Compile Include="API\Enumerables\ESkillSet.cs" />
-    <Compile Include="API\Extensions\PBCommand.cs" />
-    <Compile Include="API\Extensions\PBCooldown.cs" />
-    <Compile Include="API\Extensions\PBGroup.cs" />
+    <Compile Include="API\Server\Extensions\PBCommand.cs" />
+    <Compile Include="API\Server\Extensions\PBCooldown.cs" />
+    <Compile Include="API\Server\Extensions\PBGroup.cs" />
     <Compile Include="API\Extensions\PBSteamGroup.cs" />
     <Compile Include="API\Localizator.cs" />
-    <Compile Include="API\PBChat.cs" />
+    <Compile Include="API\Server\PBChat.cs" />
     <Compile Include="API\Enumerables\PrivacyState.cs" />
     <Compile Include="API\Extensions\PlayerProfile.cs" />
-    <Compile Include="API\Extensions\PBPlugin.cs" />
+    <Compile Include="API\Server\Extensions\PBPlugin.cs" />
     <Compile Include="API\PBConfig.cs" />
     <Compile Include="API\PBLogging.cs" />
-    <Compile Include="API\PBPlayer.cs" />
-    <Compile Include="API\PBServer.cs" />
+    <Compile Include="API\Server\PBPlayer.cs" />
+    <Compile Include="API\Server\PBServer.cs" />
     <Compile Include="API\PB.cs" />
-    <Compile Include="API\PBSKills.cs" />
+    <Compile Include="API\Server\PBSkills.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
     <Compile Include="PB_Commands\CMD_Freeze.cs" />
     <Compile Include="PB_Commands\CMD_GodMode.cs" />
@@ -198,7 +201,11 @@
     <Content Include="lib\Assembly-CSharp.dll" />
     <Content Include="lib\UnityEngine.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="API\Client\Enumerables\" />
+    <Folder Include="API\Client\Extensions\" />
+    <Folder Include="API\Server\Enumerables\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
