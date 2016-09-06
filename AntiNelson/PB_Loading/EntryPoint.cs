@@ -40,7 +40,6 @@ namespace PointBlank.PB_Loading
                     {
                         mainObject = new GameObject();
                         instance = mainObject.AddComponent<EntryPoint>();
-                        hackInstance = mainObject.AddComponent<Framework>();
                         DontDestroyOnLoad(mainObject);
                     }
 
@@ -64,6 +63,15 @@ namespace PointBlank.PB_Loading
             hackInstance = new Framework();
 
             Launch();
+        }
+
+        public void Start()
+        {
+
+            hackInstance = new Framework();
+            hackInstance._Start();
+            DontDestroyOnLoad(transform.gameObject);
+
         }
 
         public void Update()

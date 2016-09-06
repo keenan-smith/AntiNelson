@@ -12,26 +12,26 @@ namespace PointBlank.API
         #region Functions
         public static void log(string text, bool inConsole = true)
         {
-            Debug.Log(text);
-            Console.WriteLine(text);
+            Debug.Log("[PointBlank] " + text);
+            //Console.WriteLine(text);
             if (inConsole)
-                CommandWindow.Log(text);
+                CommandWindow.Log("[PointBlank] " + text);
         }
 
         public static void logError(string text, Exception ex, bool inConsole = true)
         {
-            Debug.LogException(ex);
-            Console.WriteLine(ex.Message);
+            Debug.LogError("[PointBlank] " + ex);
+            //Console.WriteLine(ex.Message);
             if (inConsole)
-                CommandWindow.LogError(text);
+                CommandWindow.LogError("[PointBlank] " + text);
         }
 
         public static void logWarning(string text, bool inConsole = true)
         {
-            Debug.LogWarning(text);
-            Console.WriteLine(text);
+            Debug.LogWarning("[PointBlank] " + text);
+            //Console.WriteLine(text);
             if (inConsole)
-                CommandWindow.LogWarning(text);
+                CommandWindow.LogWarning("[PointBlank] " + text);
         }
         #endregion
     }

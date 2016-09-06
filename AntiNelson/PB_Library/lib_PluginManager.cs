@@ -28,9 +28,9 @@ namespace PointBlank.PB_Library
 
         static lib_PluginManager()
         {
-            /*
+            
             if (!PB.isServer())
-                return;*/
+                return;
 
             createPluginDomain();
 
@@ -44,7 +44,6 @@ namespace PointBlank.PB_Library
             domainSetup.DisallowBindingRedirects = false;
             domainSetup.DisallowCodeDownload = true;
             _pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
-            //_pluginDomain.Load(typeof(PluginLoaderProxy).Assembly.FullName);
             pluginLoader = _pluginDomain.CreateInstanceAndUnwrap(typeof(PluginLoaderProxy).Assembly.FullName, typeof(PluginLoaderProxy).FullName) as PluginLoaderProxy;
 
         }
@@ -54,24 +53,35 @@ namespace PointBlank.PB_Library
 
             loadedPlugins.Clear();
             AppDomain.Unload(_pluginDomain);
-            //PBLogging.log("Unloaded plugin domain!");
-            Console.WriteLine("Unloaded plugin domain!");
+            PBLogging.log("Unloaded plugin domain!");
             createPluginDomain();
+
+            printLoadedAssemblies(AppDomain.CurrentDomain);
+            printLoadedAssemblies(_pluginDomain);
+
 
         }
 
-        public PBPlugin loadPlugin(String name)
+        public void loadPlugins()
+        {
+
+            foreach (String path in Directory.GetFiles(Variables.pluginsPathServer, "*.dll"))
+                loadPlugin(path);
+
+        }
+
+        public PBPlugin loadPlugin(String fullPath)
         {
             try {
-                if (loadedPlugins.ContainsKey(name))
+                if (loadedPlugins.ContainsKey(fullPath))
                 {
 
-                    PBLogging.logWarning("Already loaded: " + name);
-                    return loadedPlugins[name];
+                    PBLogging.logWarning("Already loaded: " + fullPath);
+                    return loadedPlugins[fullPath];
 
                 }
 
-                pluginLoader.loadPlugin(name);
+                pluginLoader.loadPlugin(fullPath);
 
             } catch (Exception e)
             {
@@ -84,19 +94,19 @@ namespace PointBlank.PB_Library
 
         }
 
-        public static void registerPlugin(String name, PBPlugin plugin)
+        public static void registerPlugin(String fullPath, PBPlugin plugin)
         {
 
-            loadedPlugins.Add(name, plugin);
+            loadedPlugins.Add(fullPath, plugin);
 
         }
 
-        public static byte[] readFile(String path)
+        public static byte[] readFile(String fullPath)
         {
 
             byte[] buffer = new byte[4096];
 
-            using (FileStream fs = new FileStream(path, FileMode.Open))
+            using (FileStream fs = new FileStream(fullPath, FileMode.Open))
             {
 
                 using (MemoryStream ms = new MemoryStream())
@@ -128,7 +138,7 @@ namespace PointBlank.PB_Library
         {
 
             foreach (Assembly a in domain.GetAssemblies())
-                Console.WriteLine("{0} ({1}): {2}", domain.FriendlyName, domain.Id, a.ManifestModule.Name);
+                PBLogging.log(String.Format("{0} ({1}): {2}", domain.FriendlyName, domain.Id, a.ManifestModule.Name));
 
         }
 
