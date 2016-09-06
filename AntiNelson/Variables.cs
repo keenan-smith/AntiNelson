@@ -16,7 +16,7 @@ namespace PointBlank
 
         public static string modsPathClient = Directory.GetCurrentDirectory() + @"\Mods\";
 
-        public static string currentPath = "";
+        public static string currentPath = Directory.GetCurrentDirectory() + @"\";
 
         //public static AppDomainSetup ads = new AppDomainSetup();
         //public static Dictionary<Assembly, AppDomain> plugins = new Dictionary<Assembly, AppDomain>();

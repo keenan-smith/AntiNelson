@@ -188,7 +188,7 @@
     <Compile Include="PB_Library\lib_EventInitalizer.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Library\lib_RCON.cs" />
-    <Compile Include="PB_Library\PluginLoadingProxy.cs" />
+    <Compile Include="PB_Library\PluginLoaderProxy.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
     <Compile Include="PB_Loading\Framework.cs" />
     <Compile Include="PB_Overridables\Override_ChatManager.cs" />

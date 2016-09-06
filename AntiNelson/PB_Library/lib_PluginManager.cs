@@ -13,10 +13,10 @@ namespace PointBlank.PB_Library
     public class lib_PluginManager
     {
 
-        public Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
+        private static Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
         private static AppDomainSetup domainSetup = new AppDomainSetup();
         private static AppDomain _pluginDomain = null;
-        private static PluginLoadingProxy pluginLoader = null;
+        private static PluginLoaderProxy pluginLoader = null;
 
         public static AppDomain pluginDomain
         {
@@ -28,20 +28,35 @@ namespace PointBlank.PB_Library
 
         static lib_PluginManager()
         {
+            /*
             if (!PB.isServer())
-                return;
-            //domainSetup.ApplicationBase = Variables.pluginsPathServer;
+                return;*/
+
+            createPluginDomain();
+
+        }
+
+        private static void createPluginDomain()
+        {
+
+            domainSetup.ApplicationBase = Variables.currentPath;
             domainSetup.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-            domainSetup.DisallowBindingRedirects = !(domainSetup.DisallowCodeDownload = true);
+            domainSetup.DisallowBindingRedirects = false;
+            domainSetup.DisallowCodeDownload = true;
             _pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
+            //_pluginDomain.Load(typeof(PluginLoaderProxy).Assembly.FullName);
+            pluginLoader = _pluginDomain.CreateInstanceAndUnwrap(typeof(PluginLoaderProxy).Assembly.FullName, typeof(PluginLoaderProxy).FullName) as PluginLoaderProxy;
 
         }
 
         public void unloadAllPlugins()
         {
 
+            loadedPlugins.Clear();
             AppDomain.Unload(_pluginDomain);
-            PBLogging.log("Unloaded plugin domain!");
+            //PBLogging.log("Unloaded plugin domain!");
+            Console.WriteLine("Unloaded plugin domain!");
+            createPluginDomain();
 
         }
 
@@ -56,30 +71,8 @@ namespace PointBlank.PB_Library
 
                 }
 
-                String pluginPath = Variables.pluginsPathServer + name;
+                pluginLoader.loadPlugin(name);
 
-                //Console.WriteLine(pluginPath);
-
-                if (pluginLoader == null)
-                {
-
-                    _pluginDomain.Load(typeof(PluginLoadingProxy).Assembly.FullName);
-                    pluginLoader = (PluginLoadingProxy)Activator.CreateInstance(_pluginDomain, typeof(PluginLoadingProxy).Assembly.FullName, typeof(PluginLoadingProxy).FullName).Unwrap();
-                    PBLogging.log("Initialized plugin loader");
-
-                }
-
-                if (pluginLoader != null)
-                {
-
-                    //PBPlugin plugin = pluginLoader.fetchPlugin(name);
-                    //plugin.load();
-                    //loadedPlugins.Add(name, plugin);
-
-                    //return plugin;
-
-                }
-                else PBLogging.logWarning("Plugin loader is not functioning!");
             } catch (Exception e)
             {
 
@@ -91,7 +84,14 @@ namespace PointBlank.PB_Library
 
         }
 
-        private static byte[] readFile(String path)
+        public static void registerPlugin(String name, PBPlugin plugin)
+        {
+
+            loadedPlugins.Add(name, plugin);
+
+        }
+
+        public static byte[] readFile(String path)
         {
 
             byte[] buffer = new byte[4096];
@@ -121,6 +121,14 @@ namespace PointBlank.PB_Library
                 }
 
             }
+
+        }
+
+        public static void printLoadedAssemblies(AppDomain domain)
+        {
+
+            foreach (Assembly a in domain.GetAssemblies())
+                Console.WriteLine("{0} ({1}): {2}", domain.FriendlyName, domain.Id, a.ManifestModule.Name);
 
         }
 

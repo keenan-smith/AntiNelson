@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-namespace PointBlank.API.Server.Extensions
+﻿namespace PointBlank.API.Server.Extensions
 {
 
-    public abstract class PBPlugin
+    public interface PBPlugin
     {
 
-        public abstract void load();
+        void load();
 
     }
+
 }

@@ -14,14 +14,17 @@ namespace TestLoader
         static void Main(string[] args)
         {
 
-            Console.ReadKey();
-
             lib_PluginManager pm = new lib_PluginManager();
 
             pm.loadPlugin(@"C:\Users\Kunii\Dropbox\Github\AntiNelson\TestPlugin\bin\Debug\TestPlugin.dll");
 
             Console.ReadKey();
             pm.unloadAllPlugins();
+            lib_PluginManager.printLoadedAssemblies(AppDomain.CurrentDomain);
+            lib_PluginManager.printLoadedAssemblies(lib_PluginManager.pluginDomain);
+
+            Console.ReadKey();
+            pm.loadPlugin(@"C:\Users\Kunii\Dropbox\Github\AntiNelson\TestPlugin\bin\Debug\TestPlugin.dll");
             Console.ReadKey();
         }
     }

@@ -4,13 +4,14 @@ using PointBlank.API.Server.Attributes;
 
 namespace TestPlugin
 {
-    [Plugin("Test Plugin", "Kunii", false, true)]
+    //[Plugin("Test Plugin", "Kunii", false, true)]
     public class Main : PBPlugin
     {
         
-        public override void load()
+        public void load()
         {
-            Console.WriteLine("Hurrdurr");
+            Console.WriteLine("adqwdhqudwhi");
+            PointBlank.PB_Library.lib_PluginManager.printLoadedAssemblies(AppDomain.CurrentDomain);
         }
 
     }
