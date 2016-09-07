@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using SDG.Unturned;
+using PointBlank.PB_GameObjects;
 using PointBlank.API;
-using PointBlank.PB_Threads;
 
 namespace PointBlank.PB_Library
 {
     public class lib_RCON : MonoBehaviour
     {
         #region Variables
+        private GameObject obj_RCON;
         private RCON sys_RCON;
         private ushort _port;
         private string _password;
@@ -79,12 +80,17 @@ namespace PointBlank.PB_Library
                 rConfig.save(path);
                 return;
             }
-            createThread();
+            createGameObject();
         }
 
         #region Functions
-        public void createThread()
+        public void createGameObject()
         {
+            obj_RCON = new GameObject();
+
+            sys_RCON = obj_RCON.AddComponent<RCON>();
+
+            DontDestroyOnLoad(obj_RCON);
         }
         #endregion
     }

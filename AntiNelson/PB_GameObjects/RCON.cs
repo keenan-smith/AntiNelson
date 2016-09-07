@@ -5,9 +5,9 @@ using System.Text;
 using UnityEngine;
 using SDG.Unturned;
 
-namespace PointBlank.PB_Threads
+namespace PointBlank.PB_GameObjects
 {
-    public class RCON
+    public class RCON : MonoBehaviour
     {
     }
 }
