@@ -12,21 +12,15 @@ namespace PointBlank.PB_Loading
 
         public void _Start()
         {
-
-            lib_PluginManager pm = new lib_PluginManager();
-            pm.loadPlugins();
-
+            
         }
 
         public void _Update()
         {
-
         }
 
         public void _OnGUI()
         {
-
         }
-
     }
 }

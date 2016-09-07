@@ -22,5 +22,17 @@ namespace PointBlank
 
         public static bool isServer = false;
 
+        public static string[] serverDirectories = new string[]
+        {
+            "Plugins",
+            "Mods",
+            "Settings",
+        };
+
+        public static string[] clientDirectories = new string[]
+        {
+            "Mods",
+            "Settings",
+        };
     }
 }
