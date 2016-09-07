@@ -14,22 +14,17 @@ namespace PointBlank.PB_Library
         {
             foreach (Type t in AppDomain.CurrentDomain.Load(lib_PluginManager.readFile(dll)).GetTypes())
             {
-
                 if (t.IsInterface || t.IsAbstract)
                     continue;
 
                 if (t.GetInterface(typeof(PBPlugin).FullName) != null)
                 {
-
                     PBPlugin plugin = (AppDomain.CurrentDomain.CreateInstanceFromAndUnwrap(dll, t.FullName) as PBPlugin);
                     plugin.load();
                     lib_PluginManager.registerPlugin(dll, plugin);
                     break;
-
                 }
             }
-
         }
-
     }
 }

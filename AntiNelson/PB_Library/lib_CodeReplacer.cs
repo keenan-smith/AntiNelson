@@ -16,6 +16,7 @@ namespace PointBlank.PB_Library
     {
         public lib_CodeReplacer()
         {
+            PBLogging.log("Loading CodeReplacer...");
             loadCodes(AppDomain.CurrentDomain);
             loadCodes(lib_PluginManager.pluginDomain);
         }

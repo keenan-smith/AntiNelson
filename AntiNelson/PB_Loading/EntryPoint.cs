@@ -18,6 +18,8 @@ namespace PointBlank.PB_Loading
 
         public static void Launch()
         {
+            if (Variables.isLoaded)
+                return;
             try
             {
                 Thread runThread = new Thread(new ThreadStart(doHook));
@@ -27,6 +29,7 @@ namespace PointBlank.PB_Loading
             {
                 Debug.LogException(ex);
             }
+            Variables.isLoaded = true;
         }
 
         private static void doHook()
@@ -35,18 +38,21 @@ namespace PointBlank.PB_Loading
             {
                 while (true)
                 {
-                    Thread.Sleep(1000);
-                    if (mainObject == null || instance == null)
+                    if (asmLoaded())
                     {
-                        mainObject = new GameObject();
-                        instance = mainObject.AddComponent<EntryPoint>();
-                        DontDestroyOnLoad(mainObject);
+                        Thread.Sleep(1000);
+                        if (mainObject == null || instance == null)
+                        {
+                            mainObject = new GameObject();
+                            instance = mainObject.AddComponent<EntryPoint>();
+                            DontDestroyOnLoad(mainObject);
+                        }
+
+                        if (!waitForRelaunch)
+                            Thread.Sleep(5000);
+
+                        waitForRelaunch = false;
                     }
-
-                    if (!waitForRelaunch)
-                        Thread.Sleep(5000);
-
-                    waitForRelaunch = false;
                 }
             }
             catch (Exception ex)
@@ -128,6 +134,11 @@ namespace PointBlank.PB_Loading
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
             }
+        }
+
+        private static bool asmLoaded()
+        {
+            return Array.Exists(AppDomain.CurrentDomain.GetAssemblies(), a => a.FullName.ToLower().Contains("csharp") && !a.FullName.ToLower().Contains("firstpass"));
         }
     }
 }

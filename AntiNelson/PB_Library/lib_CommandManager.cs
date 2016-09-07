@@ -34,6 +34,7 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
+            PBLogging.log("Loading CommandManager...");
             obj_Commands = new GameObject();
             DontDestroyOnLoad(obj_Commands);
             loadCommands(AppDomain.CurrentDomain);

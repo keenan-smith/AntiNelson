@@ -19,9 +19,9 @@ namespace PointBlank.API
 
         public static string getWorkingDirectory()
         {
-            string path = Directory.GetCurrentDirectory(); // Unturned directory...
+            string path = Directory.GetCurrentDirectory();
             if (isServer())
-                path = path + "\\Servers\\" + PBServer.serverSaveName; // I hope...
+                path = Variables.serverPath;
             return path;
         }
         #endregion

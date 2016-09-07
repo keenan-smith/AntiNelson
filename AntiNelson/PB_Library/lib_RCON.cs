@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using SDG.Unturned;
-using PointBlank.PB_GameObjects;
+using PointBlank.PB_Threads;
 using PointBlank.API;
 
 namespace PointBlank.PB_Library
@@ -58,6 +58,7 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
+            PBLogging.log("Loading RCON...");
             string path = Variables.currentPath + "\\Settings\\RCON.dat";
             if (ReadWrite.fileExists(path, false, false))
             {
@@ -80,17 +81,13 @@ namespace PointBlank.PB_Library
                 rConfig.save(path);
                 return;
             }
-            createGameObject();
+            createThread();
         }
 
         #region Functions
-        public void createGameObject()
+        public void createThread()
         {
-            obj_RCON = new GameObject();
-
-            sys_RCON = obj_RCON.AddComponent<RCON>();
-
-            DontDestroyOnLoad(obj_RCON);
+            
         }
         #endregion
     }

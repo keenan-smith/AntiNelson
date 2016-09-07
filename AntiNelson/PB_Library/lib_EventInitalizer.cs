@@ -11,6 +11,7 @@ namespace PointBlank.PB_Library
     {
         public lib_EventInitalizer()
         {
+            PBLogging.log("Loading EventInitalizer...");
             initChat();
         }
 

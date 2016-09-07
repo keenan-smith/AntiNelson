@@ -28,29 +28,24 @@ namespace PointBlank.PB_Library
 
         static lib_PluginManager()
         {
-            
             if (!PB.isServer())
                 return;
 
             createPluginDomain();
-
         }
 
         private static void createPluginDomain()
         {
-
-            domainSetup.ApplicationBase = Variables.currentPath;
+            domainSetup.ApplicationBase = Variables.pathManaged;
             domainSetup.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
             domainSetup.DisallowBindingRedirects = false;
             domainSetup.DisallowCodeDownload = true;
             _pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
             pluginLoader = _pluginDomain.CreateInstanceAndUnwrap(typeof(PluginLoaderProxy).Assembly.FullName, typeof(PluginLoaderProxy).FullName) as PluginLoaderProxy;
-
         }
 
         public void unloadAllPlugins()
         {
-
             loadedPlugins.Clear();
             AppDomain.Unload(_pluginDomain);
             PBLogging.log("Unloaded plugin domain!");
@@ -58,60 +53,46 @@ namespace PointBlank.PB_Library
 
             printLoadedAssemblies(AppDomain.CurrentDomain);
             printLoadedAssemblies(_pluginDomain);
-
-
         }
 
         public void loadPlugins()
         {
-
             foreach (String path in Directory.GetFiles(Variables.pluginsPathServer, "*.dll"))
                 loadPlugin(path);
-
         }
 
         public PBPlugin loadPlugin(String fullPath)
         {
-            try {
+            try
+            {
                 if (loadedPlugins.ContainsKey(fullPath))
                 {
-
                     PBLogging.logWarning("Already loaded: " + fullPath);
                     return loadedPlugins[fullPath];
-
                 }
 
                 pluginLoader.loadPlugin(fullPath);
-
-            } catch (Exception e)
-            {
-
-                PBLogging.logError("ERROR: Failed to load plugin loader!", e);
-
             }
-
+            catch (Exception e)
+            {
+                PBLogging.logError("ERROR: Failed to load plugin loader!", e);
+            }
             return null;
-
         }
 
         public static void registerPlugin(String fullPath, PBPlugin plugin)
         {
-
             loadedPlugins.Add(fullPath, plugin);
-
         }
 
         public static byte[] readFile(String fullPath)
         {
-
             byte[] buffer = new byte[4096];
 
             using (FileStream fs = new FileStream(fullPath, FileMode.Open))
             {
-
                 using (MemoryStream ms = new MemoryStream())
                 {
-
                     int i;
 
                     try
@@ -125,22 +106,15 @@ namespace PointBlank.PB_Library
                     }
 
                     fs.Close();
-
                     return ms.ToArray();
-
                 }
-
             }
-
         }
 
         public static void printLoadedAssemblies(AppDomain domain)
         {
-
             foreach (Assembly a in domain.GetAssemblies())
                 PBLogging.log(String.Format("{0} ({1}): {2}", domain.FriendlyName, domain.Id, a.ManifestModule.Name));
-
         }
-
     }
 }

@@ -31,6 +31,7 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
+            PBLogging.log("Loading Autosave...");
             string path = Variables.currentPath + "\\Settings\\AutoSave.dat";
             if (ReadWrite.fileExists(path, false, false))
             {
