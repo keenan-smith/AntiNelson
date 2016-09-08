@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,11 +38,30 @@ namespace PointBlank.PB_Library
             PBLogging.log("Loading CommandManager...");
             obj_Commands = new GameObject();
             DontDestroyOnLoad(obj_Commands);
-            loadCommands(AppDomain.CurrentDomain);
+            //loadCommands(AppDomain.CurrentDomain);
             loadCommands(lib_PluginManager.pluginDomain);
         }
 
         #region Functions
+        public void addLocals(Type t)
+        {
+            CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
+            if (att != null)
+            {
+                string path = Variables.currentPath + "\\Locals\\" + att.pluginName + "\\" + att.commandName + ".dat";
+                if (!ReadWrite.fileExists(path, false, false))
+                {
+                    if (!ReadWrite.folderExists(Variables.currentPath + "\\Locals\\" + att.pluginName, false))
+                        ReadWrite.createFolder(Variables.currentPath + "\\Locals\\" + att.pluginName, false);
+                    byte[] s = Tool.getResource(att.commandName);
+                    if (s != null && s.Length > 0)
+                    {
+                        File.WriteAllBytes(path, s);
+                    }
+                }
+            }
+        }
+
         public void loadCommand(Type t)
         {
             CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
@@ -65,6 +85,8 @@ namespace PointBlank.PB_Library
                 }
                 else
                 {
+                    if (!ReadWrite.folderExists(Variables.currentPath + "\\Settings\\" + att.pluginName, false))
+                        ReadWrite.createFolder(Variables.currentPath + "\\Settings\\" + att.pluginName, false);
                     PBConfig cConfig = new PBConfig();
                     cConfig.addTextElement("enabled", "true");
                     cConfig.addTextElements("aliases", "alias", cmd.alias);
@@ -88,6 +110,7 @@ namespace PointBlank.PB_Library
                     {
                         if (t.IsClass && typeof(PBCommand).IsAssignableFrom(t))
                         {
+                            addLocals(t);
                             loadCommand(t);
                         }
                     }
@@ -109,6 +132,7 @@ namespace PointBlank.PB_Library
                 {
                     if (t.IsClass && typeof(PBCommand).IsAssignableFrom(t))
                     {
+                        addLocals(t);
                         loadCommand(t);
                     }
                 }

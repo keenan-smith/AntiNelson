@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Resources;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -11,17 +13,14 @@ namespace PointBlank
 
         public static string GetRandomString()
         {
-
             string path = Path.GetRandomFileName();
             path = path.Replace(".", "");
 
             return path;
-
         }
 
         public static string getServerName()
         {
-
             String args = Environment.CommandLine;
 
             int sServer = args.ToLower().IndexOf("+secureserver");
@@ -38,8 +37,15 @@ namespace PointBlank
                 return args.Substring(lServer + 11, args.Length - lServer - 11);
 
             return "";
-
         }
 
+        public static byte[] getResource(string name)
+        {
+            Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("PointBlank.Properties.Resources.resources");
+            using (ResourceSet set = new ResourceSet(st))
+            {
+                return (byte[])set.GetObject(name, true);
+            }
+        }
     }
 }
