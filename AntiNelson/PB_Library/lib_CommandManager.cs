@@ -61,6 +61,7 @@ namespace PointBlank.PB_Library
                     return;
                 cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
                 string path = Variables.currentPath + "\\Settings\\" + att.pluginName + "\\" + att.commandName + ".dat";
+                PBLogging.log("Loading command: " + att.commandName, false);
                 if (ReadWrite.fileExists(path, false, false))
                 {
                     PBConfig cConfig = new PBConfig(path);

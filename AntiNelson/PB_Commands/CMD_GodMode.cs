@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using PointBlank.API.Server;
 using PointBlank.API.Server.Attributes;
 using PointBlank.API.Server.Extensions;
@@ -13,7 +14,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_GodMode()
         {
-            permission = "godmode";
+            permission = "godmode.godmode";
             command = "godmode";
             alias = new string[]
             {
@@ -24,11 +25,12 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
+            PBPlayer orgPlayer = player;
             if (args.Length > 0)
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
             {
-                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
                 return;
             }
 

@@ -41,6 +41,7 @@ namespace PointBlank.API.Server
                 PBCommand cmd = PBServer.findCommand(info[0]);
                 if (cmd != null)
                 {
+                    PBLogging.log("Calling: " + info[0], false);
                     string cArgs = (info.Length > 1 ? info[1] : "");
                     cmd.execute(PBServer.findPlayer(speaker), cArgs);
                     args.text = null;
@@ -119,17 +120,20 @@ namespace PointBlank.API.Server
 			    color = Palette.PRO;
 		    }
 		    bool flag = true;
-		    if (ChatManager.onChatted != null)
-		    {
+            if (ChatManager.onChatted != null)
+            {
                 ChatManager.onChatted(player, (EChatMode)mode, ref color, text, ref flag);
-		    }
-            
+            }
             Chat args = new Chat((EChatMode)mode, color, player.playerID.playerName, text);
-            ProcessCommands(steamID, args);
-            OnMessageReceived(steamID, args);
 
+            ProcessCommands(steamID, args);
             if (args == null || args.text == null)
                 return;
+
+            OnMessageReceived(steamID, args);
+            if (args == null || args.text == null)
+                return;
+
             ChatManager manager = (ChatManager)typeof(ChatManager).GetField("manager", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
             if (ChatManager.process(player, args.text) && flag)
             {

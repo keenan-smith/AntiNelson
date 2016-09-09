@@ -22,7 +22,6 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
-            PBChat.OnMessageReceived += new PBChat.ChatMessageHandler(PBChat.ProcessCommands);
         }
 
         private void initServer()

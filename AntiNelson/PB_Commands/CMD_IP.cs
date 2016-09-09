@@ -28,7 +28,7 @@ namespace PointBlank.PB_Commands
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
             {
-                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
                 return;
             }
 

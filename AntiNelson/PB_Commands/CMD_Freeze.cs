@@ -15,7 +15,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_Freeze()
         {
-            permission = "freeze";
+            permission = "freeze.freeze";
             command = "freeze";
             alias = new string[0];
         }
@@ -23,11 +23,12 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
+            PBPlayer orgPlayer = player;
             if (args.Length > 0)
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
             {
-                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
                 return;
             }
         }

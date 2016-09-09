@@ -18,7 +18,7 @@ namespace PointBlank.API
         {
             var fptr1 = from.MethodHandle.GetFunctionPointer();
             var fptr2 = to.MethodHandle.GetFunctionPointer();
-            Debug.Log("Patching from " + fptr1 + " to " + fptr2);
+            PBLogging.log("Patching " + fptr1 + " to " + fptr2, false);
             PatchJumpTo(fptr1, fptr2);
         }
 

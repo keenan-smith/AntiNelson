@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SDG.Unturned;
 using Steamworks;
+using UnityEngine;
 using PointBlank.API;
 using PointBlank.API.Server;
 using PointBlank.API.Server.Attributes;
@@ -16,7 +17,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_Mute()
         {
-            permission = "mute";
+            permission = "mute.mute";
             command = "mute";
             alias = new string[0];
         }
@@ -24,11 +25,12 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
+            PBPlayer orgPlayer = player;
             if (args.Length > 0)
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
             {
-                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
                 return;
             }
 

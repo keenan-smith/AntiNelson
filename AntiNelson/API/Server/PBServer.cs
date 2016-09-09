@@ -114,9 +114,14 @@ namespace PointBlank.API.Server
         }
 
         #region Functions
-        public static PBCommand findCommand(string permissionOrName)
+        public static PBCommand findCommand(string command)
         {
-            return Array.Find(commands.ToArray(), a => a.permission == permissionOrName || a.name == permissionOrName);
+            return Array.Find(commands.ToArray(), a => a.command == command);
+        }
+
+        public static PBCommand findCommandPermission(string permission)
+        {
+            return Array.Find(commands.ToArray(), a => a.permission == permission);
         }
 
         public static PBPlayer findPlayer(string name)

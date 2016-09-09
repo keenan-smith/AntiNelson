@@ -21,6 +21,7 @@ namespace PointBlank.API.Server
         private List<PBGroup> _groups = new List<PBGroup>();
         private List<PBCooldown> _cooldowns = new List<PBCooldown>();
         private Dictionary<string, object> _customVariables = new Dictionary<string, object>();
+        private List<string> _saveKeys = new List<string>();
         #endregion
 
         #region Properties
@@ -125,6 +126,14 @@ namespace PointBlank.API.Server
             get
             {
                 return _customVariables;
+            }
+        }
+
+        public List<string> saveKeys
+        {
+            get
+            {
+                return _saveKeys;
             }
         }
         #endregion

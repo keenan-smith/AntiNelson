@@ -31,6 +31,7 @@ namespace PointBlank
             "Mods",
             "Settings",
             "Locals",
+            "Saves",
         };
 
         public static string[] clientDirectories = new string[]

@@ -39,11 +39,12 @@ namespace PointBlank.PB_Commands
             if (args[2] == null || !byte.TryParse(args[2], out quality))
                 quality = 255;
 
+            PBPlayer orgPlayer = player;
             if (args.Length > 0)
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
             {
-                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
                 return;
             }
 
