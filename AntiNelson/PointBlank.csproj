@@ -179,6 +179,7 @@
     <Compile Include="Instances.cs" />
     <Compile Include="PB_Commands\CMD_Freeze.cs" />
     <Compile Include="PB_Commands\CMD_GodMode.cs" />
+    <Compile Include="PB_Commands\CMD_IP.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
     <Compile Include="PB_Commands\CMD_MaxSkills.cs" />
     <Compile Include="PB_Commands\CMD_Mute.cs" />
@@ -223,6 +224,7 @@
   <ItemGroup>
     <None Include="Resources\FreezeCommand.dat" />
     <None Include="Resources\GodMode.dat" />
+    <None Include="Resources\IPCommand.dat" />
     <None Include="Resources\ItemCommand.dat" />
     <None Include="Resources\MaxSkills.dat" />
     <None Include="Resources\MuteCommand.dat" />

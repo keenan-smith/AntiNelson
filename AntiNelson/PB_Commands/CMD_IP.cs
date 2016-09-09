@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using SDG.Unturned;
-using Steamworks;
-using PointBlank.API;
 using PointBlank.API.Server;
 using PointBlank.API.Server.Attributes;
 using PointBlank.API.Server.Extensions;
 
 namespace PointBlank.PB_Commands
 {
-    [Command("Default", "UnmuteCommand")]
-    public class CMD_Unmute : PBCommand
+    [Command("Default", "IPCommand")]
+    public class CMD_IP : PBCommand
     {
-        public CMD_Unmute()
+        public CMD_IP()
         {
-            permission = "mute";
-            command = "unmute";
+            permission = "ip";
+            command = "ip";
             alias = new string[0];
         }
 
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
+            PBPlayer orgPlayer = player;
             if (args.Length > 0)
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
@@ -32,8 +32,7 @@ namespace PointBlank.PB_Commands
                 return;
             }
 
-            if (player.getCustomVariable("Muted") != null)
-                player.customVariables.Remove("Muted");
+            orgPlayer.sendChatMessage(Parser.getIPFromUInt32(player.IP), Color.magenta);
         }
         #endregion
     }

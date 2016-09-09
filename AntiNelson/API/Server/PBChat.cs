@@ -125,6 +125,7 @@ namespace PointBlank.API.Server
 		    }
             
             Chat args = new Chat((EChatMode)mode, color, player.playerID.playerName, text);
+            ProcessCommands(steamID, args);
             OnMessageReceived(steamID, args);
 
             if (args == null || args.text == null)

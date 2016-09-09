@@ -38,6 +38,15 @@ namespace PointBlank.PB_Commands
                 amount = 1;
             if (args[2] == null || !byte.TryParse(args[2], out quality))
                 quality = 255;
+
+            if (args.Length > 0)
+                player = PBServer.findPlayer(args[0]);
+            if (player == null)
+            {
+                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                return;
+            }
+
             player.giveItem(id, amount, quality);
         }
         #endregion

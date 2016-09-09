@@ -215,6 +215,11 @@ namespace PointBlank.API.Server
             customVariables.Remove("key");
             customVariables.Add("key", value);
         }
+
+        public void sendChatMessage(string message, Color color)
+        {
+            PBChat.sendChatToPlayer(this, message, color);
+        }
         #endregion
     }
 }

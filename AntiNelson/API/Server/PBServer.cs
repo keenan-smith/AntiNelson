@@ -144,8 +144,12 @@ namespace PointBlank.API.Server
             return Array.Find(players.ToArray(), a => a.player == player);
         }
 
-        public static void broadcastChat(string message) // NOT DONE!
+        public static void broadcastChat(string message, Color color)
         {
+            foreach (PBPlayer player in players)
+            {
+                player.sendChatMessage(message, color);
+            }
         }
 
         public static bool restart() // NOT DONE!

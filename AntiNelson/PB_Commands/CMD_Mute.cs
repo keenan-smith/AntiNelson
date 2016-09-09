@@ -25,8 +25,11 @@ namespace PointBlank.PB_Commands
         public override void onCall(PBPlayer player, string[] args)
         {
             if (args.Length > 0)
-            {
                 player = PBServer.findPlayer(args[0]);
+            if (player == null)
+            {
+                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                return;
             }
 
             object bl = player.getCustomVariable("Muted");

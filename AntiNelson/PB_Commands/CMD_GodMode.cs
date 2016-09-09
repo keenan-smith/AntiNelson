@@ -9,7 +9,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "GodMode")]
-    public class CMD_GodMode : PBCommand // NOT FINISHED
+    public class CMD_GodMode : PBCommand
     {
         public CMD_GodMode()
         {
@@ -24,9 +24,14 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
-            if (args[0] != null)
+            if (args.Length > 0)
+                player = PBServer.findPlayer(args[0]);
+            if (player == null)
             {
+                player.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
+                return;
             }
+
             player.customVariables.Add("GodMode", true);
         }
 

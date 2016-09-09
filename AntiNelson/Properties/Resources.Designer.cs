@@ -83,6 +83,16 @@ namespace PointBlank.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] IPCommand {
+            get {
+                object obj = ResourceManager.GetObject("IPCommand", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] ItemCommand {
             get {
                 object obj = ResourceManager.GetObject("ItemCommand", resourceCulture);

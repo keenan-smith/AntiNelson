@@ -124,6 +124,9 @@
   <data name="GodMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GodMode.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="IPCommand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IPCommand.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ItemCommand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ItemCommand.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
