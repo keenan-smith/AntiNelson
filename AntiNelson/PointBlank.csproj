@@ -181,6 +181,8 @@
     <Compile Include="PB_Commands\CMD_GodMode.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
     <Compile Include="PB_Commands\CMD_MaxSkills.cs" />
+    <Compile Include="PB_Commands\CMD_Mute.cs" />
+    <Compile Include="PB_Commands\CMD_Unmute.cs" />
     <Compile Include="PB_GameObjects\AutoSave.cs" />
     <Compile Include="PB_Threads\RCON.cs" />
     <Compile Include="PB_Library\lib_AutoSave.cs" />
@@ -223,6 +225,8 @@
     <None Include="Resources\GodMode.dat" />
     <None Include="Resources\ItemCommand.dat" />
     <None Include="Resources\MaxSkills.dat" />
+    <None Include="Resources\MuteCommand.dat" />
+    <None Include="Resources\UnmuteCommand.dat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

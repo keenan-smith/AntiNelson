@@ -99,5 +99,25 @@ namespace PointBlank.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MuteCommand {
+            get {
+                object obj = ResourceManager.GetObject("MuteCommand", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] UnmuteCommand {
+            get {
+                object obj = ResourceManager.GetObject("UnmuteCommand", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

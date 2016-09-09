@@ -130,4 +130,10 @@
   <data name="MaxSkills" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MaxSkills.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="MuteCommand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MuteCommand.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="UnmuteCommand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UnmuteCommand.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

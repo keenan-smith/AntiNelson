@@ -1,5 +1,5 @@
-Help Prevents a player from moving.
-Usage /freeze [Player Name]
+Help Removes mute from player
+Usage /unmute, /unmute [Player Name]
 CommandPermission Not enough permissions!
 CommandLimit You have reached the command limit!
 CommandCooldown You have a command cooldown!

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using UnityEngine;
 using SDG.Unturned;
 using Steamworks;
@@ -199,6 +200,20 @@ namespace PointBlank.API.Server
         {
             PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
             return (cDown != null && cDown.usage > maxUse);
+        }
+
+        public object getCustomVariable(string key)
+        {
+            KeyValuePair<string, object> kvp = Array.Find(customVariables.ToArray(), a => a.Key == key);
+            if (kvp.Equals(default(KeyValuePair<string, object>)))
+                return null;
+            return kvp.Value;
+        }
+
+        public void setCustomVariable(string key, object value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", value);
         }
         #endregion
     }

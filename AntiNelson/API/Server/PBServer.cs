@@ -121,7 +121,7 @@ namespace PointBlank.API.Server
 
         public static PBPlayer findPlayer(string name)
         {
-            return Array.Find(players.ToArray(), a => a.playerID.playerName == name || a.playerID.nickName == name);
+            return Array.Find(players.ToArray(), a => a.playerID.playerName.Contains(name) || a.playerID.nickName.Contains(name));
         }
 
         public static PBPlayer findPlayer(CSteamID steamID)

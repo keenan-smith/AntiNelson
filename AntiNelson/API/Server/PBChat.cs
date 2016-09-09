@@ -30,6 +30,9 @@ namespace PointBlank.API.Server
         #region Event Functions
         public static void ProcessCommands(CSteamID speaker, Chat args)
         {
+            if (args == null || args.text == null)
+                return;
+
             string prefix = args.text.Substring(0, 1);
             if (prefix == "@" || prefix == "/")
             {
@@ -40,7 +43,7 @@ namespace PointBlank.API.Server
                 {
                     string cArgs = (info.Length > 1 ? info[1] : "");
                     cmd.execute(PBServer.findPlayer(speaker), cArgs);
-                    args = null;
+                    args.text = null;
                 }
             }
         }
@@ -124,7 +127,7 @@ namespace PointBlank.API.Server
             Chat args = new Chat((EChatMode)mode, color, player.playerID.playerName, text);
             OnMessageReceived(steamID, args);
 
-            if (args == null)
+            if (args == null || args.text == null)
                 return;
             ChatManager manager = (ChatManager)typeof(ChatManager).GetField("manager", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
             if (ChatManager.process(player, args.text) && flag)

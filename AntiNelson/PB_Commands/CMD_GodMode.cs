@@ -34,8 +34,8 @@ namespace PointBlank.PB_Commands
         {
             foreach (PBPlayer player in PBServer.players)
             {
-                KeyValuePair<string, object> god = Array.Find(player.customVariables.ToArray(), a => a.Key == "GodMode");
-                if (!god.Equals(default(KeyValuePair<string, object>)) && (bool)god.Value)
+                object god = player.getCustomVariable("GodMode");
+                if (god != null && (bool)god)
                 {
                     player.player.life.askBreath(100);
                     player.player.life.askDrink(100);
