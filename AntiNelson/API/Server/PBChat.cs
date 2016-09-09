@@ -6,6 +6,7 @@ using System.Text;
 using SDG.Unturned;
 using UnityEngine;
 using Steamworks;
+using PointBlank.API.Server.Extensions;
 
 namespace PointBlank.API.Server
 {
@@ -27,12 +28,20 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Event Functions
-        public static void ProcessCommands(CSteamID speaker, Chat args) // NOT DONE!
+        public static void ProcessCommands(CSteamID speaker, Chat args)
         {
             string prefix = args.text.Substring(0, 1);
             if (prefix == "@" || prefix == "/")
             {
-                // NEED FRAMEWORK TO FINISH!
+                string command = args.text.Substring(1, args.text.Length - 1);
+                string[] info = command.Split(' ');
+                PBCommand cmd = PBServer.findCommand(info[0]);
+                if (cmd != null)
+                {
+                    string cArgs = (info.Length > 1 ? info[1] : "");
+                    cmd.execute(PBServer.findPlayer(speaker), cArgs);
+                    args = null;
+                }
             }
         }
         #endregion

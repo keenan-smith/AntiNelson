@@ -17,18 +17,7 @@ namespace PointBlank.PB_Library
     public class lib_CommandManager : MonoBehaviour
     {
         #region Variables
-        private List<PBCommand> _commands = new List<PBCommand>();
         private GameObject obj_Commands;
-        #endregion
-
-        #region Propertys
-        public PBCommand[] commands
-        {
-            get
-            {
-                return _commands.ToArray();
-            }
-        }
         #endregion
 
         public lib_CommandManager()
@@ -68,7 +57,7 @@ namespace PointBlank.PB_Library
             if (att != null)
             {
                 PBCommand cmd = obj_Commands.AddComponent(t) as PBCommand;
-                if (Array.Exists(commands, a => a.command == cmd.command))
+                if (Array.Exists(PBServer.commands.ToArray(), a => a.command == cmd.command))
                     return;
                 cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
                 string path = Variables.currentPath + "\\Settings\\" + att.pluginName + "\\" + att.commandName + ".dat";
@@ -96,7 +85,7 @@ namespace PointBlank.PB_Library
                     cConfig.addTextElement("permission", cmd.permission);
                     cConfig.save(path);
                 }
-                _commands.Add(cmd);
+                PBServer.commands.Add(cmd);
             }
         }
 

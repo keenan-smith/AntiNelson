@@ -117,22 +117,28 @@ namespace PointBlank.API.Server.Extensions
         {
             string[] sArgs = args.Split('/');
 
-            if (checkPermissions(player, sArgs))
-            {
-                PBChat.sendChatToPlayer(player, localization.format("CommandPermission"), Color.red);
+            if (player == null)
                 return;
-            }
 
-            if (hasReachedLimit(player))
+            if (!player.steamPlayer.isAdmin)
             {
-                PBChat.sendChatToPlayer(player, localization.format("CommandLimit"), Color.red);
-                return;
-            }
+                if (checkPermissions(player, sArgs))
+                {
+                    PBChat.sendChatToPlayer(player, localization.format("CommandPermission"), Color.red);
+                    return;
+                }
 
-            if (hasCooldown(player))
-            {
-                PBChat.sendChatToPlayer(player, localization.format("CommandCooldown"), Color.red);
-                return;
+                if (hasReachedLimit(player))
+                {
+                    PBChat.sendChatToPlayer(player, localization.format("CommandLimit"), Color.red);
+                    return;
+                }
+
+                if (hasCooldown(player))
+                {
+                    PBChat.sendChatToPlayer(player, localization.format("CommandCooldown"), Color.red);
+                    return;
+                }
             }
 
             PBCooldown cDown = Array.Find(player.cooldowns.ToArray(), a => a.command == this);

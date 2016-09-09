@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using SDG.Unturned;
+using Steamworks;
+using PointBlank.API.Server.Extensions;
 
 namespace PointBlank.API.Server
 {
@@ -12,6 +14,7 @@ namespace PointBlank.API.Server
         #region Variables
         private static PBServer _instance;
         private static List<PBPlayer> _players = new List<PBPlayer>();
+        private static List<PBCommand> _commands = new List<PBCommand>();
         #endregion
 
         #region Properties
@@ -90,6 +93,14 @@ namespace PointBlank.API.Server
                 return _instance;
             }
         }
+
+        public static List<PBCommand> commands
+        {
+            get
+            {
+                return _commands;
+            }
+        }
         #endregion
 
         public PBServer()
@@ -103,6 +114,36 @@ namespace PointBlank.API.Server
         }
 
         #region Functions
+        public static PBCommand findCommand(string permissionOrName)
+        {
+            return Array.Find(commands.ToArray(), a => a.permission == permissionOrName || a.name == permissionOrName);
+        }
+
+        public static PBPlayer findPlayer(string name)
+        {
+            return Array.Find(players.ToArray(), a => a.playerID.playerName == name || a.playerID.nickName == name);
+        }
+
+        public static PBPlayer findPlayer(CSteamID steamID)
+        {
+            return Array.Find(players.ToArray(), a => a.steamID == steamID);
+        }
+
+        public static PBPlayer findPlayer(ulong sID)
+        {
+            return Array.Find(players.ToArray(), a => a.steamID.m_SteamID == sID);
+        }
+
+        public static PBPlayer findPlayer(SteamPlayer sPlayer)
+        {
+            return Array.Find(players.ToArray(), a => a.steamPlayer == sPlayer);
+        }
+
+        public static PBPlayer findPlayer(Player player)
+        {
+            return Array.Find(players.ToArray(), a => a.player == player);
+        }
+
         public static void broadcastChat(string message) // NOT DONE!
         {
         }
@@ -144,6 +185,21 @@ namespace PointBlank.API.Server
                 PBLogging.logError("ERROR: Exception while attempting to shutdown server!", ex);
                 return false;
             }
+        }
+        #endregion
+
+        #region Event Functions
+        public static void ClientConnect(SteamPlayer player)
+        {
+            if (findPlayer(player) == null)
+                players.Add(new PBPlayer(player));
+        }
+
+        public static void ClientDisconnect(SteamPlayer player)
+        {
+            PBPlayer ply = findPlayer(player);
+            if (ply != null)
+                players.Remove(ply);
         }
         #endregion
     }
