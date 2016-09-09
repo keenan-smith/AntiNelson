@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin", "TestPlugin\Te
 		{95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9} = {95D8534B-DA83-4014-A1A3-FDF4F8F9E1B9}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patcher", "Patcher\Patcher.csproj", "{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,18 @@ Global
 		{C8526FEE-2F8D-4EBC-AE3C-AC75261FF404}.Release|x64.Build.0 = Release|Any CPU
 		{C8526FEE-2F8D-4EBC-AE3C-AC75261FF404}.Release|x86.ActiveCfg = Release|Any CPU
 		{C8526FEE-2F8D-4EBC-AE3C-AC75261FF404}.Release|x86.Build.0 = Release|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Debug|x64.Build.0 = Debug|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Debug|x86.Build.0 = Debug|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Release|x64.ActiveCfg = Release|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Release|x64.Build.0 = Release|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Release|x86.ActiveCfg = Release|Any CPU
+		{5371C701-AA5F-47BC-A5A2-3BC99BB88DA1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

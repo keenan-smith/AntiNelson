@@ -18,18 +18,26 @@ namespace PointBlank.PB_Loading
 
         public static void Launch()
         {
-            if (Variables.isLoaded)
+
+            if (AppDomain.CurrentDomain.Id != 0)
                 return;
+
             try
             {
+
                 Thread runThread = new Thread(new ThreadStart(doHook));
                 runThread.Start();
+
             }
             catch (Exception ex)
             {
+
                 Debug.LogException(ex);
+
             }
+
             Variables.isLoaded = true;
+
         }
 
         private static void doHook()
