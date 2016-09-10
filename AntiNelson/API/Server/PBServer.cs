@@ -15,8 +15,11 @@ namespace PointBlank.API.Server
         private static PBServer _instance;
         private static List<PBPlayer> _players = new List<PBPlayer>();
         private static List<PBCommand> _commands = new List<PBCommand>();
+        private static List<PBGroup> _groups = new List<PBGroup>();
 
         private static PBSaving _playerSave;
+        private static PBSaving _groupSave;
+        private static PBSaving _steamGroupSave;
         #endregion
 
         #region Properties
@@ -104,11 +107,35 @@ namespace PointBlank.API.Server
             }
         }
 
+        public static List<PBGroup> groups
+        {
+            get
+            {
+                return _groups;
+            }
+        }
+
         public static PBSaving playerSave
         {
             get
             {
                 return _playerSave;
+            }
+        }
+
+        public static PBSaving groupSave
+        {
+            get
+            {
+                return _groupSave;
+            }
+        }
+
+        public static PBSaving steamGroupSave
+        {
+            get
+            {
+                return _steamGroupSave;
             }
         }
         #endregion
@@ -221,6 +248,8 @@ namespace PointBlank.API.Server
         public static void PBPostInit()
         {
             _playerSave = new PBSaving(Variables.currentPath + "\\Saves\\Players.dat");
+            _groupSave = new PBSaving(Variables.currentPath + "\\Saves\\Groups.dat");
+            _steamGroupSave = new PBSaving(Variables.currentPath + "\\Saves\\SteamGroups.dat");
         }
 
         public static void PlayerJoin(PBPlayer player)
