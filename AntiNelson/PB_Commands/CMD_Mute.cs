@@ -36,7 +36,7 @@ namespace PointBlank.PB_Commands
 
             object bl = player.getCustomVariable("Muted");
             if (bl == null)
-                player.customVariables.Add("Muted", true);
+                player.setCustomVariable("Muted", true);
             else if (!(bool)bl)
                 player.setCustomVariable("Muted", true);
         }

@@ -160,6 +160,7 @@
     <Compile Include="API\Attributes\ReplaceCodeAttribute.cs" />
     <Compile Include="API\Enumerables\ESkill.cs" />
     <Compile Include="API\Enumerables\ESkillSet.cs" />
+    <Compile Include="API\Server\Enumerables\ECustomVariableType.cs" />
     <Compile Include="API\Server\Extensions\PBCommand.cs" />
     <Compile Include="API\Server\Extensions\PBCooldown.cs" />
     <Compile Include="API\Server\Extensions\PBGroup.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="API\PB.cs" />
     <Compile Include="API\Server\PBSkills.cs" />
     <Compile Include="API\RedirectionHelper.cs" />
+    <Compile Include="API\Server\Types\PBCustomVariable.cs" />
     <Compile Include="Instances.cs" />
     <Compile Include="PB_Commands\CMD_Freeze.cs" />
     <Compile Include="PB_Commands\CMD_GodMode.cs" />
@@ -217,7 +219,6 @@
   <ItemGroup>
     <Folder Include="API\Client\Enumerables\" />
     <Folder Include="API\Client\Extensions\" />
-    <Folder Include="API\Server\Enumerables\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

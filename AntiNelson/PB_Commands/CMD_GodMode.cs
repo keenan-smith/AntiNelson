@@ -34,7 +34,7 @@ namespace PointBlank.PB_Commands
                 return;
             }
 
-            player.customVariables.Add("GodMode", true);
+            player.setCustomVariable("GodMode", true);
         }
 
         public void Update()

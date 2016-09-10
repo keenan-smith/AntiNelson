@@ -8,6 +8,7 @@ using System.Text;
 using SDG.Unturned;
 using UnityEngine;
 using PointBlank.API.Server.Extensions;
+using PointBlank.API.Server.Enumerables;
 
 namespace PointBlank.API.Server
 {
@@ -47,18 +48,39 @@ namespace PointBlank.API.Server
 
         public PBSaving(string path)
         {
+
             _path = path;
 
             if (ReadWrite.fileExists(path, false, false))
             {
+
                 _doc = new XmlDocument();
-                _doc.Load(path);
+
+                try
+                {
+
+                    _doc.Load(path);
+
+                }
+                catch (Exception e)
+                {
+
+                    PBLogging.logError("Failed to load xml file: ", e);
+
+                }
+
                 _root = _doc.DocumentElement;
+
             }
             else
             {
-                PBLogging.logWarning("Could not load players!");
+
+                _doc = new XmlDocument();
+                _doc.Save(path);
+                _root = _doc.DocumentElement;
+
             }
+
         }
 
         #region Functions
@@ -91,9 +113,42 @@ namespace PointBlank.API.Server
 
                     foreach (XmlElement tmp in ele.SelectSingleNode("customVariables").SelectNodes("variable"))
                     {
+
                         string key = tmp.SelectSingleNode("key").InnerText;
-                        player.customVariables.Add(key, tmp.SelectSingleNode("value").InnerText);
+                        ECustomVariableType type = (ECustomVariableType)Enum.Parse(typeof(ECustomVariableType), tmp.SelectSingleNode("type").InnerText);
+
+                        switch (type)
+                        {
+
+                            case ECustomVariableType.BOOLEAN:
+                                player.setCustomVariable(key, bool.Parse(tmp.SelectSingleNode("value").InnerText));
+                                break;
+                            case ECustomVariableType.BYTE:
+                                player.setCustomVariable(key, byte.Parse(tmp.SelectSingleNode("value").InnerText));
+                                break;
+                            case ECustomVariableType.SHORT:
+                                player.setCustomVariable(key, short.Parse(tmp.SelectSingleNode("value").InnerText));
+                                break;
+                            case ECustomVariableType.INT:
+                                player.setCustomVariable(key, int.Parse(tmp.SelectSingleNode("value").InnerText));
+                                break;
+                            case ECustomVariableType.LONG:
+                                player.setCustomVariable(key, long.Parse(tmp.SelectSingleNode("value").InnerText));
+                                break;
+                            case ECustomVariableType.DOUBLE:
+                                player.setCustomVariable(key, double.Parse(tmp.SelectSingleNode("value").InnerText));
+                                break;
+                            case ECustomVariableType.FLOAT:
+                                player.setCustomVariable(key, float.Parse(tmp.SelectSingleNode("value").InnerText));
+                                break; ;
+                            case ECustomVariableType.STRING:
+                                player.setCustomVariable(key, tmp.SelectSingleNode("value").InnerText);
+                                break;
+
+                        }
+
                         player.saveKeys.Add(key);
+
                     }
                 }
             }
@@ -104,10 +159,12 @@ namespace PointBlank.API.Server
             XmlElement ele = null;
             foreach (XmlElement tmp in rootElement.SelectNodes("player"))
             {
+
                 if (tmp.SelectSingleNode("steam64").InnerText == player.steam64.ToString())
                 {
                     ele = tmp;
                 }
+
             }
 
             if (ele != null)

@@ -20,7 +20,7 @@ namespace PointBlank.API.Server
         private List<string> _permissions = new List<string>();
         private List<PBGroup> _groups = new List<PBGroup>();
         private List<PBCooldown> _cooldowns = new List<PBCooldown>();
-        private Dictionary<string, object> _customVariables = new Dictionary<string, object>();
+        private Dictionary<string, Types.CustomVariable> _customVariables = new Dictionary<string, Types.CustomVariable>();
         private List<string> _saveKeys = new List<string>();
         #endregion
 
@@ -121,7 +121,7 @@ namespace PointBlank.API.Server
             }
         }
 
-        public Dictionary<string, object> customVariables
+        public Dictionary<string, Types.CustomVariable> customVariables
         {
             get
             {
@@ -213,16 +213,58 @@ namespace PointBlank.API.Server
 
         public object getCustomVariable(string key)
         {
-            KeyValuePair<string, object> kvp = Array.Find(customVariables.ToArray(), a => a.Key == key);
-            if (kvp.Equals(default(KeyValuePair<string, object>)))
+            KeyValuePair<string, Types.CustomVariable> kvp = Array.Find(customVariables.ToArray(), a => a.Key == key);
+            if (kvp.Equals(default(KeyValuePair<string, Types.CustomVariable>)))
                 return null;
             return kvp.Value;
         }
 
-        public void setCustomVariable(string key, object value)
+        public void setCustomVariable(string key, bool value)
         {
             customVariables.Remove("key");
-            customVariables.Add("key", value);
+            customVariables.Add("key", new Types.CustomVariable(value));
+        }
+
+        public void setCustomVariable(string key, byte value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", new Types.CustomVariable(value));
+        }
+
+        public void setCustomVariable(string key, short value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", new Types.CustomVariable(value));
+        }
+
+        public void setCustomVariable(string key, int value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", new Types.CustomVariable(value));
+        }
+
+        public void setCustomVariable(string key, long value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", new Types.CustomVariable(value));
+        }
+
+        public void setCustomVariable(string key, float value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", new Types.CustomVariable(value));
+        }
+
+        public void setCustomVariable(string key, double value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", new Types.CustomVariable(value));
+        }
+
+        public void setCustomVariable(string key, string value)
+        {
+            customVariables.Remove("key");
+            customVariables.Add("key", new Types.CustomVariable(value));
         }
 
         public void sendChatMessage(string message, Color color)

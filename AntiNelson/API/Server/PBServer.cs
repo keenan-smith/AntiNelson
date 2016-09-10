@@ -252,9 +252,14 @@ namespace PointBlank.API.Server
             _steamGroupSave = new PBSaving(Variables.currentPath + "\\Saves\\SteamGroups.dat");
         }
 
+        public static void PBPreInit()
+        {
+
+        }
+
         public static void PlayerJoin(PBPlayer player)
         {
-            playerSave.loadPlayer(player);
+                playerSave.loadPlayer(player);
         }
 
         public static void PlayerLeave(PBPlayer player)

@@ -37,15 +37,19 @@ namespace PointBlank.PB_Loading
             }
             #endregion
 
+            Instances.eventInitalizer = new lib_EventInitalizer();
+
             PB.preInit();
+
             Instances.autoSave = new lib_AutoSave();
             Instances.codeReplacer = new lib_CodeReplacer();
             Instances.commandManager = new lib_CommandManager();
-            Instances.eventInitalizer = new lib_EventInitalizer();
             Instances.RCON = new lib_RCON();
             Instances.pluginManager = new lib_PluginManager();
             Instances.pluginManager.loadPlugins();
+
             PB.postInit();
+
         }
 
         public void _Update()

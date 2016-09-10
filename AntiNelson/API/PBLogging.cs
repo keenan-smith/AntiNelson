@@ -23,7 +23,7 @@ namespace PointBlank.API
             Debug.LogError("[PointBlank] " + ex);
             //Console.WriteLine(ex.Message);
             if (inConsole)
-                CommandWindow.LogError("[PointBlank] " + text);
+                CommandWindow.LogError("[PointBlank] " + text + ex);
         }
 
         public static void logWarning(string text, bool inConsole = true)
