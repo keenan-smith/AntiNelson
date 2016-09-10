@@ -11,7 +11,27 @@ namespace PointBlank.API
 {
     public class PB
     {
+        #region Handlers
+        public delegate void PBPostInit();
+        public delegate void PBPreInit();
+        #endregion
+
+        #region Events
+        public static event PBPostInit OnPBPostInit;
+        public static event PBPreInit OnPBPreInit;
+        #endregion
+
         #region Functions
+        public static void preInit()
+        {
+            OnPBPreInit();
+        }
+
+        public static void postInit()
+        {
+            OnPBPostInit();
+        }
+
         public static bool isServer()
         {
             return (Provider.isServer || Dedicator.isDedicated);

@@ -28,7 +28,7 @@ namespace PointBlank.PB_Commands
         public override void onCall(PBPlayer player, string[] args)
         {
             PBPlayer orgPlayer = player;
-            if (args.Length > 0)
+            if (!string.IsNullOrEmpty(args[0]))
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
             {

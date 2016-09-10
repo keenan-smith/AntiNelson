@@ -1,0 +1,6 @@
+Help Displays usage of a commad
+Usage /usage [Command]
+CommandPermission Not enough permissions!
+CommandLimit You have reached the command limit!
+CommandCooldown You have a command cooldown!
+NoArguments Not enough arguments!

@@ -15,6 +15,8 @@ namespace PointBlank.API.Server
         private static PBServer _instance;
         private static List<PBPlayer> _players = new List<PBPlayer>();
         private static List<PBCommand> _commands = new List<PBCommand>();
+
+        private static PBSaving _playerSave;
         #endregion
 
         #region Properties
@@ -101,6 +103,24 @@ namespace PointBlank.API.Server
                 return _commands;
             }
         }
+
+        public static PBSaving playerSave
+        {
+            get
+            {
+                return _playerSave;
+            }
+        }
+        #endregion
+
+        #region Handlers
+        public delegate void ClientJoinHandler(PBPlayer player);
+        public delegate void ClientLeaveHandler(PBPlayer player);
+        #endregion
+
+        #region Events
+        public static event ClientJoinHandler OnPlayerJoin;
+        public static event ClientLeaveHandler OnPlayerLeave;
         #endregion
 
         public PBServer()
@@ -198,17 +218,39 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Event Functions
+        public static void PBPostInit()
+        {
+            _playerSave = new PBSaving(Variables.currentPath + "\\Saves\\Players.dat");
+        }
+
+        public static void PlayerJoin(PBPlayer player)
+        {
+            playerSave.loadPlayer(player);
+        }
+
+        public static void PlayerLeave(PBPlayer player)
+        {
+            playerSave.savePlayer(player);
+        }
+
         public static void ClientConnect(SteamPlayer player)
         {
             if (findPlayer(player) == null)
-                players.Add(new PBPlayer(player));
+            {
+                PBPlayer ply = new PBPlayer(player);
+                OnPlayerJoin(ply);
+                players.Add(ply);
+            }
         }
 
         public static void ClientDisconnect(SteamPlayer player)
         {
             PBPlayer ply = findPlayer(player);
             if (ply != null)
+            {
+                OnPlayerLeave(ply);
                 players.Remove(ply);
+            }
         }
         #endregion
     }

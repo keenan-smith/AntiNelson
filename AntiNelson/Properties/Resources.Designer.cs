@@ -83,6 +83,16 @@ namespace PointBlank.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] HelpCommand {
+            get {
+                object obj = ResourceManager.GetObject("HelpCommand", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] IPCommand {
             get {
                 object obj = ResourceManager.GetObject("IPCommand", resourceCulture);
@@ -126,6 +136,16 @@ namespace PointBlank.Properties {
         internal static byte[] UnmuteCommand {
             get {
                 object obj = ResourceManager.GetObject("UnmuteCommand", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] UsageCommand {
+            get {
+                object obj = ResourceManager.GetObject("UsageCommand", resourceCulture);
                 return ((byte[])(obj));
             }
         }

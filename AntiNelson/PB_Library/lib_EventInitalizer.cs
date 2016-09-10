@@ -30,6 +30,9 @@ namespace PointBlank.PB_Library
                 return;
             Provider.onEnemyConnected += new Provider.EnemyConnected(PBServer.ClientConnect);
             Provider.onEnemyDisconnected += new Provider.EnemyDisconnected(PBServer.ClientDisconnect);
+            PBServer.OnPlayerJoin += new PBServer.ClientJoinHandler(PBServer.PlayerJoin);
+            PBServer.OnPlayerLeave += new PBServer.ClientLeaveHandler(PBServer.OnPlayerLeave);
+            PB.OnPBPostInit += new PB.PBPostInit(PBServer.PBPostInit);
         }
         #endregion
     }

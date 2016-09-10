@@ -14,7 +14,6 @@ namespace PointBlank.PB_Loading
 
         public void _Start()
         {
-
             Variables.currentPath = PB.getWorkingDirectory();
 
             #region Folder Stuff
@@ -38,6 +37,7 @@ namespace PointBlank.PB_Loading
             }
             #endregion
 
+            PB.preInit();
             Instances.autoSave = new lib_AutoSave();
             Instances.codeReplacer = new lib_CodeReplacer();
             Instances.commandManager = new lib_CommandManager();
@@ -45,7 +45,7 @@ namespace PointBlank.PB_Loading
             Instances.RCON = new lib_RCON();
             Instances.pluginManager = new lib_PluginManager();
             Instances.pluginManager.loadPlugins();
-
+            PB.postInit();
         }
 
         public void _Update()
