@@ -37,14 +37,17 @@ namespace PointBlank.PB_Loading
             }
             #endregion
 
+            Variables.obj_Commands = new GameObject();
+            DontDestroyOnLoad(Variables.obj_Commands);
+
             Instances.eventInitalizer = new lib_EventInitalizer();
 
             PB.preInit();
 
             Instances.autoSave = new lib_AutoSave();
             Instances.codeReplacer = new lib_CodeReplacer();
-            Instances.commandManager = new lib_CommandManager();
             Instances.RCON = new lib_RCON();
+            Instances.commandManager = new lib_CommandManager();
             Instances.pluginManager = new lib_PluginManager();
             Instances.pluginManager.loadPlugins();
 

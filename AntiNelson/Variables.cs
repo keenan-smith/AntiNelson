@@ -4,11 +4,14 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Text;
 using SDG.Unturned;
+using UnityEngine;
 
 namespace PointBlank
 {
     public static class Variables
     {
+        public static GameObject obj_Commands = null;
+
         public static string serverPath = Directory.GetCurrentDirectory() + @"\Servers\" + Tool.getServerName();
 
         public static string modsPathServer = serverPath + @"\Mods\";

@@ -16,23 +16,19 @@ namespace PointBlank.PB_Library
 {
     public class lib_CommandManager : MonoBehaviour
     {
-        #region Variables
-        private GameObject obj_Commands;
-        #endregion
+
 
         public lib_CommandManager()
         {
             if (!PB.isServer())
                 return;
             PBLogging.log("Loading CommandManager...");
-            obj_Commands = new GameObject();
-            DontDestroyOnLoad(obj_Commands);
             //loadCommands(AppDomain.CurrentDomain);
             loadCommands(lib_PluginManager.pluginDomain);
         }
 
         #region Functions
-        public void addLocals(Type t)
+        public static void addLocals(Type t)
         {
             CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
             if (att != null)
@@ -51,42 +47,59 @@ namespace PointBlank.PB_Library
             }
         }
 
-        public void loadCommand(Type t)
+        public static void loadCommand(Type t)
         {
-            CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
-            if (att != null)
-            {
-                PBCommand cmd = obj_Commands.AddComponent(t) as PBCommand;
-                if (Array.Exists(PBServer.commands.ToArray(), a => a.command == cmd.command))
-                    return;
-                cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
-                string path = Variables.currentPath + "\\Settings\\" + att.pluginName + "\\" + att.commandName + ".dat";
-                PBLogging.log("Loading command: " + att.commandName, false);
-                if (ReadWrite.fileExists(path, false, false))
+            try {
+                Console.WriteLine("0000000000000000000000000000000000");
+                CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
+                Console.WriteLine("9999999999999999999999999999999999");
+                if (att != null)
                 {
-                    PBConfig cConfig = new PBConfig(path);
-                    if (cConfig.getText("enabled") != "true")
+                    Console.WriteLine("8888888888888888888888888888888888888888");
+                    PBCommand cmd = Variables.obj_Commands.AddComponent(t) as PBCommand;
+                    Console.WriteLine("77777777777777777777777777");
+                    if (Array.Exists(PBServer.commands.ToArray(), a => a.command == cmd.command))
                         return;
-                    cmd.alias = cConfig.getChildNodesText("aliases");
-                    cmd.command = cConfig.getText("command");
-                    cmd.cooldown = int.Parse(cConfig.getText("cooldown"));
-                    cmd.maxUsage = int.Parse(cConfig.getText("maxusage"));
-                    cmd.permission = cConfig.getText("permission");
+                    Console.WriteLine("666666666666666666666666666666");
+                    cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
+                    string path = Variables.currentPath + "\\Settings\\" + att.pluginName + "\\" + att.commandName + ".dat";
+                    PBLogging.log("Loading command: " + att.commandName, false);
+                    Console.WriteLine("555555555555555555555555555");
+                    if (ReadWrite.fileExists(path, false, false))
+                    {
+                        Console.WriteLine("444444444444444444444444444444444");
+                        PBConfig cConfig = new PBConfig(path);
+                        if (cConfig.getText("enabled") != "true")
+                            return;
+                        cmd.alias = cConfig.getChildNodesText("aliases");
+                        cmd.command = cConfig.getText("command");
+                        cmd.cooldown = int.Parse(cConfig.getText("cooldown"));
+                        cmd.maxUsage = int.Parse(cConfig.getText("maxusage"));
+                        cmd.permission = cConfig.getText("permission");
+                        Console.WriteLine("333333333333333333333333333333");
+                    }
+                    else
+                    {
+                        Console.WriteLine("22222222222222222222222222222222");
+                        if (!ReadWrite.folderExists(Variables.currentPath + "\\Settings\\" + att.pluginName, false))
+                            ReadWrite.createFolder(Variables.currentPath + "\\Settings\\" + att.pluginName, false);
+                        PBConfig cConfig = new PBConfig();
+                        cConfig.addTextElement("enabled", "true");
+                        cConfig.addTextElements("aliases", "alias", cmd.alias);
+                        cConfig.addTextElement("command", cmd.command);
+                        cConfig.addTextElement("cooldown", cmd.cooldown.ToString());
+                        cConfig.addTextElement("maxusage", cmd.maxUsage.ToString());
+                        cConfig.addTextElement("permission", cmd.permission);
+                        cConfig.save(path);
+                        Console.WriteLine("111111111111111111111111111111111");
+                    }
+                    PBServer.commands.Add(cmd);
                 }
-                else
-                {
-                    if (!ReadWrite.folderExists(Variables.currentPath + "\\Settings\\" + att.pluginName, false))
-                        ReadWrite.createFolder(Variables.currentPath + "\\Settings\\" + att.pluginName, false);
-                    PBConfig cConfig = new PBConfig();
-                    cConfig.addTextElement("enabled", "true");
-                    cConfig.addTextElements("aliases", "alias", cmd.alias);
-                    cConfig.addTextElement("command", cmd.command);
-                    cConfig.addTextElement("cooldown", cmd.cooldown.ToString());
-                    cConfig.addTextElement("maxusage", cmd.maxUsage.ToString());
-                    cConfig.addTextElement("permission", cmd.permission);
-                    cConfig.save(path);
-                }
-                PBServer.commands.Add(cmd);
+            } catch(Exception e)
+            {
+
+                Console.WriteLine(e);
+
             }
         }
 
@@ -114,16 +127,20 @@ namespace PointBlank.PB_Library
             }
         }
 
-        public bool loadCommands(Assembly asm)
+        public static bool loadCommands(Assembly asm)
         {
+
             try
             {
                 foreach (Type t in asm.GetTypes())
                 {
                     if (t.IsClass && typeof(PBCommand).IsAssignableFrom(t))
                     {
+                        Console.WriteLine("Found cmd: " + t.Name);
                         addLocals(t);
+                        Console.WriteLine("Passed addLocals");
                         loadCommand(t);
+                        Console.WriteLine("Passed loadCommand");
                     }
                 }
                 return true;
@@ -133,6 +150,7 @@ namespace PointBlank.PB_Library
                 PBLogging.logError("ERROR: Exception while attempting to load commands from assembly!", ex);
                 return false;
             }
+
         }
         #endregion
     }
