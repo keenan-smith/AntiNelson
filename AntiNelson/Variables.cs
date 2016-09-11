@@ -20,7 +20,7 @@ namespace PointBlank
 
         public static string modsPathClient = Directory.GetCurrentDirectory() + @"\Mods\";
 
-        public static string currentPath = Directory.GetCurrentDirectory();
+        public static string currentPath = AppDomain.CurrentDomain.Id != 0 ? serverPath : Directory.GetCurrentDirectory();
 
         public static string pathManaged = Directory.GetCurrentDirectory() + @"\Unturned_Data\Managed\";
 

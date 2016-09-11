@@ -17,6 +17,9 @@ namespace PointBlank.API
 
         public static Local read(string path)
         {
+
+            Console.WriteLine(Variables.currentPath + "\\" + path);
+
             if (exists(path))
             {
                 path = Variables.currentPath + "\\" + path;

@@ -28,13 +28,20 @@ namespace PointBlank.PB_Library
                     PBPlugin plugin = (AppDomain.CurrentDomain.CreateInstanceFromAndUnwrap(dll, t.FullName) as PBPlugin);
                     Console.WriteLine(t.GetInterface(typeof(PBPlugin).FullName) + "##################");
                     //Instances.commandManager.loadCommands(asm);
-                    lib_CommandManager.loadCommands(asm);
+                    //lib_CommandManager.loadCommands(asm);
                     plugin.load();
                     lib_PluginManager.registerPlugin(dll, plugin);
-                    break;
+                    //break;
 
                 }
 
+                if (typeof(PBCommand).IsAssignableFrom(t))
+                {
+
+                    //lib_CommandManager.addLocals(t);
+                    lib_CommandManager.loadCommand(t);
+
+                }
             }
 
         }
