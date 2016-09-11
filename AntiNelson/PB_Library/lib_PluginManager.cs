@@ -13,6 +13,7 @@ namespace PointBlank.PB_Library
     public class lib_PluginManager
     {
 
+        private static List<Type> commandList = new List<Type>();
         private static Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
         private static AppDomainSetup domainSetup = new AppDomainSetup();
         private static AppDomain _pluginDomain = null;
@@ -43,7 +44,7 @@ namespace PointBlank.PB_Library
             _pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
             pluginLoader = _pluginDomain.CreateInstanceAndUnwrap(typeof(PluginLoaderProxy).Assembly.FullName, typeof(PluginLoaderProxy).FullName) as PluginLoaderProxy;
             pluginLoader.init();
-            pluginLoader.cmdManager = Instances.commandManager;
+
         }
 
         public void unloadAllPlugins()
@@ -59,8 +60,10 @@ namespace PointBlank.PB_Library
 
         public void loadPlugins()
         {
+
             foreach (String path in Directory.GetFiles(Variables.pluginsPathServer, "*.dll"))
                 loadPlugin(path);
+
         }
 
         public PBPlugin loadPlugin(String fullPath)
@@ -73,11 +76,12 @@ namespace PointBlank.PB_Library
                     return loadedPlugins[fullPath];
                 }
 
-                pluginLoader.loadPlugin(fullPath);
+                pluginLoader.loadPlugin(AppDomain.CurrentDomain, fullPath);
+
             }
             catch (Exception e)
             {
-                PBLogging.logError("ERROR: Failed to load plugin loader!", e);
+                PBLogging.logError("ERROR: Failed to load plugin! - ", e);
             }
             return null;
         }
@@ -85,6 +89,13 @@ namespace PointBlank.PB_Library
         public static void registerPlugin(String fullPath, PBPlugin plugin)
         {
             loadedPlugins.Add(fullPath, plugin);
+        }
+
+        public static void registerCommands()
+        {
+
+            Instances.commandManager.loadCommands((Assembly)AppDomain.CurrentDomain.GetData("asm"));
+
         }
 
         public static byte[] readFile(String fullPath)

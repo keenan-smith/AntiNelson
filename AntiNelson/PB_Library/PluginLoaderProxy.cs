@@ -12,7 +12,6 @@ namespace PointBlank.PB_Library
     public class PluginLoaderProxy : MarshalByRefObject
     {
         private AppDomain domain = AppDomain.CurrentDomain;
-        public lib_CommandManager cmdManager = null;
 
         public void init()
         {
@@ -21,8 +20,9 @@ namespace PointBlank.PB_Library
             //domain.AssemblyLoad += new AssemblyLoadEventHandler(loadedEvent);
         }
 
-        public void loadPlugin(String dll)
+        public void loadPlugin(AppDomain parent, String dll)
         {
+
             Assembly asm = AppDomain.CurrentDomain.Load(lib_PluginManager.readFile(dll));
 
             foreach (Type t in asm.GetTypes())
@@ -39,8 +39,10 @@ namespace PointBlank.PB_Library
 
                 if (typeof(PBCommand).IsAssignableFrom(t))
                 {
-                    cmdManager.addLocals(t);
-                    cmdManager.loadCommand(t);
+
+                    parent.SetData("asm", parent.Load(lib_PluginManager.readFile(dll)));
+                    parent.DoCallBack(new CrossAppDomainDelegate(lib_PluginManager.registerCommands));
+
                 }
             }
         }

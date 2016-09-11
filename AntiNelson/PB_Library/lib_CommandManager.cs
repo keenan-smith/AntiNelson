@@ -21,7 +21,7 @@ namespace PointBlank.PB_Library
             if (!PB.isServer())
                 return;
             PBLogging.log("Loading CommandManager...");
-            //loadCommands(lib_PluginManager.pluginDomain);
+            loadCommands(lib_PluginManager.pluginDomain);
         }
 
         #region Functions
@@ -46,6 +46,7 @@ namespace PointBlank.PB_Library
 
         public void loadCommand(Type t)
         {
+            
             try
             {
                 CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
