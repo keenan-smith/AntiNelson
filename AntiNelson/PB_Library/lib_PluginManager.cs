@@ -42,6 +42,8 @@ namespace PointBlank.PB_Library
             domainSetup.DisallowCodeDownload = true;
             _pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
             pluginLoader = _pluginDomain.CreateInstanceAndUnwrap(typeof(PluginLoaderProxy).Assembly.FullName, typeof(PluginLoaderProxy).FullName) as PluginLoaderProxy;
+            pluginLoader.init();
+            pluginLoader.cmdManager = Instances.commandManager;
         }
 
         public void unloadAllPlugins()

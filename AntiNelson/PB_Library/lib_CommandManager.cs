@@ -16,19 +16,16 @@ namespace PointBlank.PB_Library
 {
     public class lib_CommandManager : MonoBehaviour
     {
-
-
         public lib_CommandManager()
         {
             if (!PB.isServer())
                 return;
             PBLogging.log("Loading CommandManager...");
-            //loadCommands(AppDomain.CurrentDomain);
-            loadCommands(lib_PluginManager.pluginDomain);
+            //loadCommands(lib_PluginManager.pluginDomain);
         }
 
         #region Functions
-        public static void addLocals(Type t)
+        public void addLocals(Type t)
         {
             CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
             if (att != null)
@@ -47,34 +44,26 @@ namespace PointBlank.PB_Library
             }
         }
 
-        public static void loadCommand(Type t)
+        public void loadCommand(Type t)
         {
-            try {
-                Console.WriteLine("0000000000000000000000000000000000");
+            try
+            {
                 CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
-                Console.WriteLine("9999999999999999999999999999999999");
                 if (att != null)
                 {
-                    Console.WriteLine("8888888888888888888888888888888888888888");
-
                     if(Variables.obj_Commands == null)
                     {
                         Variables.obj_Commands = new GameObject();
                         DontDestroyOnLoad(Variables.obj_Commands);
                     }
-
                     PBCommand cmd = Variables.obj_Commands.AddComponent(t) as PBCommand;
-                    Console.WriteLine("77777777777777777777777777");
                     if (Array.Exists(PBServer.commands.ToArray(), a => a.command == cmd.command))
                         return;
-                    Console.WriteLine("666666666666666666666666666666");
-                    //cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
+                    cmd.localization = Localizator.read("Locals\\" + att.pluginName + "\\" + att.commandName + ".dat");
                     string path = Variables.currentPath + "\\Settings\\" + att.pluginName + "\\" + att.commandName + ".dat";
                     PBLogging.log("Loading command: " + att.commandName, false);
-                    Console.WriteLine("555555555555555555555555555");
                     if (ReadWrite.fileExists(path, false, false))
                     {
-                        Console.WriteLine("444444444444444444444444444444444");
                         PBConfig cConfig = new PBConfig(path);
                         if (cConfig.getText("enabled") != "true")
                             return;
@@ -83,37 +72,27 @@ namespace PointBlank.PB_Library
                         cmd.cooldown = int.Parse(cConfig.getText("cooldown"));
                         cmd.maxUsage = int.Parse(cConfig.getText("maxusage"));
                         cmd.permission = cConfig.getText("permission");
-                        Console.WriteLine("333333333333333333333333333333");
                     }
                     else
                     {
-                        try
-                        {
-                            Console.WriteLine("22222222222222222222222222222222");
-                            if (!ReadWrite.folderExists(Variables.currentPath + "\\Settings\\" + att.pluginName, false))
-                                ReadWrite.createFolder(Variables.currentPath + "\\Settings\\" + att.pluginName, false);
-                            PBConfig cConfig = new PBConfig();
-                            cConfig.addTextElement("enabled", "true");
-                            cConfig.addTextElements("aliases", "alias", cmd.alias);
-                            cConfig.addTextElement("command", cmd.command);
-                            cConfig.addTextElement("cooldown", cmd.cooldown.ToString());
-                            cConfig.addTextElement("maxusage", cmd.maxUsage.ToString());
-                            cConfig.addTextElement("permission", cmd.permission);
-                            cConfig.save(path);
-                            Console.WriteLine("111111111111111111111111111111111");
-                        }
-                        catch (Exception e) { }
+                        if (!ReadWrite.folderExists(Variables.currentPath + "\\Settings\\" + att.pluginName, false))
+                            ReadWrite.createFolder(Variables.currentPath + "\\Settings\\" + att.pluginName, false);
+                        PBConfig cConfig = new PBConfig();
+                        cConfig.addTextElement("enabled", "true");
+                        cConfig.addTextElements("aliases", "alias", cmd.alias);
+                        cConfig.addTextElement("command", cmd.command);
+                        cConfig.addTextElement("cooldown", cmd.cooldown.ToString());
+                        cConfig.addTextElement("maxusage", cmd.maxUsage.ToString());
+                        cConfig.addTextElement("permission", cmd.permission);
+                        cConfig.save(path);
                     }
                     
                     PBServer.commands.Add(cmd);
-                    Console.WriteLine("Added cmd");
-
                 }
-            } catch(Exception e)
+            }
+            catch(Exception e)
             {
-
-                Console.WriteLine(e);
-
+                PBLogging.logError("ERROR: ", e);
             }
         }
 
@@ -141,7 +120,7 @@ namespace PointBlank.PB_Library
             }
         }
 
-        public static bool loadCommands(Assembly asm)
+        public bool loadCommands(Assembly asm)
         {
 
             try
