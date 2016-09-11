@@ -3,6 +3,7 @@ using PointBlank.API.Server.Extensions;
 using PointBlank.API.Server.Attributes;
 using PointBlank.API;
 using PointBlank.PB_Library;
+using PointBlank;
 
 namespace TestPlugin
 {
@@ -13,7 +14,7 @@ namespace TestPlugin
         public void load()
         {
             Console.WriteLine("Hurrdurr, called from plugin!");
-            lib_PluginManager.printLoadedAssemblies(AppDomain.CurrentDomain);
+            //Instances.commandManager.loadCommand(typeof(TestCommand));
         }
 
     }
