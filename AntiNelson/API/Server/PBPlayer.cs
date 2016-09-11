@@ -192,12 +192,25 @@ namespace PointBlank.API.Server
         public bool hasPermission(string permission)
         {
             string[] sPerm = permission.Split('.');
-            bool pUser1 = Array.Exists(permissions.ToArray(), a => a == sPerm[0]);
-            bool pUser2 = Array.Exists(permissions.ToArray(), a => a == permission);
-            bool pGroup1 = Array.Exists(groups.ToArray(), a => Array.Exists(a.permissions.ToArray(), b => b == sPerm[0]));
-            bool pGroup2 = Array.Exists(groups.ToArray(), a => Array.Exists(a.permissions.ToArray(), b => b == permission));
 
-            return (pUser1 || pUser2 || pGroup1 || pGroup2);
+            foreach (string perm in permissions)
+            {
+                string[] pPerm = perm.Split('.');
+
+                if (perm == "*" || perm == permission)
+                    return true;
+                for (int i = 0; i < sPerm.Length; i++)
+                {
+                    if (pPerm[i] == "*")
+                        return true;
+                    if (pPerm[i] != sPerm[i])
+                        break;
+                    if (i >= sPerm.Length)
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         public bool hasCooldown(PBCommand command)
