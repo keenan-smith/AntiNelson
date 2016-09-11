@@ -86,6 +86,11 @@ namespace PointBlank.API.Server.Types
 
         }
 
+        public ECustomVariableType getValueType()
+        {
+            return type;
+        }
+
         public Object getValue()
         {
 

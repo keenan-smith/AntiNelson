@@ -12,8 +12,7 @@ namespace PointBlank.API.Extensions
     {
         #region Variables
         private string _name;
-        private Texture2D _icon;
-        private CSteamID _steamID;
+        private ulong _steamID;
         private List<string> _permissions = new List<string>();
         #endregion
 
@@ -26,15 +25,7 @@ namespace PointBlank.API.Extensions
             }
         }
 
-        public Texture2D icon
-        {
-            get
-            {
-                return _icon;
-            }
-        }
-
-        public CSteamID steamID
+        public ulong steamID
         {
             get
             {
@@ -51,11 +42,11 @@ namespace PointBlank.API.Extensions
         }
         #endregion
 
-        public PBSteamGroup(string name, Texture2D icon, CSteamID steamID)
+        public PBSteamGroup(string name, ulong steamID, string[] perms)
         {
             _name = name;
-            _icon = icon;
             _steamID = steamID;
+            _permissions.AddRange(perms);
         }
     }
 }

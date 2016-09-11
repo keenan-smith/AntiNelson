@@ -6,6 +6,7 @@ using UnityEngine;
 using SDG.Unturned;
 using Steamworks;
 using PointBlank.API.Server.Extensions;
+using PointBlank.API.Extensions;
 
 namespace PointBlank.API.Server
 {
@@ -16,6 +17,7 @@ namespace PointBlank.API.Server
         private static List<PBPlayer> _players = new List<PBPlayer>();
         private static List<PBCommand> _commands = new List<PBCommand>();
         private static List<PBGroup> _groups = new List<PBGroup>();
+        private static List<PBSteamGroup> _steamGroups = new List<PBSteamGroup>();
 
         private static PBSaving _playerSave;
         private static PBSaving _groupSave;
@@ -112,6 +114,14 @@ namespace PointBlank.API.Server
             get
             {
                 return _groups;
+            }
+        }
+
+        public static List<PBSteamGroup> steamGroups
+        {
+            get
+            {
+                return _steamGroups;
             }
         }
 
@@ -247,9 +257,11 @@ namespace PointBlank.API.Server
         #region Event Functions
         public static void PBPostInit()
         {
-            _playerSave = new PBSaving(Variables.currentPath + "\\Saves\\Players.dat");
-            _groupSave = new PBSaving(Variables.currentPath + "\\Saves\\Groups.dat");
             _steamGroupSave = new PBSaving(Variables.currentPath + "\\Saves\\SteamGroups.dat");
+            _steamGroupSave.loadSteamGroups();
+            _groupSave = new PBSaving(Variables.currentPath + "\\Saves\\Groups.dat");
+            _groupSave.loadGroups();
+            _playerSave = new PBSaving(Variables.currentPath + "\\Saves\\Players.dat");
         }
 
         public static void PBPreInit()
@@ -259,7 +271,7 @@ namespace PointBlank.API.Server
 
         public static void PlayerJoin(PBPlayer player)
         {
-                playerSave.loadPlayer(player);
+            playerSave.loadPlayer(player);
         }
 
         public static void PlayerLeave(PBPlayer player)

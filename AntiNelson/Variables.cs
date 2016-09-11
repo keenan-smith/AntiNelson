@@ -34,6 +34,13 @@ namespace PointBlank
             "Saves",
         };
 
+        public static string[] serverSaveFiles = new string[]
+        {
+            "Players.dat",
+            "Groups.dat",
+            "SteamGroups.dat",
+        };
+
         public static string[] clientDirectories = new string[]
         {
             "Mods",

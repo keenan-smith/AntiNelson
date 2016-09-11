@@ -7,7 +7,6 @@ namespace PointBlank.API.Server.Enumerables
 {
     public enum ECustomVariableType
     {
-
         BOOLEAN,
         BYTE,
         SHORT,
@@ -16,6 +15,5 @@ namespace PointBlank.API.Server.Enumerables
         DOUBLE,
         FLOAT,
         STRING
-
     }
 }

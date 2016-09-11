@@ -49,7 +49,6 @@ namespace PointBlank.PB_Loading
             Instances.pluginManager.loadPlugins();
 
             PB.postInit();
-
         }
 
         public void _Update()

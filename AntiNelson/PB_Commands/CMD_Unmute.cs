@@ -35,7 +35,7 @@ namespace PointBlank.PB_Commands
             }
 
             if (player.getCustomVariable("Muted") != null)
-                player.customVariables.Remove("Muted");
+                player.removeCustomVariable("Muted");
         }
         #endregion
     }
