@@ -1,0 +1,13 @@
+Help Edits permissions of a player
+Usage /permission [Action] [Permission], /permission [Action] [Permission] [Player]
+CommandPermission Not enough permissions!
+CommandLimit You have reached the command limit!
+CommandCooldown You have a command cooldown!
+NoArguments Not enough arguments!
+InvalidAction The action is invalid use get/set/del!
+TruePermission The player has this permission!
+FalsePermission The player does not have this permission!
+PermissionSet The permission has been set!
+PermissionNoSet Failed to set permission!
+PermissionRem The permission has been removed!
+PermissionNoRem Failed to remove permission!

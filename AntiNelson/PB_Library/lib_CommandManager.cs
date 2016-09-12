@@ -130,11 +130,8 @@ namespace PointBlank.PB_Library
                 {
                     if (t.IsClass && typeof(PBCommand).IsAssignableFrom(t))
                     {
-                        Console.WriteLine("Found cmd: " + t.Name);
                         addLocals(t);
-                        Console.WriteLine("Passed addLocals");
                         loadCommand(t);
-                        Console.WriteLine("Passed loadCommand");
                     }
                 }
                 return true;

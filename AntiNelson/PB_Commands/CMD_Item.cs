@@ -27,7 +27,10 @@ namespace PointBlank.PB_Commands
         public override void onCall(PBPlayer player, string[] args)
         {
             if (args.Length < 1)
+            {
+                player.sendChatMessage(localization.format("NoArguments"), Color.red);
                 return;
+            }
 
             ushort id;
             byte amount;

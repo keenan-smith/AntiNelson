@@ -43,7 +43,14 @@ namespace PointBlank.API.Server
                 {
                     PBLogging.log("Calling: " + info[0], false);
                     string cArgs = (info.Length > 1 ? info[1] : "");
-                    cmd.execute(PBServer.findPlayer(speaker), cArgs);
+                    try
+                    {
+                        cmd.execute(PBServer.findPlayer(speaker), cArgs);
+                    }
+                    catch (Exception ex)
+                    {
+                        PBLogging.logError("ERROR, while running command!", ex);
+                    }
                     args.text = null;
                 }
             }

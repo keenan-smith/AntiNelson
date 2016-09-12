@@ -99,18 +99,18 @@ namespace PointBlank.API.Server.Extensions
 
         public virtual bool hasCooldown(PBPlayer player)
         {
-            bool chk1 = player.hasPermission("no-command-cooldown");
-            bool chk2 = !player.hasCooldown(this);
+            bool chk1 = !player.hasPermission("no-command-cooldown");
+            bool chk2 = player.hasCooldown(this);
 
-            return (chk1 || chk2);
+            return (chk1 && chk2);
         }
 
         public virtual bool hasReachedLimit(PBPlayer player)
         {
-            bool chk1 = player.hasPermission("no-command-limit");
-            bool chk2 = !player.hasReachedLimit(this, maxUsage);
+            bool chk1 = !player.hasPermission("no-command-limit");
+            bool chk2 = player.hasReachedLimit(this, maxUsage);
 
-            return (chk1 || chk2);
+            return (chk1 && chk2);
         }
 
         public virtual void execute(PBPlayer player, string args)
@@ -125,7 +125,7 @@ namespace PointBlank.API.Server.Extensions
 
             if (!player.steamPlayer.isAdmin)
             {
-                if (checkPermissions(player, sArgs))
+                if (!checkPermissions(player, sArgs))
                 {
                     PBChat.sendChatToPlayer(player, localization.format("CommandPermission"), Color.red);
                     return;

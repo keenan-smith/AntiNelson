@@ -218,13 +218,13 @@ namespace PointBlank.API.Server
         public bool hasCooldown(PBCommand command)
         {
             PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
-            return (cDown != null && !cDown.cooldown);
+            return (cDown != null && cDown.cooldown);
         }
 
         public bool hasReachedLimit(PBCommand command, int maxUse)
         {
             PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
-            return (cDown != null && cDown.usage > maxUse);
+            return (cDown != null && cDown.usage >= maxUse);
         }
 
         public object getCustomVariable(string key)
