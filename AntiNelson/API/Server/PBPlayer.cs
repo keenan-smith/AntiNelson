@@ -193,6 +193,8 @@ namespace PointBlank.API.Server
         {
             string[] sPerm = permission.Split('.');
 
+            if (permission == "")
+                return true;
             foreach (string perm in permissions)
             {
                 string[] pPerm = perm.Split('.');

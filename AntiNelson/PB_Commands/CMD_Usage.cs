@@ -23,7 +23,7 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
-            if (string.IsNullOrEmpty(args[0]))
+            if (args.Length < 1)
             {
                 player.sendChatMessage(localization.format("NoArguments"), Color.red);
                 return;

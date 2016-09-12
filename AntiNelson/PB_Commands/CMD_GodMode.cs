@@ -14,7 +14,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_GodMode()
         {
-            permission = "godmode.godmode";
+            permission = "godmode.god";
             command = "godmode";
             alias = new string[]
             {
@@ -26,7 +26,7 @@ namespace PointBlank.PB_Commands
         public override void onCall(PBPlayer player, string[] args)
         {
             PBPlayer orgPlayer = player;
-            if (!string.IsNullOrEmpty(args[0]))
+            if (args.Length > 0)
                 player = PBServer.findPlayer(args[0]);
             if (player == null)
             {

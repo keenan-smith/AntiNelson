@@ -117,6 +117,9 @@ namespace PointBlank.API.Server.Extensions
         {
             string[] sArgs = args.Split('/');
 
+            if (string.IsNullOrEmpty(sArgs[0]))
+                sArgs = new string[0];
+
             if (player == null)
                 return;
 

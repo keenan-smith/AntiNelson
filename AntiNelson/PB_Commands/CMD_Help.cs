@@ -22,14 +22,12 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
-            if (string.IsNullOrEmpty(args[0]))
+            if (args.Length < 1)
             {
-                string msg = "";
                 foreach (PBCommand command in PBServer.commands)
                 {
-                    msg = msg + command.command + " - " + command.help + "\n";
+                    player.sendChatMessage(command.command + " - " + command.help, Color.magenta);
                 }
-                player.sendChatMessage(msg, Color.magenta);
                 return;
             }
 

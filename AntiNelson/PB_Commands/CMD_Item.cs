@@ -26,6 +26,9 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
+            if (args.Length < 1)
+                return;
+
             ushort id;
             byte amount;
             byte quality;
@@ -40,8 +43,8 @@ namespace PointBlank.PB_Commands
                 quality = 255;
 
             PBPlayer orgPlayer = player;
-            if (!string.IsNullOrEmpty(args[0]))
-                player = PBServer.findPlayer(args[0]);
+            if (args.Length > 3)
+                player = PBServer.findPlayer(args[3]);
             if (player == null)
             {
                 orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
