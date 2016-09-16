@@ -23,6 +23,7 @@ namespace PointBlank.API.Server
         private List<PBCooldown> _cooldowns = new List<PBCooldown>();
         private Dictionary<string, CustomVariable> _customVariables = new Dictionary<string, CustomVariable>();
         private List<string> _saveKeys = new List<string>();
+        private Color _playerColor;
         #endregion
 
         #region Properties
@@ -137,6 +138,18 @@ namespace PointBlank.API.Server
                 return _saveKeys;
             }
         }
+
+        public Color playerColor
+        {
+            get
+            {
+                return _playerColor;
+            }
+            set
+            {
+                _playerColor = value;
+            }
+        }
         #endregion
 
         public PBPlayer(SteamPlayer p)
@@ -150,6 +163,7 @@ namespace PointBlank.API.Server
                 _IP = 0u;
 
             _profile = new PlayerProfile("http://steamcommunity.com/profiles/" + steam64 + "/?xml=1");
+            _playerColor = Color.white;
         }
 
         #region Functions

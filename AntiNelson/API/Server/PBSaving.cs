@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using SDG.Unturned;
 using UnityEngine;
+using PointBlank.API.Enumerables;
 using PointBlank.API.Extensions;
 using PointBlank.API.Server.Extensions;
 using PointBlank.API.Server.Enumerables;
@@ -48,7 +49,7 @@ namespace PointBlank.API.Server
         }
         #endregion
 
-        public PBSaving(string path)
+        public PBSaving(string path, ESaveType saveType)
         {
             _path = path;
             _doc = new XmlDocument();
@@ -71,6 +72,10 @@ namespace PointBlank.API.Server
                 document.AppendChild(document.CreateXmlDeclaration("1.0", null, null));
                 _root = document.CreateElement("PointBlank");
                 document.AppendChild(rootElement);
+                if (saveType == ESaveType.GROUP)
+                    firstRunGroup();
+                else if (saveType == ESaveType.STEAMGROUP)
+                    firstRunSteamGroup();
                 document.Save(path);
             }
         }
@@ -89,6 +94,9 @@ namespace PointBlank.API.Server
             {
                 if (ele.SelectSingleNode("steam64").InnerText == player.steam64.ToString())
                 {
+                    XmlNode tmpC = ele.SelectSingleNode("color");
+                    player.playerColor = new Color(float.Parse(tmpC.SelectSingleNode("red").InnerText), float.Parse(tmpC.SelectSingleNode("green").InnerText), float.Parse(tmpC.SelectSingleNode("blue").InnerText), float.Parse(tmpC.SelectSingleNode("alpha").InnerText));
+
                     foreach (XmlElement tmp in ele.SelectSingleNode("groups").SelectNodes("group"))
                     {
                         PBGroup group = Array.Find(PBServer.groups.ToArray(), a => a.name == tmp.InnerText);
@@ -144,6 +152,7 @@ namespace PointBlank.API.Server
         {
             XmlElement ele = null;
             XmlNode tmp_steam64 = null;
+            XmlNode tmp_color = null;
             XmlNode tmp_groups = null;
             XmlNode tmp_permissions = null;
             XmlNode tmp_customVariables = null;
@@ -159,11 +168,13 @@ namespace PointBlank.API.Server
                 ele = document.CreateElement("player");
                 tmp_steam64 = document.CreateElement("steam64");
                 tmp_steam64.InnerText = player.steam64.ToString();
+                tmp_color = document.CreateElement("color");
                 tmp_groups = document.CreateElement("groups");
                 tmp_permissions = document.CreateElement("permissions");
                 tmp_customVariables = document.CreateElement("customVariables");
 
                 ele.AppendChild(tmp_steam64);
+                ele.AppendChild(tmp_color);
                 ele.AppendChild(tmp_groups);
                 ele.AppendChild(tmp_permissions);
                 ele.AppendChild(tmp_customVariables);
@@ -172,6 +183,8 @@ namespace PointBlank.API.Server
             else
             {
                 tmp_steam64 = ele.SelectSingleNode("steam64");
+                tmp_color = ele.SelectSingleNode("color");
+                tmp_color.InnerXml = "";
                 tmp_groups = ele.SelectSingleNode("groups");
                 tmp_groups.InnerXml = "";
                 tmp_permissions = ele.SelectSingleNode("permissions");
@@ -180,6 +193,21 @@ namespace PointBlank.API.Server
                 tmp_customVariables.InnerXml = "";
             }
 
+            XmlElement tmpCRed = document.CreateElement("red");
+            XmlElement tmpCGreen = document.CreateElement("green");
+            XmlElement tmpCBlue = document.CreateElement("blue");
+            XmlElement tmpCAlpha = document.CreateElement("alpha");
+            Color tmpWhite = Color.white;
+
+            tmpCRed.InnerText = tmpWhite.r.ToString();
+            tmpCGreen.InnerText = tmpWhite.g.ToString();
+            tmpCBlue.InnerText = tmpWhite.b.ToString();
+            tmpCAlpha.InnerText = tmpWhite.a.ToString();
+
+            tmp_color.AppendChild(tmpCRed);
+            tmp_color.AppendChild(tmpCGreen);
+            tmp_color.AppendChild(tmpCBlue);
+            tmp_color.AppendChild(tmpCAlpha);
             foreach (PBGroup group in player.groups)
             {
                 XmlElement tmp = document.CreateElement("group");
@@ -216,6 +244,22 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Functions - Groups
+        public void firstRunGroup()
+        {
+            XmlElement ele = document.CreateElement("group");
+            XmlElement name = document.CreateElement("name");
+            XmlElement isDefault = document.CreateElement("default");
+            XmlElement permissions = document.CreateElement("permissions");
+
+            name.InnerText = "Guest";
+            isDefault.InnerText = "true";
+
+            ele.AppendChild(name);
+            ele.AppendChild(isDefault);
+            ele.AppendChild(permissions);
+            rootElement.AppendChild(ele);
+        }
+
         public void loadGroups()
         {
             foreach (XmlElement ele in rootElement.SelectNodes("group"))
@@ -235,6 +279,22 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Functions - Steam Groups
+        public void firstRunSteamGroup()
+        {
+            XmlElement ele = document.CreateElement("steamGroup");
+            XmlElement name = document.CreateElement("name");
+            XmlElement steam64 = document.CreateElement("steam64");
+            XmlElement permissions = document.CreateElement("permissions");
+
+            name.InnerText = "Unturned Fan Club";
+            steam64.InnerText = "103582791435804732";
+
+            ele.AppendChild(name);
+            ele.AppendChild(steam64);
+            ele.AppendChild(permissions);
+            rootElement.AppendChild(ele);
+        }
+
         public void loadSteamGroups()
         {
             foreach (XmlElement ele in rootElement.SelectNodes("steamGroup"))

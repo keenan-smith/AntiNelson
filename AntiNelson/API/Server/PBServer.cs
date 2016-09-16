@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using SDG.Unturned;
 using Steamworks;
+using PointBlank.API.Enumerables;
 using PointBlank.API.Server.Extensions;
 using PointBlank.API.Extensions;
 
@@ -257,11 +258,11 @@ namespace PointBlank.API.Server
         #region Event Functions
         public static void PBPostInit()
         {
-            _steamGroupSave = new PBSaving(Variables.currentPath + "\\Saves\\SteamGroups.dat");
+            _steamGroupSave = new PBSaving(Variables.currentPath + "\\Saves\\SteamGroups.dat", ESaveType.STEAMGROUP);
             _steamGroupSave.loadSteamGroups();
-            _groupSave = new PBSaving(Variables.currentPath + "\\Saves\\Groups.dat");
+            _groupSave = new PBSaving(Variables.currentPath + "\\Saves\\Groups.dat", ESaveType.GROUP);
             _groupSave.loadGroups();
-            _playerSave = new PBSaving(Variables.currentPath + "\\Saves\\Players.dat");
+            _playerSave = new PBSaving(Variables.currentPath + "\\Saves\\Players.dat", ESaveType.PLAYER);
         }
 
         public static void PBPreInit()
