@@ -12,7 +12,6 @@ namespace PointBlank.PB_Library
     public class lib_RCON : MonoBehaviour
     {
         #region Variables
-        private GameObject obj_RCON;
         private RCON sys_RCON;
         private ushort _port;
         private string _password;
@@ -87,7 +86,8 @@ namespace PointBlank.PB_Library
         #region Functions
         public void createThread()
         {
-            
+            sys_RCON = new RCON();
+            sys_RCON.startHooking();
         }
         #endregion
     }
