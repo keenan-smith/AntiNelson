@@ -194,6 +194,7 @@
     <Compile Include="PB_Commands\CMD_Unmute.cs" />
     <Compile Include="PB_Commands\CMD_Usage.cs" />
     <Compile Include="PB_GameObjects\AutoSave.cs" />
+    <Compile Include="PB_Library\lib_Sync.cs" />
     <Compile Include="PB_Overridables\Override_CommandWindow.cs" />
     <Compile Include="PB_Threads\RCON.cs" />
     <Compile Include="PB_Library\lib_AutoSave.cs" />

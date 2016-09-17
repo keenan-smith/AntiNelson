@@ -123,33 +123,34 @@ namespace PointBlank.API.Server
                     foreach (XmlElement tmp in ele.SelectSingleNode("customVariables").SelectNodes("variable"))
                     {
                         string key = tmp.SelectSingleNode("key").InnerText;
+                        bool sync = (tmp.SelectSingleNode("sync").InnerText == "true");
                         ECustomVariableType type = (ECustomVariableType)Enum.Parse(typeof(ECustomVariableType), tmp.SelectSingleNode("type").InnerText);
 
                         switch (type)
                         {
                             case ECustomVariableType.BOOLEAN:
-                                player.setCustomVariable(key, bool.Parse(tmp.SelectSingleNode("value").InnerText), true);
+                                player.setCustomVariable(key, bool.Parse(tmp.SelectSingleNode("value").InnerText), true, sync);
                                 break;
                             case ECustomVariableType.BYTE:
-                                player.setCustomVariable(key, byte.Parse(tmp.SelectSingleNode("value").InnerText), true);
+                                player.setCustomVariable(key, byte.Parse(tmp.SelectSingleNode("value").InnerText), true, sync);
                                 break;
                             case ECustomVariableType.SHORT:
-                                player.setCustomVariable(key, short.Parse(tmp.SelectSingleNode("value").InnerText), true);
+                                player.setCustomVariable(key, short.Parse(tmp.SelectSingleNode("value").InnerText), true, sync);
                                 break;
                             case ECustomVariableType.INT:
-                                player.setCustomVariable(key, int.Parse(tmp.SelectSingleNode("value").InnerText), true);
+                                player.setCustomVariable(key, int.Parse(tmp.SelectSingleNode("value").InnerText), true, sync);
                                 break;
                             case ECustomVariableType.LONG:
-                                player.setCustomVariable(key, long.Parse(tmp.SelectSingleNode("value").InnerText), true);
+                                player.setCustomVariable(key, long.Parse(tmp.SelectSingleNode("value").InnerText), true, sync);
                                 break;
                             case ECustomVariableType.DOUBLE:
-                                player.setCustomVariable(key, double.Parse(tmp.SelectSingleNode("value").InnerText), true);
+                                player.setCustomVariable(key, double.Parse(tmp.SelectSingleNode("value").InnerText), true, sync);
                                 break;
                             case ECustomVariableType.FLOAT:
-                                player.setCustomVariable(key, float.Parse(tmp.SelectSingleNode("value").InnerText), true);
+                                player.setCustomVariable(key, float.Parse(tmp.SelectSingleNode("value").InnerText), true, sync);
                                 break; ;
                             case ECustomVariableType.STRING:
-                                player.setCustomVariable(key, tmp.SelectSingleNode("value").InnerText, true);
+                                player.setCustomVariable(key, tmp.SelectSingleNode("value").InnerText, true, sync);
                                 break;
                         }
                     }
@@ -235,14 +236,17 @@ namespace PointBlank.API.Server
                     continue;
                 XmlElement tmp = document.CreateElement("variable");
                 XmlElement tmpKey = document.CreateElement("key");
+                XmlElement tmpSync = document.CreateElement("sync");
                 XmlElement tmpType = document.CreateElement("type");
                 XmlElement tmpValue = document.CreateElement("value");
 
                 tmpKey.InnerText = customVar.Key;
+                tmpKey.InnerText = (Array.Exists(player.syncKeys.ToArray(), a => a == customVar.Key) ? "true" : "false");
                 tmpType.InnerText = customVar.Value.getValueType().ToString();
                 tmpValue.InnerText = customVar.Value.getValue().ToString();
 
                 tmp.AppendChild(tmpKey);
+                tmp.AppendChild(tmpSync);
                 tmp.AppendChild(tmpType);
                 tmp.AppendChild(tmpValue);
                 tmp_customVariables.AppendChild(tmp);
