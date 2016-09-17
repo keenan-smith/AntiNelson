@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,16 @@ namespace PointBlank.PB_Overridables
 {
     public class Override_CommandWindow
     {
-        private static void onInputText(string command)
+        [ReplaceCode(typeof(CommandWindow), "onInputText", BindingFlags.NonPublic | BindingFlags.Static)]
+        public static void onInputText(string command)
         {
-
+            PBServer.consoleInput(command);
         }
 
-        private static void onOutputText(string text, string stack, LogType type)
+        [ReplaceCode(typeof(CommandWindow), "onOutputText", BindingFlags.NonPublic | BindingFlags.Static)]
+        public static void onOutputText(string text, string stack, LogType type)
         {
-
+            PBServer.consoleOutput(text, stack, type);
         }
     }
 }

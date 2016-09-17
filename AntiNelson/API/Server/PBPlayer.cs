@@ -24,6 +24,7 @@ namespace PointBlank.API.Server
         private Dictionary<string, CustomVariable> _customVariables = new Dictionary<string, CustomVariable>();
         private List<string> _saveKeys = new List<string>();
         private Color _playerColor;
+        private bool _isServer;
         #endregion
 
         #region Properties
@@ -150,6 +151,14 @@ namespace PointBlank.API.Server
                 _playerColor = value;
             }
         }
+
+        public bool isServer
+        {
+            get
+            {
+                return _isServer;
+            }
+        }
         #endregion
 
         public PBPlayer(SteamPlayer p)
@@ -166,9 +175,17 @@ namespace PointBlank.API.Server
             _playerColor = Color.white;
         }
 
+        public PBPlayer()
+        {
+            _isServer = true;
+            _playerColor = Color.white;
+        }
+
         #region Functions
         public void ban(string reason, uint duration, bool IPBan, CSteamID judge)
         {
+            if (isServer)
+                return;
             SteamBlacklist.ban(
                 steamID,
                 (IPBan ? IP : 0u),
@@ -180,31 +197,43 @@ namespace PointBlank.API.Server
 
         public void kick(string reason)
         {
+            if (isServer)
+                return;
             Provider.kick(steamID, reason);
         }
 
         public void openURL(string url, string message)
         {
+            if (isServer)
+                return;
             player.sendBrowserRequest(message, url);
         }
 
         public void teleportToPlayer(Player player)
         {
+            if (isServer)
+                return;
             this.player.transform.position = player.transform.position;
         }
 
         public void teleportToPosition(Vector3 pos)
         {
+            if (isServer)
+                return;
             player.transform.position = pos;
         }
 
         public void giveItem(ushort id, byte amount = 1, byte quality = 255)
         {
+            if (isServer)
+                return;
             player.inventory.tryAddItem(new Item(id, amount, quality), true);
         }
 
         public bool hasPermission(string permission)
         {
+            if (isServer)
+                return true;
             string[] sPerm = permission.Split('.');
 
             if (permission == "")
@@ -274,12 +303,16 @@ namespace PointBlank.API.Server
 
         public bool hasCooldown(PBCommand command)
         {
+            if (isServer)
+                return false;
             PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
             return (cDown != null && cDown.cooldown);
         }
 
         public bool hasReachedLimit(PBCommand command, int maxUse)
         {
+            if (isServer)
+                return false;
             PBCooldown cDown = Array.Find(cooldowns.ToArray(), a => a.command == command);
             return (cDown != null && cDown.usage >= maxUse);
         }
@@ -364,7 +397,10 @@ namespace PointBlank.API.Server
 
         public void sendChatMessage(string message, Color color)
         {
-            PBChat.sendChatToPlayer(this, message, color);
+            if (isServer)
+                CommandWindow.Log(message);
+            else
+                PBChat.sendChatToPlayer(this, message, color);
         }
         #endregion
     }

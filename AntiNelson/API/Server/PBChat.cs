@@ -38,7 +38,7 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Event Functions
-        private static void ProcessCommands(CSteamID speaker, Chat args)
+        public static void ProcessCommands(CSteamID speaker, Chat args)
         {
             if (args == null || args.text == null)
                 return;

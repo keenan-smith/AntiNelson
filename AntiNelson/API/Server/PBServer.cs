@@ -14,6 +14,7 @@ namespace PointBlank.API.Server
     public class PBServer
     {
         #region Variables
+        private static PBPlayer _server;
         private static PBServer _instance;
         private static List<PBPlayer> _players = new List<PBPlayer>();
         private static List<PBCommand> _commands = new List<PBCommand>();
@@ -149,16 +150,28 @@ namespace PointBlank.API.Server
                 return _steamGroupSave;
             }
         }
+
+        public static PBPlayer server
+        {
+            get
+            {
+                return _server;
+            }
+        }
         #endregion
 
         #region Handlers
         public delegate void ClientJoinHandler(PBPlayer player);
         public delegate void ClientLeaveHandler(PBPlayer player);
+        public delegate void ConsoleInputTextHandler(string command);
+        public delegate void ConsoleOutputTextHandler(string text, string stack, LogType type);
         #endregion
 
         #region Events
         public static event ClientJoinHandler OnPlayerJoin;
         public static event ClientLeaveHandler OnPlayerLeave;
+        public static event ConsoleInputTextHandler OnConsoleInput;
+        public static event ConsoleOutputTextHandler OnConsoleOutput;
         #endregion
 
         public PBServer()
@@ -215,6 +228,16 @@ namespace PointBlank.API.Server
             }
         }
 
+        public static void consoleInput(string command)
+        {
+            OnConsoleInput(command);
+        }
+
+        public static void consoleOutput(string text, string stack, LogType type)
+        {
+            OnConsoleOutput(text, stack, type);
+        }
+
         /*public static bool restart() // NOT DONE!
         {
             try
@@ -258,6 +281,7 @@ namespace PointBlank.API.Server
         #region Event Functions
         public static void PBPostInit()
         {
+            _server = new PBPlayer();
             _steamGroupSave = new PBSaving(Variables.currentPath + "\\Saves\\SteamGroups.dat", ESaveType.STEAMGROUP);
             _steamGroupSave.loadSteamGroups();
             _groupSave = new PBSaving(Variables.currentPath + "\\Saves\\Groups.dat", ESaveType.GROUP);
@@ -278,6 +302,47 @@ namespace PointBlank.API.Server
         public static void PlayerLeave(PBPlayer player)
         {
             playerSave.savePlayer(player);
+        }
+
+        public static void ParseInputCommand(string command)
+        {
+            string[] info = command.Split(' ');
+            PBCommand cmd = PBServer.findCommand(info[0]);
+            if (cmd != null)
+            {
+                PBLogging.log("Calling: " + info[0], false);
+                string[] args = (info.Length > 1 ? info[1].Split('/') : new string[0]);
+                try
+                {
+                    cmd.onCall(server, args);
+                }
+                catch (Exception ex)
+                {
+                    PBLogging.logError("ERROR, while running command!", ex);
+                }
+            }
+            else
+            {
+                Command uCmd = Array.Find(Commander.commands.ToArray(), a => a.command.ToLower() == info[0].ToLower());
+                if (uCmd != null)
+                {
+                    PBLogging.log("Calling: " + info[0], false);
+                    try
+                    {
+                        uCmd.check(CSteamID.Nil, info[0], (info.Length > 1 ? info[1] : ""));
+                    }
+                    catch (Exception ex)
+                    {
+                        PBLogging.logError("ERROR, while running command!", ex);
+                    }
+                }
+            }
+        }
+
+        public static void ParseOutputText(string text, string stack, LogType type)
+        {
+            if (type == LogType.Exception)
+                CommandWindow.LogError(text + " - " + stack);
         }
 
         public static void ClientConnect(SteamPlayer player)

@@ -34,6 +34,8 @@ namespace PointBlank.PB_Library
             PBServer.OnPlayerLeave += new PBServer.ClientLeaveHandler(PBServer.PlayerLeave);
             PB.OnPBPostInit += new PB.PBPostInit(PBServer.PBPostInit);
             PB.OnPBPreInit += new PB.PBPreInit(PBServer.PBPreInit);
+            PBServer.OnConsoleInput += new PBServer.ConsoleInputTextHandler(PBServer.ParseInputCommand);
+            PBServer.OnConsoleOutput += new PBServer.ConsoleOutputTextHandler(PBServer.ParseOutputText);
         }
         #endregion
     }
