@@ -11,7 +11,7 @@ using UnityEngine;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "FreezeCommand")]
-    public class CMD_Freeze : PBCommand // NOT DONE FINISH LATER
+    public class CMD_Freeze : PBCommand
     {
         public CMD_Freeze()
         {
@@ -30,6 +30,33 @@ namespace PointBlank.PB_Commands
             {
                 orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
                 return;
+            }
+
+            object frozen = player.getCustomVariable("Frozen");
+            if (frozen == null || !(bool)frozen)
+            {
+                player.setCustomVariable("Frozen", true);
+                player.setCustomVariable("Frozen_position_x", player.player.transform.position.x);
+                player.setCustomVariable("Frozen_position_y", player.player.transform.position.y);
+                player.setCustomVariable("Frozen_position_z", player.player.transform.position.z);
+                orgPlayer.sendChatMessage(localization.format("FreezeSuccess"), Color.magenta);
+                player.sendChatMessage(localization.format("Frozen"), Color.magenta);
+            }
+            else
+            {
+                orgPlayer.sendChatMessage(localization.format("FreezeFail"), Color.magenta);
+            }
+        }
+
+        public void Update()
+        {
+            foreach (PBPlayer player in PBServer.players)
+            {
+                object frozen = player.getCustomVariable("Frozen");
+                if (frozen != null && (bool)frozen)
+                {
+                    player.player.transform.position = new Vector3((float)player.getCustomVariable("Frozen_position_x"), (float)player.getCustomVariable("Frozen_position_y"), (float)player.getCustomVariable("Frozen_position_z"));
+                }
             }
         }
         #endregion

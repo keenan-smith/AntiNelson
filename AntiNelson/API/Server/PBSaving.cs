@@ -12,6 +12,7 @@ using PointBlank.API.Extensions;
 using PointBlank.API.Server.Extensions;
 using PointBlank.API.Server.Enumerables;
 using PointBlank.API.Server.Types;
+using Steamworks;
 
 namespace PointBlank.API.Server
 {
@@ -103,6 +104,14 @@ namespace PointBlank.API.Server
                         if (group != null)
                         {
                             player.groups.Add(group);
+                        }
+                    }
+                    if (player.groups.Count < 1)
+                    {
+                        foreach (PBGroup group in PBServer.groups)
+                        {
+                            if (group.isDefault)
+                                player.groups.Add(group);
                         }
                     }
 

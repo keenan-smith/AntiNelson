@@ -226,6 +226,49 @@ namespace PointBlank.API.Server
                 }
             }
 
+            foreach (PBGroup group in groups)
+            {
+                foreach (string perm in group.permissions)
+                {
+                    string[] pPerm = perm.Split('.');
+
+                    if (perm == "*" || perm == permission)
+                        return true;
+                    for (int i = 0; i < sPerm.Length; i++)
+                    {
+                        if (pPerm[i] == "*")
+                            return true;
+                        if (pPerm[i] != sPerm[i])
+                            break;
+                        if (i >= sPerm.Length)
+                            return true;
+                    }
+                }
+            }
+
+            foreach (PBSteamGroup steamGroup in PBServer.steamGroups)
+            {
+                if (Array.Exists(steamGroups, a => a.steamID.m_SteamID == steamGroup.steamID))
+                {
+                    foreach (string perm in steamGroup.permissions)
+                    {
+                        string[] pPerm = perm.Split('.');
+
+                        if (perm == "*" || perm == permission)
+                            return true;
+                        for (int i = 0; i < sPerm.Length; i++)
+                        {
+                            if (pPerm[i] == "*")
+                                return true;
+                            if (pPerm[i] != sPerm[i])
+                                break;
+                            if (i >= sPerm.Length)
+                                return true;
+                        }
+                    }
+                }
+            }
+
             return false;
         }
 

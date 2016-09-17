@@ -17,6 +17,16 @@ namespace PointBlank.API.Server
         {
             ChatManager.say(player.steamID, message, color, EChatMode.SAY);
         }
+
+        private static bool checkPermissions(PBPlayer player, string permission, string[] args)
+        {
+            string prm = permission;
+            foreach (string arg in args)
+            {
+                prm = prm + "." + arg;
+            }
+            return (string.IsNullOrEmpty(permission) || player.hasPermission(prm));
+        }
         #endregion
 
         #region Handlers
@@ -52,6 +62,28 @@ namespace PointBlank.API.Server
                         PBLogging.logError("ERROR, while running command!", ex);
                     }
                     args.text = null;
+                }
+                else
+                {
+                    Command uCmd = Array.Find(Commander.commands.ToArray(), a => a.command.ToLower() == info[0].ToLower());
+                    if (uCmd != null)
+                    {
+                        PBLogging.log("Calling: " + info[0], false);
+                        string cArgs = (info.Length > 1 ? info[1] : "");
+                        try
+                        {
+                            PBPlayer ply = PBServer.findPlayer(speaker);
+                            if (checkPermissions(ply, "unturned." + info[0], cArgs.Split('/')))
+                            {
+                                uCmd.check(speaker, info[0].ToLower(), cArgs);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            PBLogging.logError("ERROR, while running command!", ex);
+                        }
+                        args.text = null;
+                    }
                 }
             }
         }
@@ -142,7 +174,7 @@ namespace PointBlank.API.Server
                 return;
 
             ChatManager manager = (ChatManager)typeof(ChatManager).GetField("manager", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            if (ChatManager.process(player, args.text) && flag)
+            if (flag)
             {
                 if (Time.realtimeSinceStartup - player.lastChat < ChatManager.chatrate)
                 {

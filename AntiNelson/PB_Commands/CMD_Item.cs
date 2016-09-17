@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PointBlank.API;
 using PointBlank.API.Server;
 using PointBlank.API.Server.Extensions;
 using PointBlank.API.Server.Attributes;
@@ -40,10 +41,10 @@ namespace PointBlank.PB_Commands
                 PBChat.sendChatToPlayer(player, localization.format("InvalidItemID"), Color.red);
                 return;
             }
-            if (args[1] == null || !byte.TryParse(args[1], out amount))
+            if (args.Length < 2 || args[1] == null || !byte.TryParse(args[1], out amount))
                 amount = 1;
-            if (args[2] == null || !byte.TryParse(args[2], out quality))
-                quality = 255;
+            if (args.Length < 3 || args[2] == null || !byte.TryParse(args[2], out quality))
+                quality = 100;
 
             PBPlayer orgPlayer = player;
             if (args.Length > 3)
@@ -53,8 +54,16 @@ namespace PointBlank.PB_Commands
                 orgPlayer.sendChatMessage(localization.format("InvalidPlayer"), Color.red);
                 return;
             }
-
-            player.giveItem(id, amount, quality);
+            try
+            {
+                player.giveItem(id, amount, quality);
+                orgPlayer.sendChatMessage(localization.format("GiveSuccess"), Color.magenta);
+            }
+            catch (Exception ex)
+            {
+                orgPlayer.sendChatMessage(localization.format("GiveFail"), Color.magenta);
+                PBLogging.logError("ERROR: Item give fail!", ex, false);
+            }
         }
         #endregion
     }

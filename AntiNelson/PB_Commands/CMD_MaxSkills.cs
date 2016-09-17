@@ -40,6 +40,7 @@ namespace PointBlank.PB_Commands
             {
                 skill.setMaxLevel(player);
             }
+            orgPlayer.sendChatMessage(localization.format("MaxSkillSuccess"), Color.magenta);
         }
         #endregion
     }

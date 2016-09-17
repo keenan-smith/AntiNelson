@@ -183,13 +183,14 @@
     <Compile Include="Instances.cs" />
     <Compile Include="PB_Commands\CMD_Freeze.cs" />
     <Compile Include="PB_Commands\CMD_GodMode.cs" />
-    <Compile Include="PB_Commands\CMD_Group.cs" />
     <Compile Include="PB_Commands\CMD_Help.cs" />
     <Compile Include="PB_Commands\CMD_IP.cs" />
     <Compile Include="PB_Commands\CMD_Item.cs" />
     <Compile Include="PB_Commands\CMD_MaxSkills.cs" />
     <Compile Include="PB_Commands\CMD_Mute.cs" />
     <Compile Include="PB_Commands\CMD_Permission.cs" />
+    <Compile Include="PB_Commands\CMD_Unfreeze.cs" />
+    <Compile Include="PB_Commands\CMD_UnGodMode.cs" />
     <Compile Include="PB_Commands\CMD_Unmute.cs" />
     <Compile Include="PB_Commands\CMD_Usage.cs" />
     <Compile Include="PB_GameObjects\AutoSave.cs" />
@@ -237,6 +238,8 @@
     <None Include="Resources\MaxSkills.dat" />
     <None Include="Resources\MuteCommand.dat" />
     <None Include="Resources\Permission.dat" />
+    <None Include="Resources\UnfreezeCommand.dat" />
+    <None Include="Resources\UnGodMode.dat" />
     <None Include="Resources\UnmuteCommand.dat" />
     <None Include="Resources\UsageCommand.dat" />
   </ItemGroup>

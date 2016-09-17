@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using SDG.Unturned;
 using PointBlank.API.Server;
 using PointBlank.API.Server.Attributes;
 using PointBlank.API.Server.Extensions;
@@ -28,12 +29,26 @@ namespace PointBlank.PB_Commands
                 {
                     player.sendChatMessage(command.command + " - " + command.help, Color.magenta);
                 }
+                foreach (Command uCommand in Commander.commands)
+                {
+                    player.sendChatMessage(uCommand.command + " - " + uCommand.help, Color.magenta);
+                }
                 return;
             }
 
             PBCommand cmd = PBServer.findCommand(args[0]);
             if (cmd != null && cmd.usage != null)
+            {
                 player.sendChatMessage(cmd.help, Color.magenta);
+            }
+            else
+            {
+                Command uCmd = Array.Find(Commander.commands.ToArray(), a => a.command.ToLower() == args[0].ToLower());
+                if (uCmd != null)
+                {
+                    player.sendChatMessage(uCmd.help, Color.magenta);
+                }
+            }
         }
         #endregion
     }

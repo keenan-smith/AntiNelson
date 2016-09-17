@@ -174,7 +174,7 @@ namespace PointBlank.API.Server
         #region Functions
         public static PBCommand findCommand(string command)
         {
-            return Array.Find(commands.ToArray(), a => a.command == command || Array.Exists(a.alias.ToArray(), b => b == command));
+            return Array.Find(commands.ToArray(), a => a.command.ToLower() == command.ToLower() || Array.Exists(a.alias.ToArray(), b => b.ToLower() == command.ToLower()));
         }
 
         public static PBCommand findCommandPermission(string permission)

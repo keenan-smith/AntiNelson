@@ -36,7 +36,15 @@ namespace PointBlank.PB_Commands
 
             object bl = player.getCustomVariable("Muted");
             if (bl == null || !(bool)bl)
+            {
                 player.setCustomVariable("Muted", true, true);
+                orgPlayer.sendChatMessage(localization.format("MuteSuccess"), Color.magenta);
+                player.sendChatMessage(localization.format("Muted"), Color.magenta);
+            }
+            else
+            {
+                orgPlayer.sendChatMessage(localization.format("MuteFail"), Color.magenta);
+            }
         }
 
         public void Start()

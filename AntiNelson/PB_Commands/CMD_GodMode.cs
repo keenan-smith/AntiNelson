@@ -34,7 +34,17 @@ namespace PointBlank.PB_Commands
                 return;
             }
 
-            player.setCustomVariable("GodMode", true);
+            object godmode = player.getCustomVariable("GodMode");
+            if (godmode == null || !(bool)godmode)
+            {
+                player.setCustomVariable("GodMode", true);
+                orgPlayer.sendChatMessage(localization.format("GodmodeSuccess"), Color.magenta);
+                player.sendChatMessage(localization.format("Godmoded"), Color.magenta);
+            }
+            else
+            {
+                orgPlayer.sendChatMessage(localization.format("GodmodeFail"), Color.magenta);
+            }
         }
 
         public void Update()
@@ -49,6 +59,7 @@ namespace PointBlank.PB_Commands
                     player.player.life.askEat(100);
                     player.player.life.askHeal(100, true, true);
                     player.player.life.askDisinfect(100);
+                    player.player.life.askRest(100);
                 }
             }
         }

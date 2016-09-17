@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SDG.Unturned;
-using Steamworks;
 using UnityEngine;
-using PointBlank.API;
 using PointBlank.API.Server;
 using PointBlank.API.Server.Attributes;
 using PointBlank.API.Server.Extensions;
 
 namespace PointBlank.PB_Commands
 {
-    [Command("Default", "UnmuteCommand")]
-    public class CMD_Unmute : PBCommand
+    [Command("Default", "UnGodMode")]
+    public class CMD_UnGodMode : PBCommand
     {
-        public CMD_Unmute()
+        public CMD_UnGodMode()
         {
-            permission = "mute.unmute";
-            command = "unmute";
-            alias = new string[0];
+            permission = "godmode.ungod";
+            command = "ungodmode";
+            alias = new string[]
+            {
+                "ungod",
+            };
         }
 
         #region Functions
@@ -34,15 +34,16 @@ namespace PointBlank.PB_Commands
                 return;
             }
 
-            if (player.getCustomVariable("Muted") != null)
+            object godmode = player.getCustomVariable("GodMode");
+            if (godmode != null && (bool)godmode)
             {
-                player.removeCustomVariable("Muted");
-                orgPlayer.sendChatMessage(localization.format("UnmuteSuccess"), Color.magenta);
-                player.sendChatMessage(localization.format("Unmuted"), Color.magenta);
+                player.removeCustomVariable("GodMode");
+                orgPlayer.sendChatMessage(localization.format("UnGodmodeSuccess"), Color.magenta);
+                player.sendChatMessage(localization.format("UnGodmoded"), Color.magenta);
             }
             else
             {
-                orgPlayer.sendChatMessage(localization.format("UnmuteFail"), Color.magenta);
+                orgPlayer.sendChatMessage(localization.format("UnGodmodeFail"), Color.magenta);
             }
         }
         #endregion
