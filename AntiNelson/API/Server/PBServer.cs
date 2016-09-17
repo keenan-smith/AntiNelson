@@ -215,7 +215,7 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static bool restart() // NOT DONE!
+        /*public static bool restart() // NOT DONE!
         {
             try
             {
@@ -252,7 +252,7 @@ namespace PointBlank.API.Server
                 PBLogging.logError("ERROR: Exception while attempting to shutdown server!", ex);
                 return false;
             }
-        }
+        }*/
         #endregion
 
         #region Event Functions
