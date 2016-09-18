@@ -37,6 +37,13 @@ namespace PointBlank.PB_Library
             PBServer.OnConsoleInput += new PBServer.ConsoleInputTextHandler(PBServer.ParseInputCommand);
             PBServer.OnConsoleOutput += new PBServer.ConsoleOutputTextHandler(PBServer.ParseOutputText);
         }
+
+        private void initRCON()
+        {
+            if (!PB.isServer())
+                return;
+            PBServer.OnConsoleOutput += new PBServer.ConsoleOutputTextHandler(Instances.RCON.RCONOutputUpdate);
+        }
         #endregion
     }
 }

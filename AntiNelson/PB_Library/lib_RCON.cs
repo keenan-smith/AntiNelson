@@ -6,6 +6,7 @@ using UnityEngine;
 using SDG.Unturned;
 using PointBlank.PB_Threads;
 using PointBlank.API;
+using PointBlank.API.Server;
 
 namespace PointBlank.PB_Library
 {
@@ -17,6 +18,7 @@ namespace PointBlank.PB_Library
         private string _password;
         private bool _canSendCommands;
         private bool _canReadLogs;
+        private bool _enabled = false;
         #endregion
 
         #region Properties
@@ -51,6 +53,14 @@ namespace PointBlank.PB_Library
                 return _canReadLogs;
             }
         }
+
+        public bool enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+        }
         #endregion
 
         public lib_RCON()
@@ -80,6 +90,7 @@ namespace PointBlank.PB_Library
                 rConfig.save(path);
                 return;
             }
+            _enabled = true;
             createThread();
         }
 
@@ -88,6 +99,31 @@ namespace PointBlank.PB_Library
         {
             sys_RCON = new RCON();
             sys_RCON.startHooking();
+        }
+
+        public void RCONOutputUpdate(string text, string stack, LogType type)
+        {
+            if (!enabled)
+                return;
+            if (sys_RCON.output.Count >= 100)
+                sys_RCON.output.Remove(sys_RCON.output[0]);
+            if (type == LogType.Exception)
+                sys_RCON.output.Add(stack);
+            else
+                sys_RCON.output.Add(text);
+        }
+
+        public void RCONInputUpdate()
+        {
+            if (!enabled)
+                return;
+            lock (sys_RCON.commands)
+            {
+                foreach (string command in sys_RCON.commands)
+                {
+                    PBServer.ParseInputCommand(command);
+                }
+            }
         }
         #endregion
     }
