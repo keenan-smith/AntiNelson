@@ -40,26 +40,33 @@ namespace PointBlank.PB_Loading
             Variables.obj_Commands = new GameObject();
             DontDestroyOnLoad(Variables.obj_Commands);
 
+            Instances.RCON = new lib_RCON();
+            Instances.autoSave = new lib_AutoSave();
+            Instances.codeReplacer = new lib_CodeReplacer();
+            Instances.commandManager = new lib_CommandManager();
+            Instances.pluginManager = new lib_PluginManager();
             Instances.eventInitalizer = new lib_EventInitalizer();
 
             PB.preInit();
-
-            Instances.autoSave = new lib_AutoSave();
-            Instances.codeReplacer = new lib_CodeReplacer();
-            Instances.RCON = new lib_RCON();
-            Instances.commandManager = new lib_CommandManager();
-            Instances.pluginManager = new lib_PluginManager();
             Instances.pluginManager.loadPlugins();
-
             PB.postInit();
         }
 
         public void _Update()
         {
+            if (PB.isServer() && Instances.RCON != null)
+                Instances.RCON.RCONInputUpdate();
         }
 
         public void _OnGUI()
         {
+        }
+
+        public void _OnDestroy()
+        {
+            PBLogging.log("Shutting down!");
+            if (PB.isServer() && Instances.RCON != null)
+                Instances.RCON.RCONDestroy();
         }
     }
 }

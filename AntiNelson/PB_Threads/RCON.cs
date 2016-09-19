@@ -9,6 +9,7 @@ using System.Text;
 using UnityEngine;
 using SDG.Unturned;
 using PointBlank.PB_Extensions;
+using PointBlank.API;
 
 namespace PointBlank.PB_Threads
 {
@@ -20,9 +21,13 @@ namespace PointBlank.PB_Threads
 
         private bool running = true;
 
-        private Queue<string> _commands = new Queue<string>();
         private List<string> _output = new List<string>();
         private List<RCONClient> _clients = new List<RCONClient>();
+
+        private ushort port;
+        private string password;
+        private bool canReadLogs;
+        private bool canSendCommands;
         #endregion
 
         #region Properties
@@ -31,14 +36,6 @@ namespace PointBlank.PB_Threads
             get
             {
                 return _output;
-            }
-        }
-
-        public Queue<string> commands
-        {
-            get
-            {
-                return _commands;
             }
         }
 
@@ -51,23 +48,38 @@ namespace PointBlank.PB_Threads
         }
         #endregion
 
-        public RCON()
+        public RCON(ushort port, string password, bool canReadLogs, bool canSendCommands)
         {
-            listener = new TcpListener(IPAddress.Any, Instances.RCON.port);
+            this.port = port;
+            this.password = password;
+            this.canReadLogs = canReadLogs;
+            this.canSendCommands = canSendCommands;
+
+            listener = new TcpListener(IPAddress.Any, port);
             connectThread = new Thread(new ThreadStart(thread_Connect));
         }
 
         #region Functions
         public void startHooking()
         {
+            PBLogging.log("Starting RCON....", false);
+            running = true;
+
             listener.Start();
             connectThread.Start();
+            PBLogging.log("RCON started! PORT: " + port.ToString() + " Password: " + password, false);
         }
 
         public void stopHooking()
         {
+            PBLogging.log("Shutting down RCON....");
             running = false;
 
+            foreach (RCONClient client in clients)
+            {
+                client.client.Close();
+                clients.Remove(client);
+            }
             connectThread.Abort();
             listener.Stop();
         }
@@ -79,12 +91,22 @@ namespace PointBlank.PB_Threads
                 TcpClient tcp = listener.AcceptTcpClient();
                 if (tcp != null)
                 {
-                    RCONClient client = new RCONClient(tcp);
+                    RCONClient client = new RCONClient(tcp, this);
                     clients.Add(client);
                     client.write("PointBlankRCON v1.0 loaded!", true);
                     client.write("PointBlank v" + Assembly.GetExecutingAssembly().GetName().Version, true);
+                    ThreadPool.QueueUserWorkItem(runCons, client);
+                    PBLogging.log("User connected! IP: " + client.IP);
                 }
             }
+        }
+
+        private static void runCons(object obj)
+        {
+            PBLogging.log("Initalizing client...");
+            RCONClient client = (RCONClient)obj;
+            client.handle();
+            PBLogging.log("Client finished!");
         }
         #endregion
     }

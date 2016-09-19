@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using UnityEngine;
+using PointBlank.API;
 
 namespace PointBlank.PB_Loading
 {
@@ -18,26 +19,21 @@ namespace PointBlank.PB_Loading
 
         public static void Launch()
         {
-
             if (AppDomain.CurrentDomain.Id != 0)
                 return;
 
             try
             {
-
                 Thread runThread = new Thread(new ThreadStart(doHook));
-                runThread.Start();
 
+                runThread.Start();
             }
             catch (Exception ex)
             {
-
                 Debug.LogException(ex);
-
             }
 
             Variables.isLoaded = true;
-
         }
 
         private static void doHook()
@@ -73,6 +69,7 @@ namespace PointBlank.PB_Loading
         {
             DestroyImmediate(mainObject);
             runThread.Abort();
+
             instance = null;
             hackInstance = new Framework();
 
@@ -81,16 +78,17 @@ namespace PointBlank.PB_Loading
 
         public void Start()
         {
-
             hackInstance = new Framework();
-            hackInstance._Start();
-            DontDestroyOnLoad(transform.gameObject);
 
+            hackInstance._Start();
+
+            DontDestroyOnLoad(gameObject);
         }
 
         public void Update()
         {
             if (!waitForRelaunch && !hackCrashed)
+            {
                 try
                 {
                     hackInstance._Update();
@@ -102,11 +100,19 @@ namespace PointBlank.PB_Loading
                     if (!e.ToString().ToLower().Contains("repaint"))
                         hackCrashed = true;
                 }
+            }
+        }
+
+        public void OnDestroy()
+        {
+            PBLogging.log("Destroying");
+            hackInstance._OnDestroy();
         }
 
         public void OnGUI()
         {
             if (!waitForRelaunch && !hackCrashed)
+            {
                 try
                 {
                     hackInstance._OnGUI();
@@ -118,6 +124,7 @@ namespace PointBlank.PB_Loading
                     if (!e.ToString().ToLower().Contains("repaint"))
                         hackCrashed = true;
                 }
+            }
 
             if (hackCrashed)
             {

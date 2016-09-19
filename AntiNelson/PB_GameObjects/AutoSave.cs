@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using SDG.Unturned;
+using PointBlank.API;
 
 namespace PointBlank.PB_GameObjects
 {
@@ -11,6 +12,7 @@ namespace PointBlank.PB_GameObjects
     {
         #region Variables
         private DateTime lastSave;
+        private bool loaded = false;
         #endregion
 
         public void Start()
@@ -21,11 +23,18 @@ namespace PointBlank.PB_GameObjects
         #region Functions
         public void Update()
         {
-            if ((DateTime.Now - lastSave).TotalMilliseconds >= Instances.autoSave.interval)
+            if ((DateTime.Now - lastSave).TotalMilliseconds >= Instances.autoSave.interval && loaded)
             {
+                PBLogging.log("Autosaving....");
                 SaveManager.save();
                 lastSave = DateTime.Now;
+                PBLogging.log("Map saved!");
             }
+        }
+
+        public void LevelLoadedEvent(int level)
+        {
+            loaded = true;
         }
         #endregion
     }

@@ -25,6 +25,14 @@ namespace PointBlank.PB_Library
                 return _interval;
             }
         }
+
+        public AutoSave autosave
+        {
+            get
+            {
+                return sys_AutoSave;
+            }
+        }
         #endregion
 
         public lib_AutoSave()
@@ -44,7 +52,7 @@ namespace PointBlank.PB_Library
             {
                 PBConfig rConfig = new PBConfig();
                 rConfig.addTextElement("enabled", "true");
-                rConfig.addTextElement("saveTime", "10000");
+                rConfig.addTextElement("saveTime", "600000");
                 rConfig.save(path);
             }
             createGameObject();

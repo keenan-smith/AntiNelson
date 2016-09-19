@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PointBlank.API;
+using PointBlank.PB_Threads;
 
 namespace PointBlank.PB_Extensions
 {
@@ -14,6 +15,7 @@ namespace PointBlank.PB_Extensions
     {
         #region Variables
         public TcpClient client;
+        public RCON rcon;
 
         public bool inConsole;
         public bool Auth;
@@ -22,9 +24,10 @@ namespace PointBlank.PB_Extensions
         public Queue<string> execute = new Queue<string>();
         #endregion
 
-        public RCONClient(TcpClient client)
+        public RCONClient(TcpClient client, RCON rcon)
         {
             this.client = client;
+            this.rcon = rcon;
             inConsole = false;
             Auth = false;
             IP = client.Client.RemoteEndPoint.ToString();
@@ -36,7 +39,7 @@ namespace PointBlank.PB_Extensions
             try
             {
                 if (newLine)
-                    message = message + (!message.Contains('\n') ? "\n" : "");
+                    message = message + (!message.Contains('\n') ? "\r\n" : "");
                 if (string.IsNullOrEmpty(message))
                     return;
 
@@ -90,10 +93,12 @@ namespace PointBlank.PB_Extensions
                 while (client.Connected)
                 {
                     command = read();
-                    command = command.TrimEnd('\n', ' ', '\t');
+                    command = command.TrimEnd('\n', '\r', ' ', '\t');
+                    string[] cmds = command.Split(' ');
 
                     if (command == "")
                         continue;
+                    PBLogging.log("Got command! Command: " + command);
                     if ((command == "quit" || command == "exit" || command == "disconnect") && !inConsole)
                         break;
                     if (command == "login" && !inConsole)
@@ -103,6 +108,29 @@ namespace PointBlank.PB_Extensions
                         else
                             writeLog("Usage: login <password>");
                         continue;
+                    }
+                    if (cmds.Length > 1 && !inConsole)
+                    {
+                        if (cmds[0] == "login")
+                        {
+                            if (Auth)
+                            {
+                                writeLog("You are already logged in!");
+                                continue;
+                            }
+                            else
+                            {
+                                if (cmds[1] == Instances.RCON.password)
+                                {
+                                    Auth = true;
+                                }
+                                else
+                                {
+                                    writeLog("Invalid password!");
+                                    continue;
+                                }
+                            }
+                        }
                     }
                     if (!Auth)
                     {
@@ -129,6 +157,10 @@ namespace PointBlank.PB_Extensions
                         lock (execute)
                             execute.Enqueue(command);
                 }
+
+                rcon.clients.Remove(this);
+                writeLog("Disconnected!");
+                client.Close();
             }
             catch (Exception ex)
             {

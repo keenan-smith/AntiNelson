@@ -7,6 +7,7 @@ using SDG.Unturned;
 using PointBlank.PB_Threads;
 using PointBlank.API;
 using PointBlank.API.Server;
+using PointBlank.PB_Extensions;
 
 namespace PointBlank.PB_Library
 {
@@ -97,13 +98,13 @@ namespace PointBlank.PB_Library
         #region Functions
         public void createThread()
         {
-            sys_RCON = new RCON();
+            sys_RCON = new RCON(port, password, canReadLogs, canSendCommands);
             sys_RCON.startHooking();
         }
 
         public void RCONOutputUpdate(string text, string stack, LogType type)
         {
-            if (!enabled)
+            if (!enabled || !canReadLogs)
                 return;
             if (sys_RCON.output.Count >= 100)
                 sys_RCON.output.Remove(sys_RCON.output[0]);
@@ -115,15 +116,26 @@ namespace PointBlank.PB_Library
 
         public void RCONInputUpdate()
         {
-            if (!enabled)
+            if (!enabled || !canSendCommands)
                 return;
-            lock (sys_RCON.commands)
+            lock (sys_RCON.clients)
             {
-                foreach (string command in sys_RCON.commands)
+                foreach (RCONClient client in sys_RCON.clients)
                 {
-                    PBServer.ParseInputCommand(command);
+                    lock (client.execute)
+                    {
+                        while (client.execute.Count > 0)
+                            PBServer.ParseInputCommand(client.execute.Dequeue());
+                    }
                 }
             }
+        }
+
+        public void RCONDestroy()
+        {
+            if (!enabled)
+                return;
+            sys_RCON.stopHooking();
         }
         #endregion
     }

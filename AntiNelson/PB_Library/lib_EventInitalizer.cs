@@ -15,6 +15,7 @@ namespace PointBlank.PB_Library
             PBLogging.log("Loading EventInitalizer...");
             initChat();
             initServer();
+            initAutoSave();
         }
 
         #region Init Functions
@@ -43,6 +44,13 @@ namespace PointBlank.PB_Library
             if (!PB.isServer())
                 return;
             PBServer.OnConsoleOutput += new PBServer.ConsoleOutputTextHandler(Instances.RCON.RCONOutputUpdate);
+        }
+
+        private void initAutoSave()
+        {
+            if (!PB.isServer())
+                return;
+            Level.onPostLevelLoaded += new PostLevelLoaded(Instances.autoSave.autosave.LevelLoadedEvent);
         }
         #endregion
     }
