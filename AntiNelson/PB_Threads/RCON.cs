@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SOME(MOST) OF THE CODE WAS BORROWED FROM ROCKETMOD!
+// IT HAS MOSTLY BEEN MODIFIED THOUGH ;D
+using System;
 using System.Net;
 using System.Threading;
 using System.Net.Sockets;
@@ -72,12 +74,14 @@ namespace PointBlank.PB_Threads
 
         public void stopHooking()
         {
-            PBLogging.log("Shutting down RCON....");
+            PBLogging.log("Shutting down RCON....", false);
             running = false;
 
             foreach (RCONClient client in clients)
             {
+                client.client.Client.Disconnect(false);
                 client.client.Close();
+                client.thread.Abort();
                 clients.Remove(client);
             }
             connectThread.Abort();
@@ -92,21 +96,15 @@ namespace PointBlank.PB_Threads
                 if (tcp != null)
                 {
                     RCONClient client = new RCONClient(tcp, this);
+                    Thread t = new Thread(new ThreadStart(client.handle));
+                    client.thread = t;
                     clients.Add(client);
                     client.write("PointBlankRCON v1.0 loaded!", true);
                     client.write("PointBlank v" + Assembly.GetExecutingAssembly().GetName().Version, true);
-                    ThreadPool.QueueUserWorkItem(runCons, client);
-                    PBLogging.log("User connected! IP: " + client.IP);
+                    t.Start();
+                    PBLogging.log("User connected! IP: " + client.IP, false);
                 }
             }
-        }
-
-        private static void runCons(object obj)
-        {
-            PBLogging.log("Initalizing client...");
-            RCONClient client = (RCONClient)obj;
-            client.handle();
-            PBLogging.log("Client finished!");
         }
         #endregion
     }

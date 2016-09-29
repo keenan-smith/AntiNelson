@@ -103,9 +103,8 @@ namespace PointBlank.PB_Loading
             }
         }
 
-        public void OnDestroy()
+        public void OnApplicationQuit()
         {
-            PBLogging.log("Destroying");
             hackInstance._OnDestroy();
         }
 

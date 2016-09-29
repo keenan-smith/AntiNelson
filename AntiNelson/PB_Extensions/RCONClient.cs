@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SOME(MOST) OF THE CODE WAS BORROWED FROM ROCKETMOD!
+// IT HAS MOSTLY BEEN MODIFIED THOUGH ;D
+using System;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -16,6 +18,7 @@ namespace PointBlank.PB_Extensions
         #region Variables
         public TcpClient client;
         public RCON rcon;
+        public Thread thread;
 
         public bool inConsole;
         public bool Auth;
@@ -70,9 +73,9 @@ namespace PointBlank.PB_Extensions
                     int fChar = stream.Read(ch_Byte, 0, 1);
                     if (fChar == 0)
                         return "";
-                    string aChar = Encoding.Unicode.GetString(ch_Byte);
+                    char aChar = Convert.ToChar(ch_Byte[0]);
                     data = data + aChar;
-                    if (aChar == "\n")
+                    if (aChar == '\n')
                         break;
                 }
 
@@ -98,9 +101,16 @@ namespace PointBlank.PB_Extensions
 
                     if (command == "")
                         continue;
-                    PBLogging.log("Got command! Command: " + command);
                     if ((command == "quit" || command == "exit" || command == "disconnect") && !inConsole)
                         break;
+                    if ((command == "help" || command == "?") && !inConsole)
+                    {
+                        writeLog("quit/exit/disconnects - Disconnects you from the RCON");
+                        writeLog("help/? - Shows this");
+                        writeLog("login <password> - Login to the system");
+                        writeLog("logout - logs you out of the system");
+                        writeLog("console - Opens/closes the unturned console");
+                    }
                     if (command == "login" && !inConsole)
                     {
                         if (Auth)
