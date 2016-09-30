@@ -54,7 +54,7 @@ namespace PointBlank.PB_Loading
 
         public void _Update()
         {
-            if (PB.isServer() && Instances.RCON != null)
+            if (PB.isServer())
                 Instances.RCON.RCONInputUpdate();
         }
 
@@ -65,7 +65,7 @@ namespace PointBlank.PB_Loading
         public void _OnDestroy()
         {
             PBLogging.log("Shutting down!");
-            if (PB.isServer() && Instances.RCON != null)
+            if (PB.isServer())
                 Instances.RCON.RCONDestroy();
         }
     }

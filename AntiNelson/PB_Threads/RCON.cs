@@ -23,7 +23,6 @@ namespace PointBlank.PB_Threads
 
         private bool running = true;
 
-        private List<string> _output = new List<string>();
         private List<RCONClient> _clients = new List<RCONClient>();
 
         private ushort port;
@@ -33,14 +32,6 @@ namespace PointBlank.PB_Threads
         #endregion
 
         #region Properties
-        public List<string> output
-        {
-            get
-            {
-                return _output;
-            }
-        }
-
         public List<RCONClient> clients
         {
             get
@@ -79,7 +70,6 @@ namespace PointBlank.PB_Threads
 
             foreach (RCONClient client in clients)
             {
-                client.client.Client.Disconnect(false);
                 client.client.Close();
                 client.thread.Abort();
                 clients.Remove(client);

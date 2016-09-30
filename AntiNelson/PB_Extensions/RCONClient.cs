@@ -25,6 +25,7 @@ namespace PointBlank.PB_Extensions
         public string IP;
 
         public Queue<string> execute = new Queue<string>();
+        public List<string> output = new List<string>();
         #endregion
 
         public RCONClient(TcpClient client, RCON rcon)
@@ -110,6 +111,7 @@ namespace PointBlank.PB_Extensions
                         writeLog("login <password> - Login to the system");
                         writeLog("logout - logs you out of the system");
                         writeLog("console - Opens/closes the unturned console");
+                        continue;
                     }
                     if (command == "login" && !inConsole)
                     {
@@ -133,6 +135,7 @@ namespace PointBlank.PB_Extensions
                                 if (cmds[1] == Instances.RCON.password)
                                 {
                                     Auth = true;
+                                    writeLog("You are now logged in!");
                                 }
                                 else
                                 {
@@ -150,17 +153,27 @@ namespace PointBlank.PB_Extensions
                     if (command == "logout" && !inConsole)
                     {
                         if (Auth)
+                        {
                             Auth = false;
+                            writeLog("You are now logged out!");
+                        }
                         else
+                        {
                             writeLog("You aren't logged in!");
+                        }
                         continue;
                     }
                     if (command == "console")
                     {
                         if (Auth)
+                        {
                             inConsole = !inConsole;
+                            writeLog((inConsole ? "You are now in unturned console mode!" : "You are no longer in unturned console mode!"));
+                        }
                         else
+                        {
                             writeLog("You aren't logged in!");
+                        }
                         continue;
                     }
                     if (inConsole)

@@ -106,12 +106,16 @@ namespace PointBlank.PB_Library
         {
             if (!enabled || !canReadLogs)
                 return;
-            if (sys_RCON.output.Count >= 100)
-                sys_RCON.output.Remove(sys_RCON.output[0]);
-            if (type == LogType.Exception)
-                sys_RCON.output.Add(stack);
-            else
-                sys_RCON.output.Add(text);
+            lock (sys_RCON.clients)
+            {
+                foreach (RCONClient client in sys_RCON.clients)
+                {
+                    if (type == LogType.Exception)
+                        client.writeLog(stack);
+                    else
+                        client.writeLog(text);
+                }
+            }
         }
 
         public void RCONInputUpdate()
