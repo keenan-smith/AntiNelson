@@ -38,6 +38,8 @@ namespace PointBlank.PB_Library
             PB.OnPBPostInit += new PB.PBPostInit(PBServer.PBPostInit);
             PB.OnPBPreInit += new PB.PBPreInit(PBServer.PBPreInit);
             PBServer.OnConsoleInput += new PBServer.ConsoleInputTextHandler(PBServer.ParseInputCommand);
+            //Instances.consoleWriter.WriteEvent += new ConsoleWriter.consoleWOut(PBServer.parseOutput);
+            //Instances.consoleWriter.WriteLineEvent += new ConsoleWriter.consoleWLOut(PBServer.parseOutput);
         }
 
         private void initRCON()
@@ -45,7 +47,7 @@ namespace PointBlank.PB_Library
             if (!PB.isServer())
                 return;
             //Instances.consoleWriter.WriteLineEvent += new ConsoleWriter.consoleWLOut(Instances.RCON.RCONOutputUpdate);
-            Instances.consoleWriter.WriteEvent += new ConsoleWriter.consoleWOut(Instances.RCON.RCONOutputUpdate);
+            //Instances.consoleWriter.WriteEvent += new ConsoleWriter.consoleWOut(Instances.RCON.RCONOutputUpdate);
         }
 
         private void initAutoSave()

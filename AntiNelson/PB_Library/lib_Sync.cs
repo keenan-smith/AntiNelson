@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PointBlank.PB_Library
 {
-    class lib_Sync
+    public class lib_Sync
     {
     }
 }

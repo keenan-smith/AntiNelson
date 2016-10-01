@@ -334,6 +334,13 @@ namespace PointBlank.API.Server
             }
         }
 
+        public static void parseOutput(string text)
+        {
+            Console.SetOut(Instances.backupWriter);
+            Console.Write(text);
+            Console.SetOut(Instances.consoleWriter);
+        }
+
         public static void ClientConnect(SteamPlayer player)
         {
             if (findPlayer(player) == null)

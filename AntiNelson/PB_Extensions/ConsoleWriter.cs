@@ -13,13 +13,11 @@ namespace PointBlank.PB_Extensions
         public override void Write(string value)
         {
             if (WriteEvent != null) WriteEvent(value);
-            Instances.backupWriter.Write(value);
         }
 
         public override void WriteLine(string value)
         {
             if (WriteLineEvent != null) WriteLineEvent(value);
-            Instances.backupWriter.WriteLine(value);
         }
 
         public delegate void consoleWLOut(string text);
