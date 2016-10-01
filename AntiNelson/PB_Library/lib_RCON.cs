@@ -102,17 +102,17 @@ namespace PointBlank.PB_Library
             sys_RCON.startHooking();
         }
 
-        public void RCONOutputUpdate(string text, string stack, LogType type)
+        public void RCONOutputUpdate(string text)
         {
             if (!enabled || !canReadLogs)
+                return;
+            if (text == "\n" || text == "\t" || string.IsNullOrEmpty(text))
                 return;
             lock (sys_RCON.clients)
             {
                 foreach (RCONClient client in sys_RCON.clients)
                 {
-                    if (type == LogType.Exception)
-                        client.writeLog(stack);
-                    else
+                    if(client.inConsole)
                         client.writeLog(text);
                 }
             }

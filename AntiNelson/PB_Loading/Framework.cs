@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using PointBlank.API;
 using SDG.Unturned;
+using PointBlank.PB_Extensions;
 
 namespace PointBlank.PB_Loading
 {
@@ -40,6 +41,12 @@ namespace PointBlank.PB_Loading
             Variables.obj_Commands = new GameObject();
             DontDestroyOnLoad(Variables.obj_Commands);
 
+            Instances.backupWriter = Console.Out;
+            using (ConsoleWriter cw = new ConsoleWriter())
+            {
+                Instances.consoleWriter = cw;
+                Console.SetOut(cw);
+            }
             Instances.RCON = new lib_RCON();
             Instances.autoSave = new lib_AutoSave();
             Instances.codeReplacer = new lib_CodeReplacer();

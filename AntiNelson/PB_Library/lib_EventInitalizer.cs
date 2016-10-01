@@ -5,6 +5,7 @@ using System.Text;
 using SDG.Unturned;
 using PointBlank.API.Server;
 using PointBlank.API;
+using PointBlank.PB_Extensions;
 
 namespace PointBlank.PB_Library
 {
@@ -16,6 +17,7 @@ namespace PointBlank.PB_Library
             initChat();
             initServer();
             initAutoSave();
+            initRCON();
         }
 
         #region Init Functions
@@ -36,14 +38,14 @@ namespace PointBlank.PB_Library
             PB.OnPBPostInit += new PB.PBPostInit(PBServer.PBPostInit);
             PB.OnPBPreInit += new PB.PBPreInit(PBServer.PBPreInit);
             PBServer.OnConsoleInput += new PBServer.ConsoleInputTextHandler(PBServer.ParseInputCommand);
-            PBServer.OnConsoleOutput += new PBServer.ConsoleOutputTextHandler(PBServer.ParseOutputText);
         }
 
         private void initRCON()
         {
             if (!PB.isServer())
                 return;
-            PBServer.OnConsoleOutput += new PBServer.ConsoleOutputTextHandler(Instances.RCON.RCONOutputUpdate);
+            //Instances.consoleWriter.WriteLineEvent += new ConsoleWriter.consoleWLOut(Instances.RCON.RCONOutputUpdate);
+            Instances.consoleWriter.WriteEvent += new ConsoleWriter.consoleWOut(Instances.RCON.RCONOutputUpdate);
         }
 
         private void initAutoSave()

@@ -18,11 +18,5 @@ namespace PointBlank.PB_Overridables
         {
             PBServer.consoleInput(command);
         }
-
-        [ReplaceCode(typeof(CommandWindow), "onOutputText", BindingFlags.NonPublic | BindingFlags.Static)]
-        public static void onOutputText(string text, string stack, LogType type)
-        {
-            PBServer.consoleOutput(text, stack, type);
-        }
     }
 }

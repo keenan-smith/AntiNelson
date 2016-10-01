@@ -164,14 +164,12 @@ namespace PointBlank.API.Server
         public delegate void ClientJoinHandler(PBPlayer player);
         public delegate void ClientLeaveHandler(PBPlayer player);
         public delegate void ConsoleInputTextHandler(string command);
-        public delegate void ConsoleOutputTextHandler(string text, string stack, LogType type);
         #endregion
 
         #region Events
         public static event ClientJoinHandler OnPlayerJoin;
         public static event ClientLeaveHandler OnPlayerLeave;
         public static event ConsoleInputTextHandler OnConsoleInput;
-        public static event ConsoleOutputTextHandler OnConsoleOutput;
         #endregion
 
         public PBServer()
@@ -233,11 +231,6 @@ namespace PointBlank.API.Server
             OnConsoleInput(command);
         }
 
-        public static void consoleOutput(string text, string stack, LogType type)
-        {
-            OnConsoleOutput(text, stack, type);
-        }
-
         /*public static bool restart() // NOT DONE!
         {
             try
@@ -287,6 +280,8 @@ namespace PointBlank.API.Server
             _groupSave = new PBSaving(Variables.currentPath + "\\Saves\\Groups.dat", ESaveType.GROUP);
             _groupSave.loadGroups();
             _playerSave = new PBSaving(Variables.currentPath + "\\Saves\\Players.dat", ESaveType.PLAYER);
+
+
         }
 
         public static void PBPreInit()
@@ -337,12 +332,6 @@ namespace PointBlank.API.Server
                     }
                 }
             }
-        }
-
-        public static void ParseOutputText(string text, string stack, LogType type)
-        {
-            if (type == LogType.Exception)
-                CommandWindow.LogError(text + " - " + stack);
         }
 
         public static void ClientConnect(SteamPlayer player)
