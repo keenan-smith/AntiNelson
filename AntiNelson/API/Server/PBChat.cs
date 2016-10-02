@@ -163,7 +163,7 @@ namespace PointBlank.API.Server
             {
                 ChatManager.onChatted(player, (EChatMode)mode, ref color, text, ref flag);
             }
-            Chat args = new Chat((EChatMode)mode, color, player.playerID.playerName, text);
+            Chat args = new Chat(player, (EChatMode)mode, color, player.playerID.playerName, text);
 
             ProcessCommands(steamID, args);
             if (args == null || args.text == null)

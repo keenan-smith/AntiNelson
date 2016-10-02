@@ -167,6 +167,7 @@
     <Compile Include="API\Server\Extensions\PBGroup.cs" />
     <Compile Include="API\Extensions\PBSteamGroup.cs" />
     <Compile Include="API\Localizator.cs" />
+    <Compile Include="API\Server\PBAudio.cs" />
     <Compile Include="API\Server\PBChat.cs" />
     <Compile Include="API\Enumerables\PrivacyState.cs" />
     <Compile Include="API\Extensions\PlayerProfile.cs" />

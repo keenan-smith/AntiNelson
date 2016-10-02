@@ -37,6 +37,7 @@ namespace PointBlank.PB_Library
             PBServer.OnPlayerLeave += new PBServer.ClientLeaveHandler(PBServer.PlayerLeave);
             PB.OnPBPostInit += new PB.PBPostInit(PBServer.PBPostInit);
             PB.OnPBPreInit += new PB.PBPreInit(PBServer.PBPreInit);
+            PB.OnPBPostInit += new PB.PBPostInit(PBAudio.Init);
             PBServer.OnConsoleInput += new PBServer.ConsoleInputTextHandler(PBServer.ParseInputCommand);
             //Instances.consoleWriter.WriteEvent += new ConsoleWriter.consoleWOut(PBServer.parseOutput);
             //Instances.consoleWriter.WriteLineEvent += new ConsoleWriter.consoleWLOut(PBServer.parseOutput);
