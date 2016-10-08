@@ -156,7 +156,8 @@
     <Compile Include="API\Client\PBPlayer.cs" />
     <Compile Include="API\Client\PBSkills.cs" />
     <Compile Include="API\Enumerables\ESaveType.cs" />
-    <Compile Include="API\PBSync.cs" />
+    <Compile Include="API\PBCrypto.cs" />
+    <Compile Include="API\Server\PBSync.cs" />
     <Compile Include="API\Server\Attributes\CommandAttribute.cs" />
     <Compile Include="API\Server\Attributes\PluginAttribute.cs" />
     <Compile Include="API\Attributes\ReplaceCodeAttribute.cs" />
