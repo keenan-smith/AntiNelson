@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PointBlank.API
+namespace PointBlank.API.Server
 {
     public class PBSync
     {
