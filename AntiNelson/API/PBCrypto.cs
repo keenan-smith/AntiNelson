@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PointBlank.API.Enumerables;
+using SDG.Unturned;
 
 namespace PointBlank.API
 {
@@ -44,7 +45,7 @@ namespace PointBlank.API
             }
             else if (cryptoType == ECryptoType.HASH_SHA1)
             {
-
+                return hash_sha1(text);
             }
             else if (cryptoType == ECryptoType.HASH_SHA256)
             {
@@ -81,22 +82,6 @@ namespace PointBlank.API
             {
 
             }
-            else if (cryptoType == ECryptoType.HASH_CHARPOS)
-            {
-
-            }
-            else if (cryptoType == ECryptoType.HASH_MD5)
-            {
-
-            }
-            else if (cryptoType == ECryptoType.HASH_SHA1)
-            {
-
-            }
-            else if (cryptoType == ECryptoType.HASH_SHA256)
-            {
-
-            }
             else
             {
                 return null;
@@ -117,12 +102,34 @@ namespace PointBlank.API
             }
             return calculator1 - calculator2;
         }
+
+        private static int derecogText(string text)
+        {
+            byte[] bytes_text = Encoding.Unicode.GetBytes(text);
+            int calculator = 0;
+
+            for (int i = 0; i < bytes_text.Length; i++)
+                if (bytes_text[i] % 2 == 0)
+                    calculator += (int)bytes_text[i];
+                else
+                    calculator -= (int)bytes_text[i];
+            if (calculator < 0)
+                calculator = -calculator;
+            else if (calculator == 0)
+                calculator = text.Length;
+
+            return calculator;
+        }
         #endregion
 
         #region SHA256 Functions
         #endregion
 
         #region SHA1 Functions
+        private static string hash_sha1(string text)
+        {
+            return Encoding.Unicode.GetString(Hash.SHA1(text)).Replace('-', '\0');
+        }
         #endregion
 
         #region MD5 Functions
@@ -192,6 +199,57 @@ namespace PointBlank.API
         #endregion
 
         #region UNP Functions
+        private static string enc_unp_encrypt(string text, string username, string password)
+        {
+            string result = text;
+
+            result = unp_apply_username(result, username);
+            result = unp_apply_password(result, password);
+            result = shift_right(result, remedyText(hash_sha1(username + password)));
+
+            return result;
+        }
+
+        private static string enc_unp_decrypt(string text, string username, string password)
+        {
+
+        }
+
+        private static string unp_apply_username(string text, string username)
+        {
+            byte[] bytes_text = Encoding.Unicode.GetBytes(text);
+            byte[] bytes_username = Encoding.Unicode.GetBytes(username);
+            int calculator = derecogText(username);
+
+            for (int a = 0; a < bytes_text.Length; a++)
+            {
+                bytes_text[a] *= (byte)calculator;
+                for (int b = 0; b < bytes_username.Length; b++)
+                    if (bytes_username[b] % 2 == 0)
+                        bytes_text[a] += bytes_username[b];
+                    else
+                        bytes_text[a] -= bytes_username[b];
+            }
+
+            return Encoding.Unicode.GetString(bytes_text);
+        }
+
+        private static string unp_apply_password(string text, string password)
+        {
+            string passHash = hash_sha1(password);
+            string result = "";
+            int rText = remedyText(password);
+            Random r = new Random();
+
+            for (int a = 0; a < text.Length; a++)
+            {
+                if (text[a] + rText % 2 == 0)
+                    result += passHash[r.Next(0, passHash.Length)];
+                result += text[a];
+            }
+
+            return result;
+        }
         #endregion
 
         #region POINTER Functions
