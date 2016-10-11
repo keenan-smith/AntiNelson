@@ -33,7 +33,9 @@ namespace PointBlank.API
             }
             else if (cryptoType == ECryptoType.ENC_UNP)
             {
-
+                if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(username))
+                    return null;
+                return enc_unp_encrypt(text, username, password);
             }
             else if (cryptoType == ECryptoType.HASH_CHARPOS)
             {
@@ -49,7 +51,7 @@ namespace PointBlank.API
             }
             else if (cryptoType == ECryptoType.HASH_SHA256)
             {
-
+                
             }
             else
             {
@@ -80,7 +82,9 @@ namespace PointBlank.API
             }
             else if (cryptoType == ECryptoType.ENC_UNP)
             {
-
+                if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(username))
+                    return null;
+                return enc_unp_decrypt(text, username, password);
             }
             else
             {
@@ -203,8 +207,8 @@ namespace PointBlank.API
         {
             string result = text;
 
-            result = unp_apply_username(result, username);
             result = unp_apply_password(result, password);
+            result = unp_apply_username(result, username);
             result = shift_right(result, remedyText(hash_sha1(username + password)));
 
             return result;
@@ -212,7 +216,13 @@ namespace PointBlank.API
 
         private static string enc_unp_decrypt(string text, string username, string password)
         {
+            string result = text;
 
+            result = shift_left(result, remedyText(hash_sha1(username + password)));
+            result = unp_remove_username(result, username);
+            result = unp_remove_password(result, password);
+
+            return result;
         }
 
         private static string unp_apply_username(string text, string username)
@@ -245,6 +255,40 @@ namespace PointBlank.API
             {
                 if (text[a] + rText % 2 == 0)
                     result += passHash[r.Next(0, passHash.Length)];
+                result += text[a];
+            }
+
+            return result;
+        }
+
+        private static string unp_remove_username(string text, string username)
+        {
+            byte[] bytes_text = Encoding.Unicode.GetBytes(text);
+            byte[] bytes_username = Encoding.Unicode.GetBytes(username);
+            int calculator = derecogText(username);
+
+            for (int a = 0; a < bytes_text.Length; a++)
+            {
+                bytes_text[a] /= (byte)calculator;
+                for (int b = 0; b < bytes_username.Length; b++)
+                    if (bytes_username[b] % 2 == 0)
+                        bytes_text[a] -= bytes_username[b];
+                    else
+                        bytes_text[a] += bytes_username[b];
+            }
+
+            return Encoding.Unicode.GetString(bytes_text);
+        }
+
+        private static string unp_remove_password(string text, string password)
+        {
+            string result = "";
+            int rText = remedyText(password);
+
+            for (int a = 0; a < text.Length; a++)
+            {
+                if (text[a] + rText % 2 == 0)
+                    continue;
                 result += text[a];
             }
 
