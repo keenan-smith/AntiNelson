@@ -197,7 +197,6 @@
     <Compile Include="PB_Commands\CMD_UnGodMode.cs" />
     <Compile Include="PB_Commands\CMD_Unmute.cs" />
     <Compile Include="PB_Commands\CMD_Usage.cs" />
-    <Compile Include="PB_Extensions\ConsoleWriter.cs" />
     <Compile Include="PB_Extensions\RCONClient.cs" />
     <Compile Include="PB_GameObjects\AutoSave.cs" />
     <Compile Include="PB_Library\lib_Sync.cs" />

@@ -16,7 +16,5 @@ namespace PointBlank
         public static lib_CommandManager commandManager;
         public static lib_EventInitalizer eventInitalizer;
         public static lib_RCON RCON;
-        public static ConsoleWriter consoleWriter;
-        public static TextWriter backupWriter;
     }
 }

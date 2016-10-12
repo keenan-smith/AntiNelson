@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Security.Cryptography;
 using PointBlank.API.Enumerables;
 using SDG.Unturned;
 
@@ -39,11 +40,11 @@ namespace PointBlank.API
             }
             else if (cryptoType == ECryptoType.HASH_CHARPOS)
             {
-
+                return hash_charpos(text);
             }
             else if (cryptoType == ECryptoType.HASH_MD5)
             {
-
+                return hash_md5(text);
             }
             else if (cryptoType == ECryptoType.HASH_SHA1)
             {
@@ -51,7 +52,7 @@ namespace PointBlank.API
             }
             else if (cryptoType == ECryptoType.HASH_SHA256)
             {
-                
+                return hash_sha256(text);
             }
             else
             {
@@ -127,6 +128,21 @@ namespace PointBlank.API
         #endregion
 
         #region SHA256 Functions
+        private static string hash_sha256(string value)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            using (SHA256 hash = SHA256Managed.Create())
+            {
+                Encoding enc = Encoding.UTF8;
+                byte[] result = hash.ComputeHash(enc.GetBytes(value));
+
+                foreach (byte b in result)
+                    sb.Append(b.ToString("x2"));
+            }
+
+            return sb.ToString();
+        }
         #endregion
 
         #region SHA1 Functions
@@ -137,9 +153,30 @@ namespace PointBlank.API
         #endregion
 
         #region MD5 Functions
+        //https://blogs.msdn.microsoft.com/csharpfaq/2006/10/09/how-do-i-calculate-a-md5-hash-from-a-string/
+        private static string hash_md5(string input)
+        {
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            byte[] hash = md5.ComputeHash(inputBytes);
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            return sb.ToString();
+        }
         #endregion
 
         #region CHARPOS Functions
+        private static string hash_charpos(string text)
+        {
+            string result = text;
+
+            return result;
+        }
         #endregion
 
         #region SHIFT Functions

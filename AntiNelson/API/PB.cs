@@ -14,11 +14,14 @@ namespace PointBlank.API
         #region Handlers
         public delegate void PBPostInit();
         public delegate void PBPreInit();
+        public delegate void PBConsoleWrite(string text);
+        public delegate void PBConsoleWriteLine(string text);
         #endregion
 
         #region Events
         public static event PBPostInit OnPBPostInit;
         public static event PBPreInit OnPBPreInit;
+        public static event PBConsoleWrite OnPBConsoleWrite;
         #endregion
 
         #region Functions
@@ -30,6 +33,12 @@ namespace PointBlank.API
         public static void postInit()
         {
             OnPBPostInit();
+        }
+
+        public static void consoleWrite(string text, string stacktrace, LogType type)
+        {
+            if(OnPBConsoleWrite != null)
+                OnPBConsoleWrite(text);
         }
 
         public static bool isServer()

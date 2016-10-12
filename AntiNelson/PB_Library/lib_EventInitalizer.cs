@@ -39,16 +39,13 @@ namespace PointBlank.PB_Library
             PB.OnPBPreInit += new PB.PBPreInit(PBServer.PBPreInit);
             PB.OnPBPostInit += new PB.PBPostInit(PBAudio.Init);
             PBServer.OnConsoleInput += new PBServer.ConsoleInputTextHandler(PBServer.ParseInputCommand);
-            //Instances.consoleWriter.WriteEvent += new ConsoleWriter.consoleWOut(PBServer.parseOutput);
-            //Instances.consoleWriter.WriteLineEvent += new ConsoleWriter.consoleWLOut(PBServer.parseOutput);
         }
 
         private void initRCON()
         {
             if (!PB.isServer())
                 return;
-            //Instances.consoleWriter.WriteLineEvent += new ConsoleWriter.consoleWLOut(Instances.RCON.RCONOutputUpdate);
-            //Instances.consoleWriter.WriteEvent += new ConsoleWriter.consoleWOut(Instances.RCON.RCONOutputUpdate);
+            PB.OnPBConsoleWrite += new PB.PBConsoleWrite(Instances.RCON.RCONOutputUpdate);
         }
 
         private void initAutoSave()
