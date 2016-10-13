@@ -173,7 +173,19 @@ namespace PointBlank.API
         #region CHARPOS Functions
         private static string hash_charpos(string text)
         {
-            string result = text;
+            string result = "";
+            Dictionary<char, int> chars = new Dictionary<char, int>();
+
+            foreach (char a in text)
+            {
+                chars[a]++;
+                if (chars.Count > 256)
+                    break;
+            }
+            foreach (KeyValuePair<char, int> b in chars)
+            {
+                result += b.Key + b.Value;
+            }
 
             return result;
         }
