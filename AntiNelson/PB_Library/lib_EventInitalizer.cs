@@ -45,7 +45,7 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
-            PB.OnPBConsoleWrite += new PB.PBConsoleWrite(Instances.RCON.RCONOutputUpdate);
+            PBServer.OnConsoleOutput += new PBServer.ConsoleOutputTextHandler(Instances.RCON.RCONOutputUpdate);
         }
 
         private void initAutoSave()

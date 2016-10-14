@@ -38,7 +38,7 @@ namespace PointBlank.PB_Overridables
             }
             Console.WriteLine(text);
             input.redrawInputLine();
-            PB.consoleWrite(text.ToString(), "", LogType.Log);
+            PBServer.consoleOutput(text.ToString());
         }
     }
 }

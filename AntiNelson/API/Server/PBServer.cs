@@ -164,12 +164,14 @@ namespace PointBlank.API.Server
         public delegate void ClientJoinHandler(PBPlayer player);
         public delegate void ClientLeaveHandler(PBPlayer player);
         public delegate void ConsoleInputTextHandler(string command);
+        public delegate void ConsoleOutputTextHandler(string text);
         #endregion
 
         #region Events
         public static event ClientJoinHandler OnPlayerJoin;
         public static event ClientLeaveHandler OnPlayerLeave;
         public static event ConsoleInputTextHandler OnConsoleInput;
+        public static event ConsoleOutputTextHandler OnConsoleOutput;
         #endregion
 
         public PBServer()
@@ -229,6 +231,11 @@ namespace PointBlank.API.Server
         public static void consoleInput(string command)
         {
             OnConsoleInput(command);
+        }
+
+        public static void consoleOutput(string text)
+        {
+            OnConsoleOutput(text);
         }
 
         /*public static bool restart() // NOT DONE!
