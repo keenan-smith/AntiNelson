@@ -23,7 +23,6 @@ namespace PointBlank.API.Server
         private List<PBCooldown> _cooldowns = new List<PBCooldown>();
         private Dictionary<string, CustomVariable> _customVariables = new Dictionary<string, CustomVariable>();
         private List<string> _saveKeys = new List<string>();
-        private List<string> _syncKeys = new List<string>();
         private Color _playerColor;
         private bool _isServer;
         #endregion
@@ -138,14 +137,6 @@ namespace PointBlank.API.Server
             get
             {
                 return _saveKeys;
-            }
-        }
-
-        public List<string> syncKeys
-        {
-            get
-            {
-                return _syncKeys;
             }
         }
 
@@ -334,91 +325,74 @@ namespace PointBlank.API.Server
             return kvp.Value.getValue();
         }
 
-        public void setCustomVariable(string key, bool value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, bool value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
-        public void setCustomVariable(string key, byte value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, byte value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
-        public void setCustomVariable(string key, short value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, short value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
-        public void setCustomVariable(string key, int value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, int value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
-        public void setCustomVariable(string key, long value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, long value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
-        public void setCustomVariable(string key, float value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, float value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
-        public void setCustomVariable(string key, double value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, double value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
-        public void setCustomVariable(string key, string value, bool save = false, bool sync = false)
+        public void setCustomVariable(string key, string value, bool save = false)
         {
             customVariables.Remove(key);
             customVariables.Add(key, new CustomVariable(value));
             if (save)
                 saveKeys.Add(key);
-            if (sync)
-                syncKeys.Add(key);
         }
 
         public void removeCustomVariable(string key)
         {
             customVariables.Remove(key);
             saveKeys.Remove(key);
-            syncKeys.Remove(key);
         }
 
         public void sendChatMessage(string message, Color color)

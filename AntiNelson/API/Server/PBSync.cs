@@ -13,11 +13,15 @@ namespace PointBlank.API.Server
         #endregion
 
         #region SQL Functions
-        public static bool addSQL(string address, string username, string password, string database, int timeout = 30)
+        public static SqlConnection addSQL(string address, string port, string username, string password, string database, int timeout = 30)
         {
+            SqlConnection[] cons = getSQL(address, database);
+            if (cons.Length > 0)
+                return cons[0];
+
             SqlConnection connection = new SqlConnection(
                 "user id=" + username + ";" +
-                "password=" + password + ";" +
+                "password=" + password + "," + port + ";" +
                 "server=" + address + ";" +
                 "Trusted_Connection=yes;" +
                 "database=" + database + ";" +
@@ -28,12 +32,12 @@ namespace PointBlank.API.Server
             {
                 connection.Open();
                 _connections.Add(connection);
-                return true;
+                return connection;
             }
             catch (Exception ex)
             {
                 PBLogging.logError("ERROR in sync!", ex, false);
-                return false;
+                return null;
             }
         }
 
