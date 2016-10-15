@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,9 +43,22 @@ namespace PointBlank.PB_GameObjects
         {
             foreach (PBPlayer player in PBServer.players)
             {
+                bool exists = PBSync.sql_exists("PlayerSaves", new string[] { "steamId='" + player.steam64.ToString() + "'" }, Instances.sync.connection);
+                if (!exists)
+                {
+                    string[] columns = new string[]{
+                        "steamId",
+                        "color"
+                    };
+                    string[] values = new string[]{
+                        player.steam64.ToString(),
+                        player.playerColor.ToString()
+                    };
+                    PBSync.sql_insertCommand("PlayerSaves", columns, values, Instances.sync.connection);
+                }
                 foreach (KeyValuePair<string, CustomVariable> customVar in player.customVariables)
                 {
-                    PBSync.sql_insertCommand()
+                    
                 }
             }
         }

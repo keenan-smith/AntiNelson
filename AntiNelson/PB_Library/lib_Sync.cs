@@ -17,7 +17,6 @@ namespace PointBlank.PB_Library
         private bool _enabled = false;
         private string _username;
         private string _password;
-        private string _table;
         private string _ip;
         private ushort _port;
         private string _database;
@@ -45,14 +44,6 @@ namespace PointBlank.PB_Library
                 return _syncTime;
             }
         }
-
-        public string table
-        {
-            get
-            {
-                return _table;
-            }
-        }
         #endregion
 
         public lib_Sync()
@@ -68,7 +59,6 @@ namespace PointBlank.PB_Library
                     return;
                 _username = config.getText("username");
                 _password = config.getText("password");
-                _table = config.getText("table");
                 _ip = config.getText("ip");
                 _port = ushort.Parse(config.getText("port"));
                 _database = config.getText("database");
@@ -84,7 +74,6 @@ namespace PointBlank.PB_Library
                 config.addTextElement("username", "database username here");
                 config.addTextElement("password", "database password here");
                 config.addTextElement("database", "database name");
-                config.addTextElement("table", "save table name");
                 config.addTextElement("timeout", "30");
                 config.addTextElement("syncTime", "120");
                 config.save(path);

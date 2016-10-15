@@ -62,13 +62,19 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static string[] sql_readCommand(string returnColumn, string table, string checkColumn, string checkValue, SqlConnection connection)
+        public static string[] sql_readCommand(string table, string returnColumn, string[] checks, SqlConnection connection)
         {
             try
             {
+                string check = " WHERE " + checks[0];
+                for (int i = 1; i < checks.Length; i++)
+                {
+                    check += " AND " + checks[i];
+                }
+
                 List<string> rets = new List<string>();
                 SqlDataReader reader = null;
-                SqlCommand command = new SqlCommand("SELECT * FROM " + table + " WHERE " + checkColumn + " = '" + checkValue + "'", connection);
+                SqlCommand command = new SqlCommand("SELECT * FROM " + table + check + ";", connection);
 
                 reader = command.ExecuteReader();
                 while (reader.Read())
@@ -85,11 +91,11 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static bool sql_insertCommand(string table, string columns, string values, SqlConnection connection)
+        public static bool sql_insertCommand(string table, string[] columns, string[] values, SqlConnection connection)
         {
             try
             {
-                SqlCommand command = new SqlCommand("INSERT INTO " + table + " (" + columns + ") VALUES (" + values + ");", connection);
+                SqlCommand command = new SqlCommand("INSERT INTO " + table + " (" + string.Join(",", columns) + ") VALUES (" + string.Join(",", columns) + ");", connection);
 
                 command.ExecuteNonQuery();
                 return true;
@@ -101,11 +107,52 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static bool sql_deleteCommand(string table, string checkColumn, string checkValue, SqlConnection connection)
+        public static bool sql_deleteCommand(string table, string[] checks, SqlConnection connection)
         {
             try
             {
-                SqlCommand command = new SqlCommand("DELETE FROM " + table + " WHERE " + checkColumn + " = '" + checkValue + "';", connection);
+                string check = " WHERE " + checks[0];
+                for (int i = 1; i < checks.Length; i++)
+                {
+                    check += " AND " + checks[i];
+                }
+
+                SqlCommand command = new SqlCommand("DELETE FROM " + table + check + ";", connection);
+
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("ERROR in sync command!", ex, false);
+                return false;
+            }
+        }
+
+        public static bool sql_exists(string table, string[] checks, SqlConnection connection)
+        {
+            try
+            {
+                return sql_readCommand(table, "steamId", checks, connection).Length > 0;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("ERROR in sync command!", ex, false);
+                return false;
+            }
+        }
+
+        public static bool sql_update(string table, string[] checks, string[] changes, SqlConnection connection)
+        {
+            try
+            {
+                string check = " WHERE " + checks[0];
+                for (int i = 1; i < checks.Length; i++)
+                {
+                    check += " AND " + checks[i];
+                }
+
+                SqlCommand command = new SqlCommand("UPDATE " + table + " SET " + string.Join(",", changes) + check + ";", connection);
 
                 command.ExecuteNonQuery();
                 return true;
