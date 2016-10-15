@@ -15,7 +15,6 @@ namespace PointBlank.API.Server
     {
         #region Variables
         private static PBPlayer _server;
-        private static PBServer _instance;
         private static List<PBPlayer> _players = new List<PBPlayer>();
         private static List<PBCommand> _commands = new List<PBCommand>();
         private static List<PBGroup> _groups = new List<PBGroup>();
@@ -27,6 +26,9 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Max players in the server.
+        /// </summary>
         public static byte maxPlayers
         {
             get
@@ -39,6 +41,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets the server name.
+        /// </summary>
         public static string serverName
         {
             get
@@ -51,6 +56,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets the server save name.
+        /// </summary>
         public static string serverSaveName
         {
             get
@@ -59,6 +67,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets the server password.
+        /// </summary>
         public static string serverPassword
         {
             get
@@ -71,6 +82,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets all the clients/players in the server.
+        /// </summary>
         public static SteamPlayer[] clients
         {
             get
@@ -79,6 +93,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets all the players in the server.
+        /// </summary>
         public static List<PBPlayer> players
         {
             get
@@ -87,6 +104,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets the uptime of the server.
+        /// </summary>
         public static float upTime
         {
             get
@@ -95,14 +115,9 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static PBServer instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
-
+        /// <summary>
+        /// All commands in the server.
+        /// </summary>
         public static List<PBCommand> commands
         {
             get
@@ -110,7 +125,10 @@ namespace PointBlank.API.Server
                 return _commands;
             }
         }
-
+        
+        /// <summary>
+        /// All the custom groups in the server.
+        /// </summary>
         public static List<PBGroup> groups
         {
             get
@@ -119,6 +137,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// All the steam groups in the server.
+        /// </summary>
         public static List<PBSteamGroup> steamGroups
         {
             get
@@ -127,6 +148,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets the player save.
+        /// </summary>
         public static PBSaving playerSave
         {
             get
@@ -135,6 +159,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Get the group save.
+        /// </summary>
         public static PBSaving groupSave
         {
             get
@@ -143,6 +170,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Get the steam group save.
+        /// </summary>
         public static PBSaving steamGroupSave
         {
             get
@@ -151,6 +181,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets the server player.
+        /// </summary>
         public static PBPlayer server
         {
             get
@@ -168,58 +201,100 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Events
+        /// <summary>
+        /// Gets called when a player joins.
+        /// </summary>
         public static event ClientJoinHandler OnPlayerJoin;
+        /// <summary>
+        /// Gets called when a player leaves.
+        /// </summary>
         public static event ClientLeaveHandler OnPlayerLeave;
+        /// <summary>
+        /// Gets called when a command is entered into the console.
+        /// </summary>
         public static event ConsoleInputTextHandler OnConsoleInput;
+        /// <summary>
+        /// Gets called when the console outputs text.
+        /// </summary>
         public static event ConsoleOutputTextHandler OnConsoleOutput;
         #endregion
 
-        public PBServer()
-        {
-            _instance = this;
-
-            foreach (SteamPlayer sp in clients)
-            {
-                players.Add(new PBPlayer(sp));
-            }
-        }
-
         #region Functions
+        /// <summary>
+        /// Find a command based on the execution command.
+        /// </summary>
+        /// <param name="command">The execution command.</param>
+        /// <returns>The command instance.</returns>
         public static PBCommand findCommand(string command)
         {
             return Array.Find(commands.ToArray(), a => a.command.ToLower() == command.ToLower() || Array.Exists(a.alias.ToArray(), b => b.ToLower() == command.ToLower()));
         }
 
+        /// <summary>
+        /// Find the command based on the permission.
+        /// </summary>
+        /// <param name="permission">The command permission.</param>
+        /// <returns>The command instance.</returns>
         public static PBCommand findCommandPermission(string permission)
         {
             return Array.Find(commands.ToArray(), a => a.permission == permission);
         }
 
+        /// <summary>
+        /// Find a player based on the name.
+        /// </summary>
+        /// <param name="name">Player name.</param>
+        /// <returns>Player instance.</returns>
         public static PBPlayer findPlayer(string name)
         {
             return Array.Find(players.ToArray(), a => a.playerID.playerName.Contains(name) || a.playerID.nickName.Contains(name));
         }
 
+        /// <summary>
+        /// Finds the player based on steamid instance.
+        /// </summary>
+        /// <param name="steamID">SteamID instance.</param>
+        /// <returns>The player instance.</returns>
         public static PBPlayer findPlayer(CSteamID steamID)
         {
             return Array.Find(players.ToArray(), a => a.steamID == steamID);
         }
 
+        /// <summary>
+        /// Finds player based on the steam64 id.
+        /// </summary>
+        /// <param name="sID">Steam 64 ID.</param>
+        /// <returns>The player instance.</returns>
         public static PBPlayer findPlayer(ulong sID)
         {
             return Array.Find(players.ToArray(), a => a.steamID.m_SteamID == sID);
         }
 
+        /// <summary>
+        /// Gets the player based on the steam player instance.
+        /// </summary>
+        /// <param name="sPlayer">Steam player instance.</param>
+        /// <returns>The player instance.</returns>
         public static PBPlayer findPlayer(SteamPlayer sPlayer)
         {
             return Array.Find(players.ToArray(), a => a.steamPlayer == sPlayer);
         }
 
+        /// <summary>
+        /// Gets the player based on the player object instance.
+        /// </summary>
+        /// <param name="player">Player object instance.</param>
+        /// <returns>The player instance.</returns>
         public static PBPlayer findPlayer(Player player)
         {
             return Array.Find(players.ToArray(), a => a.player == player);
         }
 
+        /// <summary>
+        /// Broadcasts a message to all the players in the server.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="color">The color of the message.</param>
         public static void broadcastChat(string message, Color color)
         {
             foreach (PBPlayer player in players)
@@ -228,12 +303,12 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static void consoleInput(string command)
+        internal static void consoleInput(string command)
         {
             OnConsoleInput(command);
         }
 
-        public static void consoleOutput(string text)
+        internal static void consoleOutput(string text)
         {
             OnConsoleOutput(text);
         }

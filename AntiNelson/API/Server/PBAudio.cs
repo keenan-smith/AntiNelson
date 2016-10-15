@@ -6,7 +6,7 @@ using SDG.Unturned;
 
 namespace PointBlank.API.Server
 {
-    public class PBAudio
+    internal class PBAudio
     {
         #region Variables
         private static byte[] buffer;

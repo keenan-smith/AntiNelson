@@ -13,6 +13,12 @@ namespace PointBlank.API.Server
     public class PBChat
     {
         #region Functions
+        /// <summary>
+        /// Sends a chat to a specific player.
+        /// </summary>
+        /// <param name="player">The player instance.</param>
+        /// <param name="message">The message you want to send.</param>
+        /// <param name="color">The color of the message.</param>
         public static void sendChatToPlayer(PBPlayer player, string message, Color color)
         {
             ChatManager.say(player.steamID, message, color, EChatMode.SAY);
@@ -34,6 +40,9 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Events
+        /// <summary>
+        /// The event is called when a message is received.
+        /// </summary>
         public static event ChatMessageHandler OnMessageReceived;
         #endregion
 

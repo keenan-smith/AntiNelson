@@ -14,6 +14,9 @@ namespace PointBlank.API.Server.Extensions
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Name of the group.
+        /// </summary>
         public string name
         {
             get
@@ -22,6 +25,9 @@ namespace PointBlank.API.Server.Extensions
             }
         }
 
+        /// <summary>
+        /// Permissions of the group.
+        /// </summary>
         public List<string> permissions
         {
             get
@@ -30,6 +36,9 @@ namespace PointBlank.API.Server.Extensions
             }
         }
 
+        /// <summary>
+        /// Is it the default group.
+        /// </summary>
         public bool isDefault
         {
             get
@@ -39,6 +48,12 @@ namespace PointBlank.API.Server.Extensions
         }
         #endregion
 
+        /// <summary>
+        /// The group instance of pointblank.
+        /// </summary>
+        /// <param name="name">The name of the group.</param>
+        /// <param name="isDefault">Is it the default group.</param>
+        /// <param name="permissions">The permissions of the group.</param>
         public PBGroup(string name, bool isDefault, string[] permissions)
         {
             _name = name;

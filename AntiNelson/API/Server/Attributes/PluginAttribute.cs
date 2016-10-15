@@ -17,6 +17,9 @@ namespace PointBlank.API.Server.Attributes
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The name of the plugin.
+        /// </summary>
         public string pluginName
         {
             get
@@ -25,6 +28,9 @@ namespace PointBlank.API.Server.Attributes
             }
         }
 
+        /// <summary>
+        /// The creator of the plugin.
+        /// </summary>
         public string pluginCreator
         {
             get
@@ -33,6 +39,9 @@ namespace PointBlank.API.Server.Attributes
             }
         }
 
+        /// <summary>
+        /// Is the plugin hidden from unturned.
+        /// </summary>
         public bool isHidden
         {
             get
@@ -41,6 +50,9 @@ namespace PointBlank.API.Server.Attributes
             }
         }
 
+        /// <summary>
+        /// Is the plugin private.
+        /// </summary>
         public bool isPrivate
         {
             get
@@ -49,6 +61,9 @@ namespace PointBlank.API.Server.Attributes
             }
         }
 
+        /// <summary>
+        /// The plugin ID.
+        /// </summary>
         public int pluginID
         {
             get
@@ -63,6 +78,13 @@ namespace PointBlank.API.Server.Attributes
         }
         #endregion
 
+        /// <summary>
+        /// Any class with the plugin attribute will be registered as a plugin. These classes are ran first.
+        /// </summary>
+        /// <param name="pluginName">The name of the plugin.</param>
+        /// <param name="pluginCreator">The creator of the plugin.</param>
+        /// <param name="isHidden">If the plugin is hidden from unturned.</param>
+        /// <param name="isPrivate">If the plugin is private for the server.</param>
         public PluginAttribute(string pluginName, string pluginCreator, bool isHidden, bool isPrivate)
         {
             _pluginName = pluginName;

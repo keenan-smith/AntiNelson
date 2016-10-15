@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PointBlank.API.Server.Enumerables
 {
+    /// <summary>
+    /// Custom variable types.
+    /// </summary>
     public enum ECustomVariableType
     {
         BOOLEAN,

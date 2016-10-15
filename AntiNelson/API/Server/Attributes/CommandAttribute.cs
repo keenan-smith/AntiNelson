@@ -15,6 +15,9 @@ namespace PointBlank.API.Server.Attributes
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The name of the plugin
+        /// </summary>
         public string pluginName
         {
             get
@@ -23,6 +26,9 @@ namespace PointBlank.API.Server.Attributes
             }
         }
 
+        /// <summary>
+        /// The name of the command
+        /// </summary>
         public string commandName
         {
             get
@@ -32,6 +38,11 @@ namespace PointBlank.API.Server.Attributes
         }
         #endregion
 
+        /// <summary>
+        /// Attribute for command classes. Any class with this attribute will be registered as a command.
+        /// </summary>
+        /// <param name="pluginName">The name of the plugin.</param>
+        /// <param name="commandName">The name of the command.</param>
         public CommandAttribute(string pluginName, string commandName)
         {
             _pluginName = pluginName;

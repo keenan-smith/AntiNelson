@@ -15,6 +15,9 @@ namespace PointBlank.API.Server.Extensions
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Command instance.
+        /// </summary>
         public PBCommand command
         {
             get
@@ -23,6 +26,9 @@ namespace PointBlank.API.Server.Extensions
             }
         }
 
+        /// <summary>
+        /// Has cooldown.
+        /// </summary>
         public bool cooldown
         {
             get
@@ -32,6 +38,12 @@ namespace PointBlank.API.Server.Extensions
         }
         #endregion
 
+        /// <summary>
+        /// The cooldown for the commands.
+        /// </summary>
+        /// <param name="command">What command has the cooldown.</param>
+        /// <param name="lastRun">The last time the command was ran.</param>
+        /// <param name="cooldown">The cooldown time of the command.</param>
         public PBCooldown(PBCommand command, DateTime lastRun, int cooldown)
         {
             _command = command;

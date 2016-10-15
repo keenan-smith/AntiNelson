@@ -34,6 +34,11 @@ namespace PointBlank.API
         [DllImport("mono.dll", CallingConvention = CallingConvention.FastCall, EntryPoint = "mono_method_get_header")]
         private static extern IntPtr mono_method_get_header(IntPtr method);
 
+        /// <summary>
+        /// Redirects any method to another method.
+        /// </summary>
+        /// <param name="from">MethodInfo of the original method.</param>
+        /// <param name="to">MethodInfo of the custom method.</param>
         public static void RedirectCalls(MethodInfo from, MethodInfo to)
         {
             var fptr1 = from.MethodHandle.GetFunctionPointer();
@@ -42,6 +47,11 @@ namespace PointBlank.API
             PatchJumpTo(fptr1, fptr2);
         }
 
+        /// <summary>
+        /// Redirects any method to another method. Only works 1 time.
+        /// </summary>
+        /// <param name="from">MethodInfo of the original method.</param>
+        /// <param name="to">MethodInfo of the custom method.</param>
         public static void RedirectCall(MethodInfo from, MethodInfo to)
         {
             IntPtr methodPtr1 = from.MethodHandle.Value;
@@ -126,6 +136,11 @@ namespace PointBlank.API
             }
         }
 
+        /// <summary>
+        /// Redirects any method to another method. Uses IL.
+        /// </summary>
+        /// <param name="from">MethodInfo of the original method.</param>
+        /// <param name="to">MethodInfo of the custom method.</param>
         public static void RedirectCallIL(MethodInfo from, MethodInfo to)
         {
             IntPtr methodPtr1 = from.MethodHandle.Value;

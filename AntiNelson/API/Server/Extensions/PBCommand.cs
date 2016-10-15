@@ -14,6 +14,9 @@ namespace PointBlank.API.Server.Extensions
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The localization of a command.
+        /// </summary>
         public Local localization
         {
             get
@@ -27,24 +30,36 @@ namespace PointBlank.API.Server.Extensions
             }
         }
 
+        /// <summary>
+        /// The chat command.
+        /// </summary>
         public virtual string command
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The command's cooldown.
+        /// </summary>
         public virtual int cooldown
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The command's required permissions to execute it.
+        /// </summary>
         public virtual string permission
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Does the command have max usage.
+        /// </summary>
         public bool hasMaxUsage
         {
             get
@@ -53,12 +68,18 @@ namespace PointBlank.API.Server.Extensions
             }
         }
 
+        /// <summary>
+        /// The max usage of the command.
+        /// </summary>
         public virtual int maxUsage
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The help text of the command.
+        /// </summary>
         public string help
         {
             get
@@ -67,6 +88,9 @@ namespace PointBlank.API.Server.Extensions
             }
         }
 
+        /// <summary>
+        /// The usage text of the command.
+        /// </summary>
         public string usage
         {
             get
@@ -75,6 +99,9 @@ namespace PointBlank.API.Server.Extensions
             }
         }
 
+        /// <summary>
+        /// The aliases of the command.
+        /// </summary>
         public virtual string[] alias
         {
             get;
@@ -83,10 +110,21 @@ namespace PointBlank.API.Server.Extensions
         #endregion
 
         #region Abstract Functions
+        /// <summary>
+        /// Gets ran whenever the command is called.
+        /// </summary>
+        /// <param name="player">The player that ran the command.</param>
+        /// <param name="args">The args of the command.</param>
         public abstract void onCall(PBPlayer player, string[] args);
         #endregion
 
         #region Virtual Functions
+        /// <summary>
+        /// Checks if the player has enough permissions to run the command.
+        /// </summary>
+        /// <param name="player">The executing player.</param>
+        /// <param name="args">The arguments of the command.</param>
+        /// <returns>If the player has enough permissions to run the command.</returns>
         public virtual bool checkPermissions(PBPlayer player, string[] args)
         {
             string prm = permission;
@@ -97,6 +135,11 @@ namespace PointBlank.API.Server.Extensions
             return (string.IsNullOrEmpty(permission) || player.hasPermission(prm));
         }
 
+        /// <summary>
+        /// Checks if the player has a cooldown on the command.
+        /// </summary>
+        /// <param name="player">The executing player.</param>
+        /// <returns>If a player has cooldown on the command.</returns>
         public virtual bool hasCooldown(PBPlayer player)
         {
             bool chk1 = !player.hasPermission("no-command-cooldown");
@@ -105,6 +148,11 @@ namespace PointBlank.API.Server.Extensions
             return (chk1 && chk2);
         }
 
+        /// <summary>
+        /// Checks if the player has reached max limit on the command execution.
+        /// </summary>
+        /// <param name="player">The executing player.</param>
+        /// <returns>If the player has reached command execution limit.</returns>
         public virtual bool hasReachedLimit(PBPlayer player)
         {
             bool chk1 = !player.hasPermission("no-command-limit");
@@ -113,6 +161,11 @@ namespace PointBlank.API.Server.Extensions
             return (chk1 && chk2);
         }
 
+        /// <summary>
+        /// Does all the checks needed and executes the command.
+        /// </summary>
+        /// <param name="player">The executing player.</param>
+        /// <param name="args">The arguments of the command.</param>
         public virtual void execute(PBPlayer player, string args)
         {
             string[] sArgs = args.Split('/');
