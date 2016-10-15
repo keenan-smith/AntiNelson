@@ -11,7 +11,7 @@ using PointBlank.API.Attributes;
 
 namespace PointBlank.PB_Overridables
 {
-    public class Override_ChatManager
+    internal class Override_ChatManager
     {
         [ReplaceCode(typeof(ChatManager), "askChat", BindingFlags.Public | BindingFlags.Instance)]
         [SteamCall]

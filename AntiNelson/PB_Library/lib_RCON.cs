@@ -11,7 +11,7 @@ using PointBlank.PB_Extensions;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_RCON : MonoBehaviour
+    internal class lib_RCON : MonoBehaviour
     {
         #region Variables
         private RCON sys_RCON;

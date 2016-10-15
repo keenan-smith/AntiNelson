@@ -12,7 +12,7 @@ using UnityEngine;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "MaxSkills")]
-    public class CMD_MaxSkills : PBCommand
+    internal class CMD_MaxSkills : PBCommand
     {
         public CMD_MaxSkills()
         {

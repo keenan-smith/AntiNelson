@@ -17,26 +17,40 @@ namespace PointBlank.API
         #endregion
 
         #region Events
+        /// <summary>
+        /// Ran after everything is executed.
+        /// </summary>
         public static event PBPostInit OnPBPostInit;
+        /// <summary>
+        /// Ran before everything is executed.
+        /// </summary>
         public static event PBPreInit OnPBPreInit;
         #endregion
 
         #region Functions
-        public static void preInit()
+        internal static void preInit()
         {
             OnPBPreInit();
         }
 
-        public static void postInit()
+        internal static void postInit()
         {
             OnPBPostInit();
         }
 
+        /// <summary>
+        /// Checks if the mod is the server or client.
+        /// </summary>
+        /// <returns>If the mod is on the server.</returns>
         public static bool isServer()
         {
             return (Provider.isServer || Dedicator.isDedicated);
         }
 
+        /// <summary>
+        /// Gets the current working directory(if server then server location, if client then client location).
+        /// </summary>
+        /// <returns>Current working directory</returns>
         public static string getWorkingDirectory()
         {
             string path = Directory.GetCurrentDirectory();

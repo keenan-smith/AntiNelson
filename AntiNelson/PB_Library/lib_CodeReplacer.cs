@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_CodeReplacer
+    internal class lib_CodeReplacer
     {
         public lib_CodeReplacer()
         {

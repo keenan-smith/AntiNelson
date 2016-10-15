@@ -9,7 +9,7 @@ using SDG.Unturned;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_AutoSave : MonoBehaviour
+    internal class lib_AutoSave : MonoBehaviour
     {
         #region Variables
         private GameObject obj_AutoSave;

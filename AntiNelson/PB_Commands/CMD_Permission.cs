@@ -12,7 +12,7 @@ using SDG.Unturned;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "Permission")]
-    public class CMD_Permission : PBCommand
+    internal class CMD_Permission : PBCommand
     {
         public CMD_Permission()
         {

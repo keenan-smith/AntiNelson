@@ -17,6 +17,9 @@ namespace PointBlank.API.Extensions
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Steam group name.
+        /// </summary>
         public string name
         {
             get
@@ -25,6 +28,9 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        /// <summary>
+        /// Steam group steam ID
+        /// </summary>
         public ulong steamID
         {
             get
@@ -33,6 +39,9 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        /// <summary>
+        /// Steam group permissions
+        /// </summary>
         public List<string> permissions
         {
             get
@@ -42,6 +51,12 @@ namespace PointBlank.API.Extensions
         }
         #endregion
 
+        /// <summary>
+        /// The steam group instance. These can be found player.
+        /// </summary>
+        /// <param name="name">Steam group name.</param>
+        /// <param name="steamID">Steam group steam ID.</param>
+        /// <param name="perms">Steam group permissions.</param>
         public PBSteamGroup(string name, ulong steamID, string[] perms)
         {
             _name = name;

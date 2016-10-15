@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_Sync : MonoBehaviour
+    internal class lib_Sync : MonoBehaviour
     {
         #region Variables
         private bool _enabled = false;

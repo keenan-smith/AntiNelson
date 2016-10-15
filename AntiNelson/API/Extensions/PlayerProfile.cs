@@ -21,6 +21,9 @@ namespace PointBlank.API.Extensions
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Is the profile visible(non private).
+        /// </summary>
         public bool isVisible
         {
             get
@@ -29,6 +32,9 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        /// <summary>
+        /// Is the player VAC banned in any game.
+        /// </summary>
         public bool isVacBanned
         {
             get
@@ -37,6 +43,9 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        /// <summary>
+        /// Is the steam player trade banned.
+        /// </summary>
         public bool isTradeBanned
         {
             get
@@ -45,6 +54,9 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        /// <summary>
+        /// Is the steam player account limited.
+        /// </summary>
         public bool isLimited
         {
             get
@@ -53,6 +65,9 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        /// <summary>
+        /// The steam player profile link.
+        /// </summary>
         public string link
         {
             get
@@ -61,6 +76,9 @@ namespace PointBlank.API.Extensions
             }
         }
 
+        /// <summary>
+        /// The privacy state of the player profile.
+        /// </summary>
         public PrivacyState privacyState
         {
             get
@@ -77,6 +95,10 @@ namespace PointBlank.API.Extensions
         }
         #endregion
 
+        /// <summary>
+        /// Steam player profile, with the information provided by steam.
+        /// </summary>
+        /// <param name="url">The URL of the steam player's profile.</param>
         public PlayerProfile(string url)
         {
             _link = url;

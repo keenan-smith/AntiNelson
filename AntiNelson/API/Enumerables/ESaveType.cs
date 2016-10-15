@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PointBlank.API.Enumerables
 {
+    /// <summary>
+    /// Save types.
+    /// </summary>
     public enum ESaveType
     {
         PLAYER,

@@ -9,7 +9,7 @@ using PointBlank.API.Extensions;
 
 namespace PointBlank.API.Client
 {
-    public class PBPlayer
+    internal class PBPlayer
     {
         #region Variables
         private static PBPlayer _instance;

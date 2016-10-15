@@ -9,7 +9,7 @@ using PointBlank.PB_Extensions;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_EventInitalizer
+    internal class lib_EventInitalizer
     {
         public lib_EventInitalizer()
         {

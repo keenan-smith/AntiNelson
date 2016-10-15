@@ -12,7 +12,7 @@ using UnityEngine;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "ItemCommand")]
-    public class CMD_Item : PBCommand
+    internal class CMD_Item : PBCommand
     {
         public CMD_Item()
         {

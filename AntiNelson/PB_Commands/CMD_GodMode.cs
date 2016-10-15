@@ -10,7 +10,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "GodMode")]
-    public class CMD_GodMode : PBCommand
+    internal class CMD_GodMode : PBCommand
     {
         public CMD_GodMode()
         {

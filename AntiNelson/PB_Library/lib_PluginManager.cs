@@ -10,7 +10,7 @@ using PointBlank.API;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_PluginManager
+    internal class lib_PluginManager
     {
 
         private static List<Type> commandList = new List<Type>();

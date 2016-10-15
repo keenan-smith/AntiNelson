@@ -8,7 +8,7 @@ using SDG.Unturned;
 
 namespace PointBlank.API
 {
-    public class PBCrypto
+    internal class PBCrypto
     {
         #region Functions
         public static string encrypt(string text, ECryptoType cryptoType, string password = null, string username = null)

@@ -13,7 +13,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "MuteCommand")]
-    public class CMD_Mute : PBCommand
+    internal class CMD_Mute : PBCommand
     {
         public CMD_Mute()
         {

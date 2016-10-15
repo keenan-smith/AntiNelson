@@ -11,7 +11,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "UsageCommand")]
-    public class CMD_Usage : PBCommand
+    internal class CMD_Usage : PBCommand
     {
         public CMD_Usage()
         {

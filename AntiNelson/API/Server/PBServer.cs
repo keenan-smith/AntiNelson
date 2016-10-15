@@ -279,7 +279,7 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Event Functions
-        public static void PBPostInit()
+        internal static void PBPostInit()
         {
             _server = new PBPlayer();
             _steamGroupSave = new PBSaving(Variables.currentPath + "\\Saves\\SteamGroups.dat", ESaveType.STEAMGROUP);
@@ -291,22 +291,22 @@ namespace PointBlank.API.Server
 
         }
 
-        public static void PBPreInit()
+        internal static void PBPreInit()
         {
 
         }
 
-        public static void PlayerJoin(PBPlayer player)
+        internal static void PlayerJoin(PBPlayer player)
         {
             playerSave.loadPlayer(player);
         }
 
-        public static void PlayerLeave(PBPlayer player)
+        internal static void PlayerLeave(PBPlayer player)
         {
             playerSave.savePlayer(player);
         }
 
-        public static void ParseInputCommand(string command)
+        internal static void ParseInputCommand(string command)
         {
             string[] info = command.Split(' ');
             PBCommand cmd = PBServer.findCommand(info[0]);
@@ -341,7 +341,7 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static void ClientConnect(SteamPlayer player)
+        internal static void ClientConnect(SteamPlayer player)
         {
             if (findPlayer(player) == null)
             {
@@ -351,7 +351,7 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static void ClientDisconnect(SteamPlayer player)
+        internal static void ClientDisconnect(SteamPlayer player)
         {
             PBPlayer ply = findPlayer(player);
             if (ply != null)

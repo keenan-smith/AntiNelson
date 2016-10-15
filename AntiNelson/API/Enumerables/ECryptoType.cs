@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PointBlank.API.Enumerables
 {
+    /// <summary>
+    /// The types of encryptions.
+    /// </summary>
     public enum ECryptoType
     {
         HASH_SHA256,

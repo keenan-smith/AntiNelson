@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PointBlank.API.Enumerables
 {
+    /// <summary>
+    /// All unturned skill types.
+    /// </summary>
     public enum ESkill
     {
         OVERKILL,

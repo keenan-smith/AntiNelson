@@ -12,7 +12,7 @@ using PointBlank.API.Attributes;
 
 namespace PointBlank.PB_Overridables
 {
-    public class Override_CommandWindow
+    internal class Override_CommandWindow
     {
         [ReplaceCode(typeof(CommandWindow), "onInputText", BindingFlags.NonPublic | BindingFlags.Static)]
         public static void onInputText(string command)

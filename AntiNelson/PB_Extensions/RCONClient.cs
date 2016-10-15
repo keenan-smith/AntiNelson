@@ -13,7 +13,7 @@ using PointBlank.PB_Threads;
 
 namespace PointBlank.PB_Extensions
 {
-    public class RCONClient
+    internal class RCONClient
     {
         #region Variables
         public TcpClient client;

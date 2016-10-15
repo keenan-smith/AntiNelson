@@ -11,7 +11,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "HelpCommand")]
-    public class CMD_Help : PBCommand
+    internal class CMD_Help : PBCommand
     {
         public CMD_Help()
         {

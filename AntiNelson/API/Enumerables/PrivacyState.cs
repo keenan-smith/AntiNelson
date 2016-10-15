@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PointBlank.API.Enumerables
 {
+    /// <summary>
+    /// Privacy types for steam profile.
+    /// </summary>
     public enum PrivacyState
     {
         PUBLIC,

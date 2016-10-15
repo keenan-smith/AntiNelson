@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PointBlank.API.Enumerables
 {
+    /// <summary>
+    /// The skillset types.
+    /// </summary>
     public enum ESkillSet
     {
         OFFENSE,

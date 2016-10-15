@@ -11,7 +11,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "IPCommand")]
-    public class CMD_IP : PBCommand
+    internal class CMD_IP : PBCommand
     {
         public CMD_IP()
         {

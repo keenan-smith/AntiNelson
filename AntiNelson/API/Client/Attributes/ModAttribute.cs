@@ -6,7 +6,7 @@ using System.Text;
 namespace PointBlank.API.Client.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ModAttribute : Attribute
+    internal class ModAttribute : Attribute
     {
         #region Variables
         private string _modName;

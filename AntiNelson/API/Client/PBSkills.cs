@@ -8,7 +8,7 @@ using PointBlank.API.Enumerables;
 
 namespace PointBlank.API.Client
 {
-    public class PBSkills
+    internal class PBSkills
     {
         #region Skills
         public static PBSkills Overkill = new PBSkills("Overkill", 0, ESkill.OVERKILL, ESkillSet.OFFENSE, 7);

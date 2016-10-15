@@ -7,10 +7,11 @@ using UnityEngine;
 using PointBlank.API;
 using SDG.Unturned;
 using PointBlank.PB_Extensions;
+using PointBlank.API.Server;
 
 namespace PointBlank.PB_Loading
 {
-    public class Framework : MonoBehaviour
+    internal class Framework : MonoBehaviour
     {
 
         public void _Start()
@@ -67,7 +68,10 @@ namespace PointBlank.PB_Loading
         {
             PBLogging.log("Shutting down!");
             if (PB.isServer())
+            {
                 Instances.RCON.RCONDestroy();
+                PBSync.shutdown();
+            }
         }
     }
 }

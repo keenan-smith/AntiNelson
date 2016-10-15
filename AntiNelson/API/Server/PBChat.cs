@@ -38,7 +38,7 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Event Functions
-        public static void ProcessCommands(CSteamID speaker, Chat args)
+        internal static void ProcessCommands(CSteamID speaker, Chat args)
         {
             if (args == null || args.text == null)
                 return;
@@ -90,7 +90,7 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Override Functions
-        public static void askChat(CSteamID steamID, byte mode, string text)
+        internal static void askChat(CSteamID steamID, byte mode, string text)
         {
             if (OnMessageReceived == null)
                 return;

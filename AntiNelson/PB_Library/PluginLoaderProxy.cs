@@ -9,7 +9,7 @@ using PointBlank.API;
 namespace PointBlank.PB_Library
 {
     [Serializable]
-    public class PluginLoaderProxy : MarshalByRefObject
+    internal class PluginLoaderProxy : MarshalByRefObject
     {
         private AppDomain domain = AppDomain.CurrentDomain;
 

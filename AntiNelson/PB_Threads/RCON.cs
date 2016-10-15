@@ -15,7 +15,7 @@ using PointBlank.API;
 
 namespace PointBlank.PB_Threads
 {
-    public class RCON
+    internal class RCON
     {
         #region Variables
         private TcpListener listener;

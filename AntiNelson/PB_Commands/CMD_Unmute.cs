@@ -13,7 +13,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "UnmuteCommand")]
-    public class CMD_Unmute : PBCommand
+    internal class CMD_Unmute : PBCommand
     {
         public CMD_Unmute()
         {

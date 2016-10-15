@@ -18,6 +18,9 @@ namespace PointBlank.API.Attributes
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The class that contains the original method.
+        /// </summary>
         public Type methodClass
         {
             get
@@ -26,6 +29,9 @@ namespace PointBlank.API.Attributes
             }
         }
 
+        /// <summary>
+        /// The original method name.
+        /// </summary>
         public string methodName
         {
             get
@@ -34,6 +40,9 @@ namespace PointBlank.API.Attributes
             }
         }
 
+        /// <summary>
+        /// The flags of the original method.
+        /// </summary>
         public BindingFlags flags
         {
             get
@@ -42,6 +51,9 @@ namespace PointBlank.API.Attributes
             }
         }
 
+        /// <summary>
+        /// The original method.
+        /// </summary>
         public MethodInfo method
         {
             get
@@ -58,6 +70,9 @@ namespace PointBlank.API.Attributes
             }
         }
 
+        /// <summary>
+        /// Use the IL to redirect.
+        /// </summary>
         public bool useIL
         {
             get
@@ -67,6 +82,13 @@ namespace PointBlank.API.Attributes
         }
         #endregion
 
+        /// <summary>
+        /// A method that has this attribute redirects the original method to the one contianing this attribute.
+        /// </summary>
+        /// <param name="methodClass">The class that contains the method you want to redirect.</param>
+        /// <param name="methodName">The method name you want to redirect.</param>
+        /// <param name="flags">The flags of the original method.</param>
+        /// <param name="useIL">Use IL to redirect the code</param>
         public ReplaceCodeAttribute(Type methodClass, string methodName, BindingFlags flags, bool useIL = false)
         {
             _methodClass = methodClass;

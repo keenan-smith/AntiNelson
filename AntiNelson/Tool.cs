@@ -8,9 +8,8 @@ using UnityEngine;
 
 namespace PointBlank
 {
-    public class Tool
+    internal class Tool
     {
-
         public static string GetRandomString()
         {
             string path = Path.GetRandomFileName();

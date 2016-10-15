@@ -20,7 +20,7 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Event Functions
-        public static void Init()
+        internal static void Init()
         {
             buffer = new byte[8004];
         }

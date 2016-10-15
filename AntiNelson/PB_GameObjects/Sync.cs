@@ -10,7 +10,7 @@ using PointBlank.API.Server.Types;
 
 namespace PointBlank.PB_GameObjects
 {
-    public class Sync : MonoBehaviour
+    internal class Sync : MonoBehaviour
     {
         #region Variables
         private DateTime lastSync;

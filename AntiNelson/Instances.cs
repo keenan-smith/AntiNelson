@@ -8,7 +8,7 @@ using PointBlank.PB_Extensions;
 
 namespace PointBlank
 {
-    public class Instances
+    internal class Instances
     {
         public static lib_PluginManager pluginManager;
         public static lib_AutoSave autoSave;

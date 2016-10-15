@@ -8,7 +8,7 @@ using PointBlank.API;
 
 namespace PointBlank.PB_GameObjects
 {
-    public class AutoSave : MonoBehaviour
+    internal class AutoSave : MonoBehaviour
     {
         #region Variables
         private DateTime lastSave;

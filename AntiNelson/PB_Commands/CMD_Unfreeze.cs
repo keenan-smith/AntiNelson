@@ -11,7 +11,7 @@ using UnityEngine;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "UnfreezeCommand")]
-    public class CMD_Unfreeze : PBCommand
+    internal class CMD_Unfreeze : PBCommand
     {
         public CMD_Unfreeze()
         {

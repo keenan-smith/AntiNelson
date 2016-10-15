@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace PointBlank
 {
-    public static class Variables
+    internal class Variables
     {
         public static GameObject obj_Commands = null;
 

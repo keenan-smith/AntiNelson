@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace PointBlank.PB_Library
 {
-    public class lib_CommandManager : MonoBehaviour
+    internal class lib_CommandManager : MonoBehaviour
     {
         public lib_CommandManager()
         {

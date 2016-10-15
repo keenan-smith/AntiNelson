@@ -10,7 +10,7 @@ using PointBlank.API.Server.Extensions;
 namespace PointBlank.PB_Commands
 {
     [Command("Default", "UnGodMode")]
-    public class CMD_UnGodMode : PBCommand
+    internal class CMD_UnGodMode : PBCommand
     {
         public CMD_UnGodMode()
         {
