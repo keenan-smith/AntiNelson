@@ -47,6 +47,9 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Skill name.
+        /// </summary>
         public string name
         {
             get
@@ -55,6 +58,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Skill type.
+        /// </summary>
         public ESkill skillType
         {
             get
@@ -63,6 +69,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Max level of the skill.
+        /// </summary>
         public byte maxLevel
         {
             get
@@ -71,6 +80,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// ID of the skill.
+        /// </summary>
         public int ID
         {
             get
@@ -79,6 +91,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// The skillset of the skill.
+        /// </summary>
         public ESkillSet skillset
         {
             get
@@ -87,6 +102,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// The skill instance.
+        /// </summary>
         public Skill skill
         {
             get
@@ -96,6 +114,14 @@ namespace PointBlank.API.Server
         }
         #endregion
 
+        /// <summary>
+        /// Creates a skill instance.
+        /// </summary>
+        /// <param name="name">The skill name.</param>
+        /// <param name="ID">The skill ID.</param>
+        /// <param name="skillType">The skill type.</param>
+        /// <param name="skillset">The skillset of the skill.</param>
+        /// <param name="maxLevel">The max level of the skill.</param>
         public PBSkills(string name, int ID, ESkill skillType, ESkillSet skillset, byte maxLevel)
         {
             _name = name;
@@ -105,6 +131,11 @@ namespace PointBlank.API.Server
             _maxLevel = maxLevel;
         }
 
+        /// <summary>
+        /// Duplicate skill.
+        /// </summary>
+        /// <param name="pbskill">The skill instance.</param>
+        /// <param name="skill">The unturned skill instance.</param>
         public PBSkills(PBSkills pbskill, Skill skill)
         {
             _name = pbskill.name;
@@ -116,26 +147,49 @@ namespace PointBlank.API.Server
         }
 
         #region Functions
+        /// <summary>
+        /// Sets the player's skill to the max level.
+        /// </summary>
+        /// <param name="player">The target player.</param>
         public void setMaxLevel(PBPlayer player)
         {
             player.player.skills.skills[(int)skillset][ID].level = maxLevel;
         }
 
+        /// <summary>
+        /// Sets the player's skill to the minimum number.
+        /// </summary>
+        /// <param name="player">The target player.</param>
         public void setMinLevel(PBPlayer player)
         {
             player.player.skills.skills[(int)skillset][ID].level = 0;
         }
 
+        /// <summary>
+        /// Sets the level of the player's skill.
+        /// </summary>
+        /// <param name="player">The target player.</param>
+        /// <param name="level">The skill level.</param>
         public void setLevel(PBPlayer player, byte level)
         {
             player.player.skills.skills[(int)skillset][ID].level = level;
         }
 
+        /// <summary>
+        /// Gets the skill level of the player.
+        /// </summary>
+        /// <param name="player">The target player.</param>
+        /// <returns>The skill level.</returns>
         public byte getLevel(PBPlayer player)
         {
             return player.player.skills.skills[(int)skillset][ID].level;
         }
 
+        /// <summary>
+        /// Returns all the skills of the player.
+        /// </summary>
+        /// <param name="player">The target player.</param>
+        /// <returns>All the skills of the player.</returns>
         public static PBSkills[] getSkills(PBPlayer player)
         {
             List<PBSkills> skills = new List<PBSkills>();

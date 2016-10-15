@@ -13,6 +13,16 @@ namespace PointBlank.API.Server
         #endregion
 
         #region SQL Functions
+        /// <summary>
+        /// Creates an SQL connection to the MySQL database.
+        /// </summary>
+        /// <param name="address">The IP/address of the MySQL database.</param>
+        /// <param name="port">The port of the MySQL database.</param>
+        /// <param name="username">The username to access the database.</param>
+        /// <param name="password">The password to access the database.</param>
+        /// <param name="database">The database name.</param>
+        /// <param name="timeout">The timeout of the connection.</param>
+        /// <returns>The connection instance for further use.</returns>
         public static SqlConnection addSQL(string address, string port, string username, string password, string database, int timeout = 30)
         {
             SqlConnection[] cons = getSQL(address, database);
@@ -41,11 +51,23 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Gets the SQL connections depending on the address or database provided.
+        /// </summary>
+        /// <param name="address">The IP of the MySQL server.</param>
+        /// <param name="database">The database name.</param>
+        /// <returns>Array of SQL Connections.</returns>
         public static SqlConnection[] getSQL(string address = "", string database = "")
         {
             return Array.FindAll(_connections.ToArray(), a => (!string.IsNullOrEmpty(address) ? a.DataSource == address : true) && (!string.IsNullOrEmpty(database) ? a.Database == database : true));
         }
 
+        /// <summary>
+        /// Send a custom command to the SQL database.
+        /// </summary>
+        /// <param name="command">The command you want to send.</param>
+        /// <param name="connection">The SQL Connection instance.</param>
+        /// <returns>If the command was successfully sent.</returns>
         public static bool sql_sendCommand(string command, SqlConnection connection)
         {
             try
@@ -62,14 +84,26 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Reads the data specified from the MySQL database table.
+        /// </summary>
+        /// <param name="table">The table name to read from.</param>
+        /// <param name="returnColumn">The column to get the data from.</param>
+        /// <param name="checks">The array of checks to get the correct data. Example: steamId='11111111'</param>
+        /// <param name="connection">The SQL Connection instance.</param>
+        /// <returns>Array of all values matching the checks. Returns null if failed.</returns>
         public static string[] sql_readCommand(string table, string returnColumn, string[] checks, SqlConnection connection)
         {
             try
             {
-                string check = " WHERE " + checks[0];
-                for (int i = 1; i < checks.Length; i++)
+                string check = "";
+                if (checks.Length > 0)
                 {
-                    check += " AND " + checks[i];
+                    check = " WHERE " + checks[0];
+                    for (int i = 1; i < checks.Length; i++)
+                    {
+                        check += " AND " + checks[i];
+                    }
                 }
 
                 List<string> rets = new List<string>();
@@ -91,6 +125,14 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Inserts data to the table in the database.
+        /// </summary>
+        /// <param name="table">The table to write in.</param>
+        /// <param name="columns">The columns to write in.</param>
+        /// <param name="values">The values to write into the columns specified in the columns array.</param>
+        /// <param name="connection">The SQL Connection instance.</param>
+        /// <returns>If the insertion was successful.</returns>
         public static bool sql_insertCommand(string table, string[] columns, string[] values, SqlConnection connection)
         {
             try
@@ -107,14 +149,25 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Deletes entry from the table in the database.
+        /// </summary>
+        /// <param name="table">The table to edit.</param>
+        /// <param name="checks">The check array to find the correct entry. Example: steamId='11111111'</param>
+        /// <param name="connection">The SQL Connection instance.</param>
+        /// <returns>If the command was successul.</returns>
         public static bool sql_deleteCommand(string table, string[] checks, SqlConnection connection)
         {
             try
             {
-                string check = " WHERE " + checks[0];
-                for (int i = 1; i < checks.Length; i++)
+                string check = "";
+                if (checks.Length > 0)
                 {
-                    check += " AND " + checks[i];
+                    check = " WHERE " + checks[0];
+                    for (int i = 1; i < checks.Length; i++)
+                    {
+                        check += " AND " + checks[i];
+                    }
                 }
 
                 SqlCommand command = new SqlCommand("DELETE FROM " + table + check + ";", connection);
@@ -129,6 +182,13 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Checks if a specific entry exists in the table.
+        /// </summary>
+        /// <param name="table">The table to check in.</param>
+        /// <param name="checks">The check array to find the correct entry. Example: steamId='11111111'</param>
+        /// <param name="connection">The SQL Connection instance.</param>
+        /// <returns>If it exists or not.</returns>
         public static bool sql_exists(string table, string[] checks, SqlConnection connection)
         {
             try
@@ -142,14 +202,26 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// Updates an entry in the table.
+        /// </summary>
+        /// <param name="table">The table to edit.</param>
+        /// <param name="checks">The checks to find the correct entry. Example: steamId='11111111'</param>
+        /// <param name="changes">The array of things to change in the entry. Example: steamId='2222222'</param>
+        /// <param name="connection">The SQL Connection instance.</param>
+        /// <returns></returns>
         public static bool sql_update(string table, string[] checks, string[] changes, SqlConnection connection)
         {
             try
             {
-                string check = " WHERE " + checks[0];
-                for (int i = 1; i < checks.Length; i++)
+                string check = "";
+                if (checks.Length > 0)
                 {
-                    check += " AND " + checks[i];
+                    check = " WHERE " + checks[0];
+                    for (int i = 1; i < checks.Length; i++)
+                    {
+                        check += " AND " + checks[i];
+                    }
                 }
 
                 SqlCommand command = new SqlCommand("UPDATE " + table + " SET " + string.Join(",", changes) + check + ";", connection);
@@ -166,7 +238,7 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Functions
-        public static bool shutdown()
+        internal static bool shutdown()
         {
             bool success = true;
 

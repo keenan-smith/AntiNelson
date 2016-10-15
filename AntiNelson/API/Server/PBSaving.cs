@@ -16,7 +16,7 @@ using Steamworks;
 
 namespace PointBlank.API.Server
 {
-    internal class PBSaving
+    public class PBSaving
     {
         #region Variables
         private XmlDocument _doc;

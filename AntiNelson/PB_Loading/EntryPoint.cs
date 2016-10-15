@@ -8,7 +8,7 @@ namespace PointBlank.PB_Loading
     public class EntryPoint : MonoBehaviour
     {
         public static EntryPoint instance = null;
-        public static Framework hackInstance = null;
+        internal static Framework hackInstance = null;
 
         public static bool waitForRelaunch = false;
         public static bool hackCrashed = false;
