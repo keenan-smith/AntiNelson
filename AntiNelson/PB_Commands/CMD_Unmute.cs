@@ -17,7 +17,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_Unmute()
         {
-            permission = "mute.unmute";
+            permission = "pointblank.mute.unmute";
             command = "unmute";
             alias = new string[0];
         }

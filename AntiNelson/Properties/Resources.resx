@@ -154,4 +154,7 @@
   <data name="UsageCommand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UsageCommand.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="PointBlankCommand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PointBlankCommand.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

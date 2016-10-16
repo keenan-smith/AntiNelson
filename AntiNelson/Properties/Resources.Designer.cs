@@ -143,6 +143,16 @@ namespace PointBlank.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] PointBlankCommand {
+            get {
+                object obj = ResourceManager.GetObject("PointBlankCommand", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] UnfreezeCommand {
             get {
                 object obj = ResourceManager.GetObject("UnfreezeCommand", resourceCulture);

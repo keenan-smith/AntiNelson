@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Diagnostics;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +11,7 @@ using Steamworks;
 using PointBlank.API.Enumerables;
 using PointBlank.API.Server.Extensions;
 using PointBlank.API.Extensions;
+using PointBlank.API.Server.Attributes;
 
 namespace PointBlank.API.Server
 {
@@ -305,18 +309,35 @@ namespace PointBlank.API.Server
 
         internal static void consoleInput(string command)
         {
-            OnConsoleInput(command);
+            if(OnConsoleOutput != null)
+                OnConsoleInput(command);
         }
 
         internal static void consoleOutput(string text)
         {
-            OnConsoleOutput(text);
+            if(OnConsoleInput != null)
+                OnConsoleOutput(text);
         }
 
-        /*public static bool restart() // NOT DONE!
+        /// <summary>
+        /// Restarts the server.
+        /// </summary>
+        /// <returns>If the server has been restarted.</returns>
+        public static bool restart()
         {
             try
             {
+                string p = "";
+                foreach(string path in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ink", SearchOption.TopDirectoryOnly))
+                {
+                    if (Tool.IsShortcut(path) && Tool.ResolveShortcut(path).Contains("Unturned.exe"))
+                    {
+                        p = path;
+                        break;
+                    }
+                }
+                Process.Start(p);
+                Application.Quit();
                 return true;
             }
             catch (Exception ex)
@@ -326,10 +347,22 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static bool reloadPlugins() // NOT DONE!
+        /// <summary>
+        /// Reloads all the plugins.
+        /// </summary>
+        /// <returns>If the reload was successful.</returns>
+        public static bool reloadPlugins()
         {
             try
             {
+                Instances.codeReplacer.shutdown();
+                foreach (PBCommand cmd in PBServer.commands)
+                {
+                    if (cmd.GetType().Assembly != Assembly.GetCallingAssembly())
+                        PBServer.commands.Remove(cmd);
+                }
+                Instances.pluginManager.unloadAllPlugins();
+                Instances.pluginManager.loadPlugins();
                 return true;
             }
             catch (Exception ex)
@@ -339,10 +372,15 @@ namespace PointBlank.API.Server
             }
         }
 
-        public static bool shutdown() // NOT DONE!
+        /// <summary>
+        /// Shuts down the server.
+        /// </summary>
+        /// <returns>If server shutdown was successful.</returns>
+        public static bool shutdown()
         {
             try
             {
+                Provider.shutdown();
                 return true;
             }
             catch (Exception ex)
@@ -350,7 +388,59 @@ namespace PointBlank.API.Server
                 PBLogging.logError("ERROR: Exception while attempting to shutdown server!", ex);
                 return false;
             }
-        }*/
+        }
+
+        /// <summary>
+        /// Unloads all the plugins.
+        /// </summary>
+        /// <returns>If the unload was successful.</returns>
+        public static bool unloadPlugins()
+        {
+            try
+            {
+                Instances.codeReplacer.shutdown();
+                foreach (PBCommand cmd in PBServer.commands)
+                {
+                    if (cmd.GetType().Assembly != Assembly.GetCallingAssembly())
+                        PBServer.commands.Remove(cmd);
+                }
+                Instances.pluginManager.unloadAllPlugins();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("ERROR: Exception while attempting to unload plugins!", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Loads a plugin.
+        /// </summary>
+        /// <param name="path">The path to the plugin.</param>
+        /// <returns>If the plugin was loaded successfully.</returns>
+        public static bool loadPlugin(string path)
+        {
+            try
+            {
+                Instances.pluginManager.loadPlugin(path);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("ERROR: Exception while attempting to load plugin!", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets all the plugins currently loaded.
+        /// </summary>
+        /// <returns>Loaded plugins.</returns>
+        public static PluginAttribute[] getPlugins()
+        {
+            return Instances.pluginManager.plgs;
+        }
         #endregion
 
         #region Event Functions

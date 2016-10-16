@@ -15,7 +15,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_IP()
         {
-            permission = "ip";
+            permission = "pointblank.ip";
             command = "ip";
             alias = new string[0];
         }

@@ -13,8 +13,9 @@ namespace PointBlank.API.Attributes
         #region Variables
         private Type _methodClass;
         private string _methodName;
-        private bool _useIL;
         private BindingFlags _flags;
+        private RedirectCallsState _state;
+        private bool _stateChanged = false;
         #endregion
 
         #region Properties
@@ -71,13 +72,21 @@ namespace PointBlank.API.Attributes
         }
 
         /// <summary>
-        /// Use the IL to redirect.
+        /// Gets the callstate of the method.
         /// </summary>
-        public bool useIL
+        public RedirectCallsState callState
         {
             get
             {
-                return _useIL;
+                return _state;
+            }
+            set
+            {
+                if (!_stateChanged)
+                {
+                    _state = value;
+                    _stateChanged = true;
+                }
             }
         }
         #endregion
@@ -89,11 +98,10 @@ namespace PointBlank.API.Attributes
         /// <param name="methodName">The method name you want to redirect.</param>
         /// <param name="flags">The flags of the original method.</param>
         /// <param name="useIL">Use IL to redirect the code</param>
-        public ReplaceCodeAttribute(Type methodClass, string methodName, BindingFlags flags, bool useIL = false)
+        public ReplaceCodeAttribute(Type methodClass, string methodName, BindingFlags flags)
         {
             _methodClass = methodClass;
             _methodName = methodName;
-            _useIL = useIL;
             _flags = flags;
         }
     }

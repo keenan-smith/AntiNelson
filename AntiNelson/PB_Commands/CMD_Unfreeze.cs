@@ -15,7 +15,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_Unfreeze()
         {
-            permission = "freeze.unfreeze";
+            permission = "pointblank.freeze.unfreeze";
             command = "unfreeze";
             alias = new string[0];
         }

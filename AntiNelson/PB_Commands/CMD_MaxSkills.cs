@@ -16,7 +16,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_MaxSkills()
         {
-            permission = "maxskills";
+            permission = "pointblank.maxskills";
             command = "maxskills";
             alias = new string[]
             {

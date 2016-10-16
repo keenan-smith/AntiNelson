@@ -25,91 +25,52 @@ using UnityEngine;
 
 namespace PointBlank.API
 {
+    public struct RedirectCallsState
+    {
+        public byte a, b, c, d, e;
+        public ulong f;
+    }
 
     public static class RedirectionHelper
     {
-        [DllImport("mono.dll", CallingConvention = CallingConvention.FastCall, EntryPoint = "mono_domain_get")]
-        private static extern IntPtr mono_domain_get();
-
-        [DllImport("mono.dll", CallingConvention = CallingConvention.FastCall, EntryPoint = "mono_method_get_header")]
-        private static extern IntPtr mono_method_get_header(IntPtr method);
-
         /// <summary>
         /// Redirects any method to another method.
         /// </summary>
         /// <param name="from">MethodInfo of the original method.</param>
         /// <param name="to">MethodInfo of the custom method.</param>
-        public static void RedirectCalls(MethodInfo from, MethodInfo to)
+        public static RedirectCallsState RedirectCalls(MethodInfo from, MethodInfo to)
         {
             var fptr1 = from.MethodHandle.GetFunctionPointer();
             var fptr2 = to.MethodHandle.GetFunctionPointer();
             PBLogging.log("Patching " + fptr1 + " to " + fptr2, false);
-            PatchJumpTo(fptr1, fptr2);
+            return PatchJumpTo(fptr1, fptr2);
         }
 
         /// <summary>
-        /// Redirects any method to another method. Only works 1 time.
+        /// Reverts the redirection.
         /// </summary>
         /// <param name="from">MethodInfo of the original method.</param>
-        /// <param name="to">MethodInfo of the custom method.</param>
-        public static void RedirectCall(MethodInfo from, MethodInfo to)
+        /// <param name="state">The previous state of the redirection.</param>
+        public static void RevertRedirect(MethodInfo from, RedirectCallsState state)
         {
-            IntPtr methodPtr1 = from.MethodHandle.Value;
-            IntPtr methodPtr2 = to.MethodHandle.Value;
-            from.MethodHandle.GetFunctionPointer();
-            to.MethodHandle.GetFunctionPointer();
-
-            IntPtr domain = mono_domain_get();
-            unsafe
-            {
-                byte* jitCodeHash = ((byte*)domain.ToPointer() + 0xE8);
-                long** jitCodeHashTable = *(long***)(jitCodeHash + 0x20);
-                uint tableSize = *(uint*)(jitCodeHash + 0x18);
-
-                void* jitInfoFrom = null, jitInfoTo = null;
-
-                long mptr1 = methodPtr1.ToInt64();
-                uint index1 = ((uint)mptr1) >> 3;
-                for (long* value = jitCodeHashTable[index1 % tableSize];
-                    value != null;
-                    value = *(long**)(value + 1))
-                {
-                    if (mptr1 == *value)
-                    {
-                        jitInfoFrom = value;
-                        break;
-                    }
-                }
-
-                long mptr2 = methodPtr2.ToInt64();
-                uint index2 = ((uint)mptr2) >> 3;
-                for (long* value = jitCodeHashTable[index2 % tableSize];
-                    value != null;
-                    value = *(long**)(value + 1))
-                {
-                    if (mptr2 == *value)
-                    {
-                        jitInfoTo = value;
-                        break;
-                    }
-                }
-                if (jitInfoFrom == null || jitInfoTo == null)
-                {
-                    Debug.Log("Could not find methods");
-                    return;
-                }
-
-
-                ulong* fromPtr, toPtr;
-                fromPtr = (ulong*)jitInfoFrom;
-                toPtr = (ulong*)jitInfoTo;
-                *(fromPtr + 2) = *(toPtr + 2);
-                *(fromPtr + 3) = *(toPtr + 3);
-            }
+            var fptr1 = from.MethodHandle.GetFunctionPointer();
+            RevertJumpTo(fptr1, state);
         }
 
-        private static void PatchJumpTo(IntPtr site, IntPtr target)
+        private static RedirectCallsState PatchJumpTo(IntPtr site, IntPtr target)
         {
+            RedirectCallsState state = new RedirectCallsState();
+
+            unsafe
+            {
+                byte* sitePtr = (byte*)site.ToPointer();
+                state.a = *sitePtr;
+                state.b = *(sitePtr + 1);
+                state.c = *(sitePtr + 10);
+                state.d = *(sitePtr + 11);
+                state.e = *(sitePtr + 12);
+                state.f = *((ulong*)(sitePtr + 2));
+            }
             if (IntPtr.Size == 4)
             {
                 unsafe
@@ -134,25 +95,20 @@ namespace PointBlank.API
                     *(sitePtr + 12) = 0xE3;
                 }
             }
+            return state;
         }
 
-        /// <summary>
-        /// Redirects any method to another method. Uses IL.
-        /// </summary>
-        /// <param name="from">MethodInfo of the original method.</param>
-        /// <param name="to">MethodInfo of the custom method.</param>
-        public static void RedirectCallIL(MethodInfo from, MethodInfo to)
+        private static void RevertJumpTo(IntPtr site, RedirectCallsState state)
         {
-            IntPtr methodPtr1 = from.MethodHandle.Value;
-            IntPtr methodPtr2 = to.MethodHandle.Value;
-
-            mono_method_get_header(methodPtr2);
-
             unsafe
             {
-                byte* monoMethod1 = (byte*)methodPtr1.ToPointer();
-                byte* monoMethod2 = (byte*)methodPtr2.ToPointer();
-                *((IntPtr*)(monoMethod1 + 40)) = *((IntPtr*)(monoMethod2 + 40));
+                byte* sitePtr = (byte*)site.ToPointer();
+                *sitePtr = state.a;
+                *(sitePtr + 1) = state.b;
+                *((ulong*)(sitePtr + 2)) = state.f;
+                *(sitePtr + 10) = state.c;
+                *(sitePtr + 11) = state.d;
+                *(sitePtr + 12) = state.e;
             }
         }
     }

@@ -14,7 +14,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_GodMode()
         {
-            permission = "godmode.god";
+            permission = "pointblank.godmode.god";
             command = "godmode";
             alias = new string[]
             {

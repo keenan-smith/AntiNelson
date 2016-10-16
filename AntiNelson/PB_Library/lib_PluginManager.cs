@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Reflection;
 using PointBlank.API.Server.Extensions;
 using PointBlank.API.Server;
+using PointBlank.API.Server.Attributes;
 using PointBlank.API;
 
 namespace PointBlank.PB_Library
@@ -18,12 +19,21 @@ namespace PointBlank.PB_Library
         private static AppDomainSetup domainSetup = new AppDomainSetup();
         private static AppDomain _pluginDomain = null;
         private static PluginLoaderProxy pluginLoader = null;
+        private static List<PluginAttribute> _plgs = new List<PluginAttribute>();
 
         public static AppDomain pluginDomain
         {
             get
             {
                 return _pluginDomain;
+            }
+        }
+
+        public PluginAttribute[] plgs
+        {
+            get
+            {
+                return _plgs.ToArray();
             }
         }
 
@@ -50,6 +60,7 @@ namespace PointBlank.PB_Library
         public void unloadAllPlugins()
         {
             loadedPlugins.Clear();
+            _plgs.Clear();
             AppDomain.Unload(_pluginDomain);
             PBLogging.log("Unloaded plugin domain!");
             createPluginDomain();

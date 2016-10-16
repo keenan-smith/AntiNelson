@@ -54,6 +54,8 @@ namespace PointBlank.PB_Library
                 rConfig.addTextElement("enabled", "true");
                 rConfig.addTextElement("saveTime", "600000");
                 rConfig.save(path);
+
+                _interval = 600000;
             }
             createGameObject();
         }

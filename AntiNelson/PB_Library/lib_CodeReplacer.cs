@@ -14,6 +14,10 @@ namespace PointBlank.PB_Library
 {
     internal class lib_CodeReplacer
     {
+        #region Variables
+        private List<ReplaceCodeAttribute> rcas = new List<ReplaceCodeAttribute>();
+        #endregion
+
         public lib_CodeReplacer()
         {
             PBLogging.log("Loading CodeReplacer...");
@@ -36,10 +40,10 @@ namespace PointBlank.PB_Library
                                 ReplaceCodeAttribute rca = (ReplaceCodeAttribute)Attribute.GetCustomAttribute(mi, typeof(ReplaceCodeAttribute));
                                 if (rca != null)
                                 {
-                                    if (rca.useIL)
-                                        RedirectionHelper.RedirectCallIL(rca.method, mi);
-                                    else
-                                        RedirectionHelper.RedirectCalls(rca.method, mi);
+                                    if (Array.Exists(rcas.ToArray(), a => a.method == rca.method))
+                                        continue;
+                                    rca.callState = RedirectionHelper.RedirectCalls(rca.method, mi);
+                                    rcas.Add(rca);
                                 }
                             }
                         }
@@ -67,10 +71,10 @@ namespace PointBlank.PB_Library
                             ReplaceCodeAttribute rca = (ReplaceCodeAttribute)Attribute.GetCustomAttribute(mi, typeof(ReplaceCodeAttribute));
                             if (rca != null)
                             {
-                                if (rca.useIL)
-                                    RedirectionHelper.RedirectCallIL(rca.method, mi);
-                                else
-                                    RedirectionHelper.RedirectCalls(rca.method, mi);
+                                if (Array.Exists(rcas.ToArray(), a => a.method == rca.method))
+                                    continue;
+                                rca.callState = RedirectionHelper.RedirectCalls(rca.method, mi);
+                                rcas.Add(rca);
                             }
                         }
                     }
@@ -80,6 +84,23 @@ namespace PointBlank.PB_Library
             catch (Exception ex)
             {
                 PBLogging.logError("ERROR: Exception while trying to load codes!", ex);
+                return false;
+            }
+        }
+
+        public bool shutdown()
+        {
+            try
+            {
+                foreach (ReplaceCodeAttribute rca in rcas)
+                {
+                    RedirectionHelper.RevertRedirect(rca.method, rca.callState);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("ERROR: Exception while trying to remove redirections!", ex);
                 return false;
             }
         }

@@ -71,6 +71,7 @@ namespace PointBlank.PB_Loading
             {
                 Instances.RCON.RCONDestroy();
                 PBSync.shutdown();
+                Instances.codeReplacer.shutdown();
             }
         }
     }

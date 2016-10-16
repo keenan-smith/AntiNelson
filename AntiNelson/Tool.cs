@@ -1,4 +1,5 @@
 ﻿using System;
+using Shell32;
 using System.IO;
 using System.Reflection;
 using System.Resources;
@@ -45,6 +46,37 @@ namespace PointBlank
             {
                 return (byte[])set.GetObject(name, true);
             }
+        }
+
+        public static bool IsShortcut(string path)
+        {
+            string directory = Path.GetDirectoryName(path);
+            string file = Path.GetFileName(path);
+
+            Shell32.Shell shell = new Shell32.Shell();
+            Shell32.Folder folder = shell.NameSpace(directory);
+            Shell32.FolderItem folderItem = folder.ParseName(file);
+
+            if (folderItem != null)
+            {
+                return folderItem.IsLink;
+            }
+
+            return false;
+        }
+
+        public static string ResolveShortcut(string path)
+        {
+            string directory = Path.GetDirectoryName(path);
+            string file = Path.GetFileName(path);
+
+            Shell32.Shell shell = new Shell32.Shell();
+            Shell32.Folder folder = shell.NameSpace(directory);
+            Shell32.FolderItem folderItem = folder.ParseName(file);
+
+            Shell32.ShellLinkObject link = (Shell32.ShellLinkObject)folderItem.GetLink;
+
+            return link.Path;
         }
     }
 }

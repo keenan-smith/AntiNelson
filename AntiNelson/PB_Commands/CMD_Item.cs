@@ -16,7 +16,7 @@ namespace PointBlank.PB_Commands
     {
         public CMD_Item()
         {
-            permission = "item";
+            permission = "pointblank.item";
             command = "item";
             alias = new string[]
             {
