@@ -328,9 +328,9 @@ namespace PointBlank.API.Server
             try
             {
                 string p = "";
-                foreach(string path in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ink", SearchOption.TopDirectoryOnly))
+                foreach(string path in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.lnk", SearchOption.TopDirectoryOnly))
                 {
-                    if (Tool.IsShortcut(path) && Tool.ResolveShortcut(path).Contains("Unturned.exe"))
+                    if (Tool.IsShortcut(path) && Tool.ResolveShortcut(path).ToLower().Contains("unturned.exe"))
                     {
                         p = path;
                         break;
@@ -356,13 +356,11 @@ namespace PointBlank.API.Server
             try
             {
                 Instances.codeReplacer.shutdown();
-                foreach (PBCommand cmd in PBServer.commands)
-                {
-                    if (cmd.GetType().Assembly != Assembly.GetCallingAssembly())
-                        PBServer.commands.Remove(cmd);
-                }
+                PBServer.commands.Clear();
                 Instances.pluginManager.unloadAllPlugins();
                 Instances.pluginManager.loadPlugins();
+                Instances.commandManager.reload();
+                Instances.codeReplacer.reload();
                 return true;
             }
             catch (Exception ex)
@@ -399,12 +397,9 @@ namespace PointBlank.API.Server
             try
             {
                 Instances.codeReplacer.shutdown();
-                foreach (PBCommand cmd in PBServer.commands)
-                {
-                    if (cmd.GetType().Assembly != Assembly.GetCallingAssembly())
-                        PBServer.commands.Remove(cmd);
-                }
+                PBServer.commands.Clear();
                 Instances.pluginManager.unloadAllPlugins();
+                Instances.commandManager.reload();
                 return true;
             }
             catch (Exception ex)
@@ -429,6 +424,24 @@ namespace PointBlank.API.Server
             catch (Exception ex)
             {
                 PBLogging.logError("ERROR: Exception while attempting to load plugin!", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Loads all the plugins.
+        /// </summary>
+        /// <returns>If plugins are loaded.</returns>
+        public static bool loadPlugins()
+        {
+            try
+            {
+                Instances.pluginManager.loadPlugins();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("ERROR: Exception while attempting to load plugins!", ex);
                 return false;
             }
         }

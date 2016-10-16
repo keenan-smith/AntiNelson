@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="history" name="save" />
     <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
-    <title>RedirectionHelper.RedirectCalls Method</title>
+    <title>PBServer.loadPlugin Method</title>
     <xml>
     </xml>
     <link rel="stylesheet" type="text/css" href="MSDN.css" />
@@ -20,26 +20,24 @@
         </table>
       </div>
       <div id="TitleRow">
-        <h1 class="dtH1">RedirectionHelper.RedirectCalls Method</h1>
+        <h1 class="dtH1">PBServer.loadPlugin Method</h1>
       </div>
     </div>
     <div id="nstext">
-      <p> Redirects any method to another method. </p>
-      <div class="syntax">public static <a href="PointBlank~PointBlank.API.RedirectCallsState.html">RedirectCallsState</a> RedirectCalls(<br />   <a href="">MethodInfo</a> <i>from</i>,<br />   <a href="">MethodInfo</a> <i>to</i><br />);</div>
+      <p> Loads a plugin. </p>
+      <div class="syntax">public static <a href="">bool</a> loadPlugin(<br />   <a href="">string</a> <i>path</i><br />);</div>
       <h4 class="dtH4">Parameters</h4>
       <dl>
         <dt>
-          <i>from</i>
+          <i>path</i>
         </dt>
-        <dd>MethodInfo of the original method.</dd>
-        <dt>
-          <i>to</i>
-        </dt>
-        <dd>MethodInfo of the custom method.</dd>
+        <dd>The path to the plugin.</dd>
       </dl>
+      <h4 class="dtH4">Return Value</h4>
+      <p>If the plugin was loaded successfully.</p>
       <h4 class="dtH4">See Also</h4>
       <p>
-        <a href="PointBlank~PointBlank.API.RedirectionHelper.html">RedirectionHelper Class</a> | <a href="~PointBlank.API.html">PointBlank.API Namespace</a></p>
+        <a href="PointBlank~PointBlank.API.Server.PBServer.html">PBServer Class</a> | <a href="~PointBlank.API.Server.html">PointBlank.API.Server Namespace</a></p>
     </div>
   </body>
 </html>

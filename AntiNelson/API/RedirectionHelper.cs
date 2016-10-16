@@ -54,6 +54,7 @@ namespace PointBlank.API
         public static void RevertRedirect(MethodInfo from, RedirectCallsState state)
         {
             var fptr1 = from.MethodHandle.GetFunctionPointer();
+            PBLogging.log("Reverting " + fptr1 + "...", false);
             RevertJumpTo(fptr1, state);
         }
 

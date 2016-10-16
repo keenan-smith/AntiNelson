@@ -65,8 +65,8 @@ namespace PointBlank.PB_Library
             PBLogging.log("Unloaded plugin domain!");
             createPluginDomain();
 
-            printLoadedAssemblies(AppDomain.CurrentDomain);
-            printLoadedAssemblies(_pluginDomain);
+            //printLoadedAssemblies(AppDomain.CurrentDomain);
+            //printLoadedAssemblies(_pluginDomain);
         }
 
         public void loadPlugins()

@@ -25,6 +25,11 @@ namespace PointBlank.PB_Library
         }
 
         #region Functions
+        public void reload()
+        {
+            loadCodes(lib_PluginManager.pluginDomain);
+        }
+
         public bool loadCodes(AppDomain domain)
         {
             try
@@ -43,7 +48,8 @@ namespace PointBlank.PB_Library
                                     if (Array.Exists(rcas.ToArray(), a => a.method == rca.method))
                                         continue;
                                     rca.callState = RedirectionHelper.RedirectCalls(rca.method, mi);
-                                    rcas.Add(rca);
+                                    if(!t.FullName.ToLower().StartsWith("pointblank.pb_overridables"))
+                                        rcas.Add(rca);
                                 }
                             }
                         }
@@ -74,7 +80,8 @@ namespace PointBlank.PB_Library
                                 if (Array.Exists(rcas.ToArray(), a => a.method == rca.method))
                                     continue;
                                 rca.callState = RedirectionHelper.RedirectCalls(rca.method, mi);
-                                rcas.Add(rca);
+                                if (!t.FullName.ToLower().StartsWith("PointBlank.PB_Overridables"))
+                                    rcas.Add(rca);
                             }
                         }
                     }
@@ -96,6 +103,7 @@ namespace PointBlank.PB_Library
                 {
                     RedirectionHelper.RevertRedirect(rca.method, rca.callState);
                 }
+                rcas.Clear();
                 return true;
             }
             catch (Exception ex)

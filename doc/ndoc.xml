@@ -115,6 +115,9 @@
             <hierarchyType id="T:PointBlank.API.PB.PBPreInit" displayName="PB.PBPreInit" namespace="PointBlank.API" assembly="PointBlank" />
           </hierarchyType>
         </hierarchyType>
+        <hierarchyType id="T:System.ValueType" displayName="ValueType" namespace="System" assembly="mscorlib">
+          <hierarchyType id="T:PointBlank.API.RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" assembly="PointBlank" />
+        </hierarchyType>
       </hierarchyType>
     </namespaceHierarchy>
     <namespaceHierarchy name="PointBlank.API.Server.Enumerables">
@@ -141,37 +144,38 @@
     <assemblyReference name="System.Xml" />
     <assemblyReference name="System" />
     <assemblyReference name="System.Core" />
+    <assemblyReference name="Interop.Shell32" />
     <attribute name="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" target="assembly">
       <property name="WrapNonExceptionThrows" type="System.Boolean" value="True" />
+    </attribute>
+    <attribute name="System.Reflection.AssemblyConfigurationAttribute" target="assembly">
+      <property name="Configuration" type="System.String" value="&quot;&quot;" />
     </attribute>
     <attribute name="System.Reflection.AssemblyCompanyAttribute" target="assembly">
       <property name="Company" type="System.String" value="&quot;AtiLion &amp; Kunii&quot;" />
     </attribute>
+    <attribute name="System.Runtime.CompilerServices.CompilationRelaxationsAttribute" target="assembly">
+      <property name="CompilationRelaxations" type="System.Int32" value="8" />
+    </attribute>
     <attribute name="System.Reflection.AssemblyProductAttribute" target="assembly">
       <property name="Product" type="System.String" value="&quot;PointBlank&quot;" />
+    </attribute>
+    <attribute name="System.Reflection.AssemblyCopyrightAttribute" target="assembly">
+      <property name="Copyright" type="System.String" value="&quot;Copyright © Atilion&amp;Kunii 2016&quot;" />
     </attribute>
     <attribute name="System.Diagnostics.DebuggableAttribute" target="assembly">
       <property name="IsJITTrackingEnabled" type="System.Boolean" value="True" />
       <property name="IsJITOptimizerDisabled" type="System.Boolean" value="False" />
       <property name="DebuggingFlags" type="System.Diagnostics.DebuggableAttribute+DebuggingModes" value="(DebuggingModes.Default|DebuggingModes.IgnoreSymbolStoreSequencePoints)" />
     </attribute>
-    <attribute name="System.Reflection.AssemblyTitleAttribute" target="assembly">
-      <property name="Title" type="System.String" value="&quot;PointBlank&quot;" />
-    </attribute>
     <attribute name="System.Reflection.AssemblyDescriptionAttribute" target="assembly">
       <property name="Description" type="System.String" value="&quot;An unturned framework that allows you to use mods or plugins on servers and clien&quot; +&#xD;&#xA;    &quot;ts&quot;" />
     </attribute>
-    <attribute name="System.Reflection.AssemblyConfigurationAttribute" target="assembly">
-      <property name="Configuration" type="System.String" value="&quot;&quot;" />
-    </attribute>
-    <attribute name="System.Runtime.CompilerServices.CompilationRelaxationsAttribute" target="assembly">
-      <property name="CompilationRelaxations" type="System.Int32" value="8" />
-    </attribute>
-    <attribute name="System.Reflection.AssemblyCopyrightAttribute" target="assembly">
-      <property name="Copyright" type="System.String" value="&quot;Copyright © Atilion&amp;Kunii 2016&quot;" />
-    </attribute>
     <attribute name="System.Reflection.AssemblyTrademarkAttribute" target="assembly">
       <property name="Trademark" type="System.String" value="&quot;&quot;" />
+    </attribute>
+    <attribute name="System.Reflection.AssemblyTitleAttribute" target="assembly">
+      <property name="Title" type="System.String" value="&quot;PointBlank&quot;" />
     </attribute>
     <attribute name="System.Runtime.InteropServices.ComVisibleAttribute" target="assembly">
       <property name="Value" type="System.Boolean" value="False" />
@@ -513,28 +517,20 @@
         </class>
         <class name="RedirectionHelper" displayName="RedirectionHelper" namespace="PointBlank.API" id="T:PointBlank.API.RedirectionHelper" access="Public" static="true">
           <method name="RedirectCalls" displayName="RedirectCalls" id="M:PointBlank.API.RedirectionHelper.RedirectCalls(System.Reflection.MethodInfo,System.Reflection.MethodInfo)" access="Public" contract="Static" valueType="true">
-            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <returnType typeId="T:PointBlank.API.RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" assembly="PointBlank" nullable="false" valueType="true" />
             <documentation><summary> Redirects any method to another method. </summary>
 <param name="from">MethodInfo of the original method.</param>
 <param name="to">MethodInfo of the custom method.</param></documentation>
             <parameter name="from" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
             <parameter name="to" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
           </method>
-          <method name="RedirectCall" displayName="RedirectCall" id="M:PointBlank.API.RedirectionHelper.RedirectCall(System.Reflection.MethodInfo,System.Reflection.MethodInfo)" access="Public" contract="Static" valueType="true">
+          <method name="RevertRedirect" displayName="RevertRedirect" id="M:PointBlank.API.RedirectionHelper.RevertRedirect(System.Reflection.MethodInfo,PointBlank.API.RedirectCallsState)" access="Public" contract="Static" valueType="true">
             <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
-            <documentation><summary> Redirects any method to another method. Only works 1 time. </summary>
+            <documentation><summary> Reverts the redirection. </summary>
 <param name="from">MethodInfo of the original method.</param>
-<param name="to">MethodInfo of the custom method.</param></documentation>
+<param name="state">The previous state of the redirection.</param></documentation>
             <parameter name="from" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
-            <parameter name="to" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
-          </method>
-          <method name="RedirectCallIL" displayName="RedirectCallIL" id="M:PointBlank.API.RedirectionHelper.RedirectCallIL(System.Reflection.MethodInfo,System.Reflection.MethodInfo)" access="Public" contract="Static" valueType="true">
-            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
-            <documentation><summary> Redirects any method to another method. Uses IL. </summary>
-<param name="from">MethodInfo of the original method.</param>
-<param name="to">MethodInfo of the custom method.</param></documentation>
-            <parameter name="from" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
-            <parameter name="to" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
+            <parameter name="state" typeId="T:PointBlank.API.RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" assembly="PointBlank" nullable="false" valueType="true" />
           </method>
           <method name="ToString" displayName="ToString" id="M:PointBlank.API.RedirectionHelper.ToString" access="Public" contract="Virtual" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.ToString">
             <returnType typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
@@ -560,6 +556,37 @@
             <returnType typeId="T:System.Object" displayName="Object" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
           </method>
         </class>
+        <structure name="RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" id="T:PointBlank.API.RedirectCallsState" access="Public">
+          <field name="a" id="F:PointBlank.API.RedirectCallsState.a" access="Public" contract="Normal" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <field name="b" id="F:PointBlank.API.RedirectCallsState.b" access="Public" contract="Normal" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <field name="c" id="F:PointBlank.API.RedirectCallsState.c" access="Public" contract="Normal" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <field name="d" id="F:PointBlank.API.RedirectCallsState.d" access="Public" contract="Normal" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <field name="e" id="F:PointBlank.API.RedirectCallsState.e" access="Public" contract="Normal" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <field name="f" id="F:PointBlank.API.RedirectCallsState.f" access="Public" contract="Normal" typeId="T:System.UInt64" displayName="UInt64" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <method name="Equals" displayName="Equals" id="M:PointBlank.API.RedirectCallsState.Equals(System.Object)" access="Public" contract="Override" valueType="true" declaringType="System.ValueType" declaringAssembly="mscorlib" declaringId="M:System.ValueType.Equals(System.Object)">
+            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <parameter name="obj" typeId="T:System.Object" displayName="Object" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+          <method name="GetHashCode" displayName="GetHashCode" id="M:PointBlank.API.RedirectCallsState.GetHashCode" access="Public" contract="Override" valueType="true" declaringType="System.ValueType" declaringAssembly="mscorlib" declaringId="M:System.ValueType.GetHashCode">
+            <returnType typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          </method>
+          <method name="ToString" displayName="ToString" id="M:PointBlank.API.RedirectCallsState.ToString" access="Public" contract="Override" valueType="false" declaringType="System.ValueType" declaringAssembly="mscorlib" declaringId="M:System.ValueType.ToString">
+            <returnType typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+          <method name="GetType" displayName="GetType" id="M:PointBlank.API.RedirectCallsState.GetType" access="Public" contract="Normal" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.GetType">
+            <returnType typeId="T:System.Type" displayName="Type" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+          <method name="Finalize" displayName="Finalize" id="M:PointBlank.API.RedirectCallsState.Finalize" access="Family" contract="Override" valueType="true" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.Finalize">
+            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <attribute name="System.Runtime.ConstrainedExecution.ReliabilityContractAttribute">
+              <property name="ConsistencyGuarantee" type="System.Runtime.ConstrainedExecution.Consistency" value="Consistency.WillNotCorruptState" />
+              <property name="Cer" type="System.Runtime.ConstrainedExecution.Cer" value="Cer.Success" />
+            </attribute>
+          </method>
+          <method name="MemberwiseClone" displayName="MemberwiseClone" id="M:PointBlank.API.RedirectCallsState.MemberwiseClone" access="Family" contract="Normal" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.MemberwiseClone">
+            <returnType typeId="T:System.Object" displayName="Object" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+        </structure>
         <delegate name="PB.PBPostInit" displayName="PB.PBPostInit" namespace="PointBlank.API" id="T:PointBlank.API.PB.PBPostInit" access="NestedPublic" valueType="true">
           <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
         </delegate>
@@ -1210,6 +1237,45 @@
             <parameter name="message" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
             <parameter name="color" typeId="T:UnityEngine.Color" displayName="Color" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
           </method>
+          <method name="restart" displayName="restart" id="M:PointBlank.API.Server.PBServer.restart" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Restarts the server. </summary>
+<returns>If the server has been restarted.</returns></documentation>
+          </method>
+          <method name="reloadPlugins" displayName="reloadPlugins" id="M:PointBlank.API.Server.PBServer.reloadPlugins" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Reloads all the plugins. </summary>
+<returns>If the reload was successful.</returns></documentation>
+          </method>
+          <method name="shutdown" displayName="shutdown" id="M:PointBlank.API.Server.PBServer.shutdown" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Shuts down the server. </summary>
+<returns>If server shutdown was successful.</returns></documentation>
+          </method>
+          <method name="unloadPlugins" displayName="unloadPlugins" id="M:PointBlank.API.Server.PBServer.unloadPlugins" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Unloads all the plugins. </summary>
+<returns>If the unload was successful.</returns></documentation>
+          </method>
+          <method name="loadPlugin" displayName="loadPlugin" id="M:PointBlank.API.Server.PBServer.loadPlugin(System.String)" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Loads a plugin. </summary>
+<param name="path">The path to the plugin.</param>
+<returns>If the plugin was loaded successfully.</returns></documentation>
+            <parameter name="path" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+          <method name="loadPlugins" displayName="loadPlugins" id="M:PointBlank.API.Server.PBServer.loadPlugins" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Loads all the plugins. </summary>
+<returns>If plugins are loaded.</returns></documentation>
+          </method>
+          <method name="getPlugins" displayName="getPlugins" id="M:PointBlank.API.Server.PBServer.getPlugins" access="Public" contract="Static" valueType="false">
+            <returnType typeId="T:PointBlank.API.Server.Attributes.PluginAttribute" displayName="PluginAttribute" namespace="PointBlank.API.Server.Attributes" assembly="PointBlank" nullable="false" valueType="false">
+              <array rank="1" />
+            </returnType>
+            <documentation><summary> Gets all the plugins currently loaded. </summary>
+<returns>Loaded plugins.</returns></documentation>
+          </method>
           <method name="ToString" displayName="ToString" id="M:PointBlank.API.Server.PBServer.ToString" access="Public" contract="Virtual" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.ToString">
             <returnType typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
           </method>
@@ -1522,7 +1588,7 @@
             <property name="Inherited" type="System.Boolean" value="True" />
           </attribute>
           <baseType name="Attribute" id="T:System.Attribute" displayName="Attribute" namespace="System" assembly="mscorlib" />
-          <constructor name=".ctor" id="M:PointBlank.API.Attributes.ReplaceCodeAttribute.#ctor(System.Type,System.String,System.Reflection.BindingFlags,System.Boolean)" access="Public" contract="Normal">
+          <constructor name=".ctor" id="M:PointBlank.API.Attributes.ReplaceCodeAttribute.#ctor(System.Type,System.String,System.Reflection.BindingFlags)" access="Public" contract="Normal">
             <documentation><summary> A method that has this attribute redirects the original method to the one contianing this attribute. </summary>
 <param name="methodClass">The class that contains the method you want to redirect.</param>
 <param name="methodName">The method name you want to redirect.</param>
@@ -1531,9 +1597,6 @@
             <parameter name="methodClass" typeId="T:System.Type" displayName="Type" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
             <parameter name="methodName" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
             <parameter name="flags" typeId="T:System.Reflection.BindingFlags" displayName="BindingFlags" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="true" />
-            <parameter name="useIL" optional="true" defaultValue="False" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true">
-              <attribute name="System.Runtime.InteropServices.OptionalAttribute" />
-            </parameter>
           </constructor>
           <property name="methodClass" id="P:PointBlank.API.Attributes.ReplaceCodeAttribute.methodClass" access="Public" contract="Normal" get="Public" set="false" typeId="T:System.Type" displayName="Type" namespace="System" assembly="mscorlib" nullable="false" valueType="false">
             <documentation><summary> The class that contains the original method. </summary></documentation>
@@ -1547,8 +1610,8 @@
           <property name="method" id="P:PointBlank.API.Attributes.ReplaceCodeAttribute.method" access="Public" contract="Normal" get="Public" set="false" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false">
             <documentation><summary> The original method. </summary></documentation>
           </property>
-          <property name="useIL" id="P:PointBlank.API.Attributes.ReplaceCodeAttribute.useIL" access="Public" contract="Normal" get="Public" set="false" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true">
-            <documentation><summary> Use the IL to redirect. </summary></documentation>
+          <property name="callState" id="P:PointBlank.API.Attributes.ReplaceCodeAttribute.callState" access="Public" contract="Normal" get="Public" set="Public" typeId="T:PointBlank.API.RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" assembly="PointBlank" nullable="false" valueType="true">
+            <documentation><summary> Gets the callstate of the method. </summary></documentation>
           </property>
           <property name="TypeId" id="P:PointBlank.API.Attributes.ReplaceCodeAttribute.TypeId" access="Public" contract="Virtual" declaringType="System.Attribute" declaringAssembly="mscorlib" declaringId="P:System.Attribute.TypeId" get="Public" set="false" typeId="T:System.Object" displayName="Object" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
           <method name="Equals" displayName="Equals" id="M:PointBlank.API.Attributes.ReplaceCodeAttribute.Equals(System.Object)" access="Public" contract="Override" valueType="true" declaringType="System.Attribute" declaringAssembly="mscorlib" declaringId="M:System.Attribute.Equals(System.Object)">

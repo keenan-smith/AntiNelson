@@ -39,9 +39,12 @@ namespace PointBlank.PB_Commands
             }
             else if (args[0].ToLower() == "load")
             {
-                if (args.Length <= 1)
+                if (args.Length == 1)
                 {
-                    player.sendChatMessage(localization.format("NotEnoughArgs"), Color.magenta);
+                    if (PBServer.loadPlugins())
+                        player.sendChatMessage(localization.format("LoadedPlugin"), Color.magenta);
+                    else
+                        player.sendChatMessage(localization.format("LoadedPluginFail"), Color.magenta);
                     return;
                 }
                 if(PBServer.loadPlugin(args[1]))

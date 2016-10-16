@@ -25,6 +25,11 @@ namespace PointBlank.PB_Library
         }
 
         #region Functions
+        public void reload()
+        {
+            loadCommands(lib_PluginManager.pluginDomain);
+        }
+
         public void addLocals(Type t)
         {
             CommandAttribute att = (CommandAttribute)Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
