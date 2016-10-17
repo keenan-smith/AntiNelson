@@ -141,11 +141,11 @@ namespace PointBlank.API.Server
         /// <summary>
         /// The steam groups of the player.
         /// </summary>
-        public SteamGroup[] steamGroups
+        public ulong[] steamGroups
         {
             get
             {
-                return Provider.provider.communityService.getGroups();
+                return steamProfile.groups;
             }
         }
 
@@ -367,7 +367,7 @@ namespace PointBlank.API.Server
 
             foreach (PBSteamGroup steamGroup in PBServer.steamGroups)
             {
-                if (Array.Exists(steamGroups, a => a.steamID.m_SteamID == steamGroup.steamID))
+                if (Array.Exists(steamGroups, a => a == steamGroup.steamID))
                 {
                     foreach (string perm in steamGroup.permissions)
                     {

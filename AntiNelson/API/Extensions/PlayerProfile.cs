@@ -18,6 +18,7 @@ namespace PointBlank.API.Extensions
         private bool _isLimited;
         private int _privacyState; // 0 = Public, 1 = Friends Only, 2 = Private
         private string _link;
+        private List<ulong> _groups = new List<ulong>();
         #endregion
 
         #region Properties
@@ -93,6 +94,17 @@ namespace PointBlank.API.Extensions
                     return PrivacyState.NONE;
             }
         }
+
+        /// <summary>
+        /// Returns all the groups the player is in. Only works if the profile is not private.
+        /// </summary>
+        public ulong[] groups
+        {
+            get
+            {
+                return _groups.ToArray();
+            }
+        }
         #endregion
 
         /// <summary>
@@ -117,6 +129,9 @@ namespace PointBlank.API.Extensions
                 _privacyState = 1;
             else if (privacy == "private")
                 _privacyState = 2;
+            if (root.SelectNodes("groups").Count > 0)
+                foreach (XmlElement group in root.SelectSingleNode("groups").SelectNodes("group"))
+                    _groups.Add(ulong.Parse(group.SelectSingleNode("groupID64").InnerText));
         }
     }
 }
