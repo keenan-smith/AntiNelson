@@ -299,12 +299,13 @@ namespace PointBlank.API.Server
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="color">The color of the message.</param>
-        public static void broadcastChat(string message, Color color)
+        public static void broadcastChat(string message, Color color, bool useUnturned = true)
         {
-            foreach (PBPlayer player in players)
-            {
-                player.sendChatMessage(message, color);
-            }
+            if (!useUnturned)
+                foreach (PBPlayer player in players)
+                    player.sendChatMessage(message, color);
+            else
+                ChatManager.say(message, color);
         }
 
         internal static void consoleInput(string command)

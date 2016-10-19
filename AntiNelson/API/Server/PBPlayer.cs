@@ -209,6 +209,22 @@ namespace PointBlank.API.Server
         }
         #endregion
 
+        #region Handlers
+        public delegate void PlayerHurtHandler(PBPlayer victim, PBPlayer attacker, bool died, EDeathCause cause, ELimb limb, Vector3 force);
+        public delegate void PlayerKilledHandler(PBPlayer victim, PBPlayer attacker, EDeathCause cause, ELimb limb, Vector3 force);
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// Called when player is hurt.
+        /// </summary>
+        public static event PlayerHurtHandler OnPlayerHurt;
+        /// <summary>
+        /// Called when player is killed.
+        /// </summary>
+        public static event PlayerKilledHandler OnPlayerKilled;
+        #endregion
+
         /// <summary>
         /// Create a normal player from the steam player.
         /// </summary>
