@@ -90,6 +90,8 @@
           </hierarchyInterfaces>
           <hierarchyType id="T:System.MulticastDelegate" displayName="MulticastDelegate" namespace="System" assembly="mscorlib">
             <hierarchyType id="T:PointBlank.API.Server.PBChat.ChatMessageHandler" displayName="PBChat.ChatMessageHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
+            <hierarchyType id="T:PointBlank.API.Server.PBPlayer.PlayerHurtHandler" displayName="PBPlayer.PlayerHurtHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
+            <hierarchyType id="T:PointBlank.API.Server.PBPlayer.PlayerKilledHandler" displayName="PBPlayer.PlayerKilledHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBServer.ClientJoinHandler" displayName="PBServer.ClientJoinHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBServer.ClientLeaveHandler" displayName="PBServer.ClientLeaveHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBServer.ConsoleInputTextHandler" displayName="PBServer.ConsoleInputTextHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
@@ -1970,6 +1972,12 @@
           <method name="MemberwiseClone" displayName="MemberwiseClone" id="M:PointBlank.API.Server.PBPlayer.MemberwiseClone" access="Family" contract="Normal" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.MemberwiseClone">
             <returnType typeId="T:System.Object" displayName="Object" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
           </method>
+          <event name="OnPlayerHurt" id="E:PointBlank.API.Server.PBPlayer.OnPlayerHurt" access="Public" contract="Static" typeId="T:PointBlank.API.Server.PBPlayer.PlayerHurtHandler" valueType="false" multicast="true">
+            <documentation><summary> Called when player is hurt. </summary></documentation>
+          </event>
+          <event name="OnPlayerKilled" id="E:PointBlank.API.Server.PBPlayer.OnPlayerKilled" access="Public" contract="Static" typeId="T:PointBlank.API.Server.PBPlayer.PlayerKilledHandler" valueType="false" multicast="true">
+            <documentation><summary> Called when player is killed. </summary></documentation>
+          </event>
         </class>
         <class name="PBSaving" displayName="PBSaving" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBSaving" access="Public">
           <constructor name=".ctor" id="M:PointBlank.API.Server.PBSaving.#ctor(System.String,PointBlank.API.Enumerables.ESaveType)" access="Public" contract="Normal">
@@ -2128,13 +2136,16 @@
 <returns>The player instance.</returns></documentation>
             <parameter name="player" typeId="T:SDG.Unturned.Player" displayName="Player" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="false" />
           </method>
-          <method name="broadcastChat" displayName="broadcastChat" id="M:PointBlank.API.Server.PBServer.broadcastChat(System.String,UnityEngine.Color)" access="Public" contract="Static" valueType="true">
+          <method name="broadcastChat" displayName="broadcastChat" id="M:PointBlank.API.Server.PBServer.broadcastChat(System.String,UnityEngine.Color,System.Boolean)" access="Public" contract="Static" valueType="true">
             <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
             <documentation><summary> Broadcasts a message to all the players in the server. </summary>
 <param name="message">The message.</param>
 <param name="color">The color of the message.</param></documentation>
             <parameter name="message" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
             <parameter name="color" typeId="T:UnityEngine.Color" displayName="Color" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
+            <parameter name="useUnturned" optional="true" defaultValue="True" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true">
+              <attribute name="System.Runtime.InteropServices.OptionalAttribute" />
+            </parameter>
           </method>
           <method name="restart" displayName="restart" id="M:PointBlank.API.Server.PBServer.restart" access="Public" contract="Static" valueType="true">
             <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
@@ -2343,6 +2354,23 @@
           <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
           <parameter name="speaker" typeId="T:Steamworks.CSteamID" displayName="CSteamID" namespace="Steamworks" assembly="Assembly-CSharp-firstpass" nullable="false" valueType="true" />
           <parameter name="args" typeId="T:SDG.Unturned.Chat" displayName="Chat" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="false" />
+        </delegate>
+        <delegate name="PBPlayer.PlayerHurtHandler" displayName="PBPlayer.PlayerHurtHandler" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBPlayer.PlayerHurtHandler" access="NestedPublic" valueType="true">
+          <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="victim" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
+          <parameter name="attacker" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
+          <parameter name="died" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="cause" typeId="T:SDG.Unturned.EDeathCause" displayName="EDeathCause" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
+          <parameter name="limb" typeId="T:SDG.Unturned.ELimb" displayName="ELimb" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
+          <parameter name="force" typeId="T:UnityEngine.Vector3" displayName="Vector3" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
+        </delegate>
+        <delegate name="PBPlayer.PlayerKilledHandler" displayName="PBPlayer.PlayerKilledHandler" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBPlayer.PlayerKilledHandler" access="NestedPublic" valueType="true">
+          <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="victim" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
+          <parameter name="attacker" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
+          <parameter name="cause" typeId="T:SDG.Unturned.EDeathCause" displayName="EDeathCause" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
+          <parameter name="limb" typeId="T:SDG.Unturned.ELimb" displayName="ELimb" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
+          <parameter name="force" typeId="T:UnityEngine.Vector3" displayName="Vector3" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
         </delegate>
         <delegate name="PBServer.ClientJoinHandler" displayName="PBServer.ClientJoinHandler" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBServer.ClientJoinHandler" access="NestedPublic" valueType="true">
           <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />

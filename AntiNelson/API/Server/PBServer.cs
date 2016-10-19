@@ -536,6 +536,7 @@ namespace PointBlank.API.Server
                 PBPlayer ply = new PBPlayer(player);
                 OnPlayerJoin(ply);
                 players.Add(ply);
+                ply.player.life.onHurt += new Hurt(PBPlayer.playerHurtEvent);
             }
         }
 
@@ -546,6 +547,7 @@ namespace PointBlank.API.Server
             {
                 OnPlayerLeave(ply);
                 players.Remove(ply);
+                ply.player.life.onHurt -= new Hurt(PBPlayer.playerHurtEvent);
             }
         }
         #endregion

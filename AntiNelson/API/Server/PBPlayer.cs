@@ -210,8 +210,8 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Handlers
-        public delegate void PlayerHurtHandler(PBPlayer victim, PBPlayer attacker, bool died, EDeathCause cause, ELimb limb, Vector3 force);
-        public delegate void PlayerKilledHandler(PBPlayer victim, PBPlayer attacker, EDeathCause cause, ELimb limb, Vector3 force);
+        public delegate void PlayerHurtHandler(PBPlayer victim, PBPlayer attacker, byte damage, ELimb limb, Vector3 force);
+        public delegate void PlayerKilledHandler(PBPlayer victim, PBPlayer attacker, byte damage, EDeathCause cause, ELimb limb, Vector3 force);
         #endregion
 
         #region Events
@@ -253,6 +253,16 @@ namespace PointBlank.API.Server
         }
 
         #region Functions
+        internal static void playerHurtEvent(Player ply, byte damage, Vector3 force, EDeathCause cause, ELimb limb, CSteamID killer)
+        {
+            if (OnPlayerHurt != null)
+                OnPlayerHurt(PBServer.findPlayer(ply), PBServer.findPlayer(killer), damage, limb, force);
+
+            if (ply.life.isDead || ply.life.health < 1 || ply.life.health - damage < 1)
+                if (OnPlayerKilled != null)
+                    OnPlayerKilled(PBServer.findPlayer(ply), PBServer.findPlayer(killer), damage, cause, limb, force);
+        }
+
         /// <summary>
         /// Bans the player.
         /// </summary>
