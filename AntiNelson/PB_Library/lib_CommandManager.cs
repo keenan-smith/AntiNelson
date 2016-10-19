@@ -21,13 +21,13 @@ namespace PointBlank.PB_Library
             if (!PB.isServer())
                 return;
             PBLogging.log("Loading CommandManager...");
-            loadCommands(lib_PluginManager.pluginDomain);
+            loadCommands(AppDomain.CurrentDomain);
         }
 
         #region Functions
         public void reload()
         {
-            loadCommands(lib_PluginManager.pluginDomain);
+            loadCommands(AppDomain.CurrentDomain);
         }
 
         public void addLocals(Type t)

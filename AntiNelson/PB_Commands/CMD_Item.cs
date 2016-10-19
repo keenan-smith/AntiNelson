@@ -29,7 +29,7 @@ namespace PointBlank.PB_Commands
         {
             if (args.Length < 1)
             {
-                player.sendChatMessage(localization.format("NoArguments"), Color.red);
+                PBServer.findCommand("usage").execute(player, command);
                 return;
             }
 

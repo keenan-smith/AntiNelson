@@ -31,7 +31,10 @@ namespace PointBlank.PB_Commands
 
             if (args.Length < 2)
             {
-                orgPlayer.sendChatMessage(localization.format("NoArguments"), Color.red);
+                string msg = "";
+                foreach (string perm in player.permissions)
+                    msg = msg + (msg == "" ? perm : ", " + perm);
+                orgPlayer.sendChatMessage(msg, Color.magenta);
                 return;
             }
 

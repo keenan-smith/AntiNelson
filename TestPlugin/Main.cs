@@ -11,9 +11,10 @@ namespace TestPlugin
     [Plugin("Test Plugin", "Kunii", false, true)]
     public class Main : PBPlugin
     {
-        public void load()
+        public override void onLoad()
         {
-            PBLogging.log("Hurrdurr, called from plugin!");
+            PBLogging.log("Log test.");
+            Console.WriteLine("Console test.");
             PBServer.OnPlayerJoin += new PBServer.ClientJoinHandler(onPlayerJoin);
             PBServer.OnPlayerLeave += new PBServer.ClientLeaveHandler(onPlayerLeave);
         }

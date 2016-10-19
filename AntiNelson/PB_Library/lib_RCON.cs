@@ -129,7 +129,11 @@ namespace PointBlank.PB_Library
                     lock (client.execute)
                     {
                         while (client.execute.Count > 0)
-                            PBServer.ParseInputCommand(client.execute.Dequeue());
+                        {
+                            string command = client.execute.Dequeue();
+                            PBServer.ParseInputCommand(command);
+                            Console.WriteLine("[" + client.IP + "] " + command);
+                        }
                     }
                 }
             }

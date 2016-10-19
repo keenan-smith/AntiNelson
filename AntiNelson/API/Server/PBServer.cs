@@ -447,12 +447,21 @@ namespace PointBlank.API.Server
         }
 
         /// <summary>
-        /// Gets all the plugins currently loaded.
+        /// Gets the attribute of all the currently loaded plugins.
         /// </summary>
-        /// <returns>Loaded plugins.</returns>
-        public static PluginAttribute[] getPlugins()
+        /// <returns>Attribute of loaded plugins.</returns>
+        public static PluginAttribute[] getPluginAttributes()
         {
-            return Instances.pluginManager.plgs;
+            return Instances.pluginManager.pluginAttributes;
+        }
+
+        /// <summary>
+        /// Gets all the currently loaded plugins.
+        /// </summary>
+        /// <returns>Loaded plugins</returns>
+        public static PBPlugin[] getPlugins()
+        {
+            return Instances.pluginManager.plugins;
         }
         #endregion
 

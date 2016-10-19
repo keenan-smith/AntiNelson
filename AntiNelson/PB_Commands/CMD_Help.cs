@@ -23,16 +23,29 @@ namespace PointBlank.PB_Commands
         #region Functions
         public override void onCall(PBPlayer player, string[] args)
         {
-            if (args.Length < 1)
+            int page = 1;
+            if (args.Length < 1 || int.TryParse(args[0], out page))
             {
+                string[] commands = new string[PBServer.commands.Count + Commander.commands.Count];
+                int index = 0;
                 foreach (PBCommand command in PBServer.commands)
                 {
-                    player.sendChatMessage(command.command + " - " + command.help, Color.magenta);
+                    commands[index] = command.command + " - " + command.help;
+                    index++;
                 }
                 foreach (Command uCommand in Commander.commands)
                 {
-                    player.sendChatMessage(uCommand.command + " - " + uCommand.help, Color.magenta);
+                    commands[index] = uCommand.command + " - " + uCommand.help;
+                    index++;
                 }
+                for (int i = (page * 5) - 5; i < page * 5; i++)
+                {
+                    if (i >= commands.Length)
+                        break;
+
+                    player.sendChatMessage(commands[i], Color.magenta);
+                }
+                player.sendChatMessage("Page: " + page + "/" + Math.Floor((double)(commands.Length / 5)), Color.magenta);
                 return;
             }
 

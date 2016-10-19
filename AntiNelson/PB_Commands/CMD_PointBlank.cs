@@ -27,7 +27,7 @@ namespace PointBlank.PB_Commands
         {
             if (args.Length <= 0)
             {
-                player.sendChatMessage(localization.format("NotEnoughArgs"), Color.magenta);
+                PBServer.findCommand("usage").execute(player, command);
                 return;
             }
             if (args[0].ToLower() == "reload")

@@ -16,18 +16,19 @@ namespace PointBlank.PB_Library
     {
         #region Variables
         private List<ReplaceCodeAttribute> rcas = new List<ReplaceCodeAttribute>();
+        private List<ReplaceCodeAttribute> ignores = new List<ReplaceCodeAttribute>();
         #endregion
 
         public lib_CodeReplacer()
         {
             PBLogging.log("Loading CodeReplacer...");
-            loadCodes(lib_PluginManager.pluginDomain);
+            loadCodes(AppDomain.CurrentDomain);
         }
 
         #region Functions
         public void reload()
         {
-            loadCodes(lib_PluginManager.pluginDomain);
+            loadCodes(AppDomain.CurrentDomain);
         }
 
         public bool loadCodes(AppDomain domain)
@@ -45,10 +46,12 @@ namespace PointBlank.PB_Library
                                 ReplaceCodeAttribute rca = (ReplaceCodeAttribute)Attribute.GetCustomAttribute(mi, typeof(ReplaceCodeAttribute));
                                 if (rca != null)
                                 {
-                                    if (Array.Exists(rcas.ToArray(), a => a.method == rca.method))
+                                    if (Array.Exists(rcas.ToArray(), a => a.method == rca.method) || Array.Exists(ignores.ToArray(), b => b.method == rca.method))
                                         continue;
                                     rca.callState = RedirectionHelper.RedirectCalls(rca.method, mi);
-                                    if(!t.FullName.ToLower().StartsWith("pointblank.pb_overridables"))
+                                    if (t.FullName.ToLower().StartsWith("pointblank.pb_overridables"))
+                                        ignores.Add(rca);
+                                    else
                                         rcas.Add(rca);
                                 }
                             }
@@ -77,10 +80,12 @@ namespace PointBlank.PB_Library
                             ReplaceCodeAttribute rca = (ReplaceCodeAttribute)Attribute.GetCustomAttribute(mi, typeof(ReplaceCodeAttribute));
                             if (rca != null)
                             {
-                                if (Array.Exists(rcas.ToArray(), a => a.method == rca.method))
+                                if (Array.Exists(rcas.ToArray(), a => a.method == rca.method) || Array.Exists(ignores.ToArray(), b => b.method == rca.method))
                                     continue;
                                 rca.callState = RedirectionHelper.RedirectCalls(rca.method, mi);
-                                if (!t.FullName.ToLower().StartsWith("PointBlank.PB_Overridables"))
+                                if (t.FullName.ToLower().StartsWith("pointblank.pb_overridables"))
+                                    ignores.Add(rca);
+                                else
                                     rcas.Add(rca);
                             }
                         }

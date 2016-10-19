@@ -159,6 +159,7 @@
     <Compile Include="API\Enumerables\ECryptoType.cs" />
     <Compile Include="API\Enumerables\ESaveType.cs" />
     <Compile Include="API\PBCrypto.cs" />
+    <Compile Include="API\Server\Extensions\PBPlugin.cs" />
     <Compile Include="API\Server\PBSync.cs" />
     <Compile Include="API\Server\Attributes\CommandAttribute.cs" />
     <Compile Include="API\Server\Attributes\PluginAttribute.cs" />
@@ -175,7 +176,6 @@
     <Compile Include="API\Server\PBChat.cs" />
     <Compile Include="API\Enumerables\PrivacyState.cs" />
     <Compile Include="API\Extensions\PlayerProfile.cs" />
-    <Compile Include="API\Server\Extensions\PBPlugin.cs" />
     <Compile Include="API\PBConfig.cs" />
     <Compile Include="API\PBLogging.cs" />
     <Compile Include="API\Server\PBPlayer.cs" />
@@ -202,6 +202,7 @@
     <Compile Include="PB_Extensions\RCONClient.cs" />
     <Compile Include="PB_GameObjects\AutoSave.cs" />
     <Compile Include="PB_GameObjects\Sync.cs" />
+    <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Library\lib_Sync.cs" />
     <Compile Include="PB_Overridables\Override_CommandWindow.cs" />
     <Compile Include="PB_Threads\RCON.cs" />
@@ -209,9 +210,7 @@
     <Compile Include="PB_Library\lib_CodeReplacer.cs" />
     <Compile Include="PB_Library\lib_CommandManager.cs" />
     <Compile Include="PB_Library\lib_EventInitalizer.cs" />
-    <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Library\lib_RCON.cs" />
-    <Compile Include="PB_Library\PluginLoaderProxy.cs" />
     <Compile Include="PB_Loading\EntryPoint.cs" />
     <Compile Include="PB_Loading\Framework.cs" />
     <Compile Include="PB_Overridables\Override_ChatManager.cs" />

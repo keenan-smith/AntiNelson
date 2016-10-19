@@ -1,144 +1,140 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
-using System.Reflection;
-using PointBlank.API.Server.Extensions;
-using PointBlank.API.Server;
 using PointBlank.API.Server.Attributes;
+using PointBlank.API.Server.Extensions;
 using PointBlank.API;
 
 namespace PointBlank.PB_Library
 {
-    internal class lib_PluginManager
+    internal class lib_PluginManager : MonoBehaviour
     {
+        #region Variables
+        private List<string> _loadedPaths = new List<string>();
+        private Dictionary<PluginAttribute, PBPlugin> _plugins = new Dictionary<PluginAttribute, PBPlugin>();
+        private Dictionary<string, string> _libraries = new Dictionary<string, string>();
+        #endregion
 
-        private static List<Type> commandList = new List<Type>();
-        private static Dictionary<String, PBPlugin> loadedPlugins = new Dictionary<String, PBPlugin>();
-        private static AppDomainSetup domainSetup = new AppDomainSetup();
-        private static AppDomain _pluginDomain = null;
-        private static PluginLoaderProxy pluginLoader = null;
-        private static List<PluginAttribute> _plgs = new List<PluginAttribute>();
-
-        public static AppDomain pluginDomain
+        #region Properties
+        public PluginAttribute[] pluginAttributes
         {
             get
             {
-                return _pluginDomain;
+                return _plugins.Keys.ToArray();
             }
         }
 
-        public PluginAttribute[] plgs
+        public PBPlugin[] plugins
         {
             get
             {
-                return _plgs.ToArray();
+                return _plugins.Values.ToArray();
             }
         }
+        #endregion
 
-        static lib_PluginManager()
+        public lib_PluginManager()
         {
             if (!PB.isServer())
                 return;
+            PBLogging.log("Loading plugin manager...");
 
-            createPluginDomain();
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(onResolve);
         }
 
-        private static void createPluginDomain()
+        #region Functions
+        public PBPlugin getPlugin(PluginAttribute attribute)
         {
-            domainSetup.ApplicationBase = Variables.pathManaged;
-            domainSetup.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-            domainSetup.DisallowBindingRedirects = false;
-            domainSetup.DisallowCodeDownload = true;
-            _pluginDomain = AppDomain.CreateDomain("PB Domain", null, domainSetup);
-            pluginLoader = _pluginDomain.CreateInstanceAndUnwrap(typeof(PluginLoaderProxy).Assembly.FullName, typeof(PluginLoaderProxy).FullName) as PluginLoaderProxy;
-            pluginLoader.init();
-
+            return _plugins[attribute];
         }
 
-        public void unloadAllPlugins()
+        public PluginAttribute getAttribute(PBPlugin plugin)
         {
-            loadedPlugins.Clear();
-            _plgs.Clear();
-            AppDomain.Unload(_pluginDomain);
-            PBLogging.log("Unloaded plugin domain!");
-            createPluginDomain();
-
-            //printLoadedAssemblies(AppDomain.CurrentDomain);
-            //printLoadedAssemblies(_pluginDomain);
-        }
-
-        public void loadPlugins()
-        {
-
-            foreach (String path in Directory.GetFiles(Variables.pluginsPathServer, "*.dll"))
-                loadPlugin(path);
-
-        }
-
-        public PBPlugin loadPlugin(String fullPath)
-        {
-            try
+            foreach (KeyValuePair<PluginAttribute, PBPlugin> pair in _plugins)
             {
-                if (loadedPlugins.ContainsKey(fullPath))
-                {
-                    PBLogging.logWarning("Already loaded: " + fullPath);
-                    return loadedPlugins[fullPath];
-                }
-
-                pluginLoader.loadPlugin(AppDomain.CurrentDomain, fullPath);
-
-            }
-            catch (Exception e)
-            {
-                PBLogging.logError("ERROR: Failed to load plugin! - ", e);
+                if (pair.Value == plugin)
+                    return pair.Key;
             }
             return null;
         }
 
-        public static void registerPlugin(String fullPath, PBPlugin plugin)
+        public void unloadPlugin(PBPlugin plugin)
         {
-            loadedPlugins.Add(fullPath, plugin);
+            GameObject.Destroy(plugin.pluginObject);
         }
 
-        public static void registerCommands()
+        public void unloadAllPlugins()
         {
-
-            Instances.commandManager.loadCommands((Assembly)AppDomain.CurrentDomain.GetData("asm"));
-
-        }
-
-        public static byte[] readFile(String fullPath)
-        {
-            byte[] buffer = new byte[4096];
-
-            using (FileStream fs = new FileStream(fullPath, FileMode.Open))
+            foreach (KeyValuePair<PluginAttribute, PBPlugin> pair in _plugins)
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    int i;
-
-                    try
-                    {
-                        while ((i = fs.Read(buffer, 0, buffer.Length)) > 0)
-                            ms.Write(buffer, 0, i);
-                    }
-                    catch (InternalBufferOverflowException ex)
-                    {
-                        PBLogging.logError("ERROR: Buffer overflow upon reading file!", ex);
-                    }
-
-                    fs.Close();
-                    return ms.ToArray();
-                }
+                GameObject.Destroy(pair.Value.pluginObject);
             }
         }
 
-        public static void printLoadedAssemblies(AppDomain domain)
+        public void loadLibraries()
         {
-            foreach (Assembly a in domain.GetAssemblies())
-                PBLogging.log(String.Format("{0} ({1}): {2}", domain.FriendlyName, domain.Id, a.ManifestModule.Name));
+            foreach (string path in Directory.GetFiles(Variables.librariesPathServer, "*.dll"))
+                _libraries.Add(AssemblyName.GetAssemblyName(path).FullName, path);
         }
+
+        public void loadPlugins()
+        {
+            foreach (string path in Directory.GetFiles(Variables.pluginsPathServer, "*.dll"))
+                loadPlugin(path);
+        }
+
+        public bool loadPlugin(string fullpath)
+        {
+            try
+            {
+                if (Array.Exists(_loadedPaths.ToArray(), a => a == fullpath))
+                    return true;
+
+                Assembly asm = Assembly.Load(File.ReadAllBytes(fullpath));
+
+                foreach (Type a in asm.GetTypes())
+                {
+                    if (a.IsClass && typeof(PBPlugin).IsAssignableFrom(a))
+                    {
+                        PluginAttribute pa = (PluginAttribute)Attribute.GetCustomAttribute(a, typeof(PluginAttribute));
+                        if (pa != null)
+                        {
+                            GameObject obj = new GameObject(pa.pluginName);
+                            PBPlugin plugin = obj.AddComponent(a) as PBPlugin;
+
+                            DontDestroyOnLoad(obj);
+                            plugin.pluginObject = obj;
+                            plugin.onLoad();
+
+                            _plugins.Add(pa, plugin);
+                            _loadedPaths.Add(fullpath);
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("Failed to load " + Path.GetFileName(fullpath), ex);
+                return false;
+            }
+        }
+        #endregion
+
+        #region Event Functions
+        private Assembly onResolve(object sender, ResolveEventArgs args)
+        {
+            if (_libraries.ContainsKey(args.Name))
+                return Assembly.Load(File.ReadAllBytes(_libraries[args.Name]));
+            else
+                PBLogging.log("Unable to find dependency: " + args.Name);
+            return null;
+        }
+        #endregion
     }
 }

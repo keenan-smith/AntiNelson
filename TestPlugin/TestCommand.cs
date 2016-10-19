@@ -2,6 +2,7 @@
 using PointBlank.API.Server;
 using PointBlank.API.Server.Attributes;
 using PointBlank.API.Server.Extensions;
+using PointBlank.API;
 
 namespace TestPlugin
 {
@@ -17,15 +18,12 @@ namespace TestPlugin
 
         public override void onCall(PBPlayer player, string[] args)
         {
-
             if (player.getCustomVariable("test") == null)
                 player.setCustomVariable("test", 0, true);
             else player.setCustomVariable("test", ((int)player.getCustomVariable("test"))+1, true);
 
 
             player.sendChatMessage("Set local var: " + ((int)player.getCustomVariable("test")), Color.red);
-
         }
-
     }
 }

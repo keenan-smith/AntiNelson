@@ -18,6 +18,8 @@ namespace PointBlank
 
         public static string pluginsPathServer = serverPath + @"\Plugins\";
 
+        public static string librariesPathServer = serverPath + @"\Libraries\";
+
         public static string modsPathClient = Directory.GetCurrentDirectory() + @"\Mods\";
 
         public static string currentPath = AppDomain.CurrentDomain.Id != 0 ? serverPath : Directory.GetCurrentDirectory();
@@ -35,6 +37,7 @@ namespace PointBlank
             "Settings",
             "Locals",
             "Saves",
+            "Libraries",
         };
 
         public static string[] serverSaveFiles = new string[]

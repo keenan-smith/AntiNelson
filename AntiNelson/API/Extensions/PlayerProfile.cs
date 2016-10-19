@@ -118,20 +118,31 @@ namespace PointBlank.API.Extensions
             XmlDocument doc = new XmlDocument();
             doc.Load(url);
             XmlElement root = doc.DocumentElement;
-            _isVisible = (root.SelectSingleNode("visibilityState").InnerText == "1");
-            _vacBanned = (root.SelectSingleNode("vacBanned").InnerText == "1");
-            _tradeBanned = (root.SelectSingleNode("tradeBanState").InnerText != "None");
-            _isLimited = (root.SelectSingleNode("isLimitedAccount").InnerText == "1");
-            string privacy = root.SelectSingleNode("privacyState").InnerText;
-            if (privacy == "public")
-                _privacyState = 0;
-            else if (privacy == "friendsonly")
-                _privacyState = 1;
-            else if (privacy == "private")
+            if (root != null)
+            {
+                _isVisible = (root.SelectSingleNode("visibilityState").InnerText == "1");
+                _vacBanned = (root.SelectSingleNode("vacBanned").InnerText == "1");
+                _tradeBanned = (root.SelectSingleNode("tradeBanState").InnerText != "None");
+                _isLimited = (root.SelectSingleNode("isLimitedAccount").InnerText == "1");
+                string privacy = root.SelectSingleNode("privacyState").InnerText;
+                if (privacy == "public")
+                    _privacyState = 0;
+                else if (privacy == "friendsonly")
+                    _privacyState = 1;
+                else if (privacy == "private")
+                    _privacyState = 2;
+                if (root.SelectNodes("groups").Count > 0)
+                    foreach (XmlElement group in root.SelectSingleNode("groups").SelectNodes("group"))
+                        _groups.Add(ulong.Parse(group.SelectSingleNode("groupID64").InnerText));
+            }
+            else
+            {
+                _isVisible = false;
+                _vacBanned = false;
+                _tradeBanned = false;
+                _isLimited = false;
                 _privacyState = 2;
-            if (root.SelectNodes("groups").Count > 0)
-                foreach (XmlElement group in root.SelectSingleNode("groups").SelectNodes("group"))
-                    _groups.Add(ulong.Parse(group.SelectSingleNode("groupID64").InnerText));
+            }
         }
     }
 }

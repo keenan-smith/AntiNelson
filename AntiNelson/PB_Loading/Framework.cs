@@ -42,16 +42,18 @@ namespace PointBlank.PB_Loading
             Variables.obj_Commands = new GameObject();
             DontDestroyOnLoad(Variables.obj_Commands);
 
+            Instances.pluginManager = new lib_PluginManager();
             Instances.RCON = new lib_RCON();
             Instances.autoSave = new lib_AutoSave();
-            Instances.codeReplacer = new lib_CodeReplacer();
-            Instances.commandManager = new lib_CommandManager();
-            Instances.pluginManager = new lib_PluginManager();
             Instances.eventInitalizer = new lib_EventInitalizer();
 
             PB.preInit();
+            Instances.pluginManager.loadLibraries();
             Instances.pluginManager.loadPlugins();
             PB.postInit();
+
+            Instances.codeReplacer = new lib_CodeReplacer();
+            Instances.commandManager = new lib_CommandManager();
         }
 
         public void _Update()
