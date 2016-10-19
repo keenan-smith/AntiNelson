@@ -144,7 +144,7 @@ namespace Patcher
             {
 
                 Console.WriteLine("Checking PointBlank version...");
-                version = new WebClient().DownloadString("http://pastebin.com/raw/Gn61UWxL");
+                version = new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/VERSION");
 
             }
             catch (Exception e)
@@ -172,7 +172,7 @@ namespace Patcher
             {
 
                 Console.WriteLine("Donwloading PointBlank...");
-                pbArr = decompress(new WebClient().DownloadString("http://pastebin.com/raw/e8JZQn4M"));
+                pbArr = decompress(new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/DATA"));
                 Console.WriteLine("Size: " + pbArr.Length);
             }
             catch (Exception e)
