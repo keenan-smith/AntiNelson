@@ -324,18 +324,19 @@ namespace PointBlank.API.Server
         /// Restarts the server.
         /// </summary>
         /// <returns>If the server has been restarted.</returns>
+        [Obsolete("Not functional")]
         public static bool restart()
         {
             try
             {
                 string p = "";
                 foreach(string path in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.lnk", SearchOption.TopDirectoryOnly))
-                {
+                {/*
                     if (Tool.IsShortcut(path) && Tool.ResolveShortcut(path).ToLower().Contains("unturned.exe"))
                     {
                         p = path;
                         break;
-                    }
+                    }*/
                 }
                 Process.Start(p);
                 Application.Quit();
