@@ -16,6 +16,8 @@ namespace PointBlank.PB_Loading
 
         public void _Start()
         {
+            PBLogging.logImportant("Loading PointBlank...");
+
             Variables.currentPath = PB.getWorkingDirectory();
 
             #region Folder Stuff
@@ -40,7 +42,9 @@ namespace PointBlank.PB_Loading
             #endregion
 
             Variables.obj_Commands = new GameObject();
+            Variables.obj_Extras = new GameObject();
             DontDestroyOnLoad(Variables.obj_Commands);
+            DontDestroyOnLoad(Variables.obj_Extras);
 
             Instances.pluginManager = new lib_PluginManager();
             Instances.RCON = new lib_RCON();
@@ -54,6 +58,10 @@ namespace PointBlank.PB_Loading
 
             Instances.codeReplacer = new lib_CodeReplacer();
             Instances.commandManager = new lib_CommandManager();
+
+            Instances.eventRunner = Variables.obj_Extras.AddComponent<lib_EventRunner>();
+
+            PBLogging.logImportant("PointBlank has been loaded!");
         }
 
         public void _Update()

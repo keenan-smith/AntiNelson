@@ -46,6 +46,18 @@ namespace PointBlank.API
             if (inConsole)
                 CommandWindow.LogWarning("[PointBlank] " + text);
         }
+
+        /// <summary>
+        /// Logs important messages.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="inConsole">Print in console.</param>
+        public static void logImportant(string text, bool inConsole = true)
+        {
+            Debug.Log("[PointBlank] " + text);
+            if (inConsole)
+                Tool.runMethod(typeof(CommandWindow), "Log", new object[] { text, ConsoleColor.Blue });
+        }
         #endregion
     }
 }

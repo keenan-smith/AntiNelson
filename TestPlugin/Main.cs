@@ -17,6 +17,8 @@ namespace TestPlugin
             Console.WriteLine("Console test.");
             PBServer.OnPlayerJoin += new PBServer.ClientJoinHandler(onPlayerJoin);
             PBServer.OnPlayerLeave += new PBServer.ClientLeaveHandler(onPlayerLeave);
+            PBServer.addPrefix(76561198073993164, "Admin");
+            PBServer.addSuffix(76561198073993164, "Fag");
         }
 
         public void onPlayerLeave(PBPlayer player)

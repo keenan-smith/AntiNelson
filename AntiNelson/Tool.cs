@@ -5,6 +5,7 @@ using System.Resources;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using SDG.Unturned;
 
 namespace PointBlank
 {
@@ -47,5 +48,9 @@ namespace PointBlank
             }
         }
 
+        public static object runMethod(Type loc, string name, object[] args)
+        {
+            return loc.GetMethod(name, BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, args);
+        }
     }
 }

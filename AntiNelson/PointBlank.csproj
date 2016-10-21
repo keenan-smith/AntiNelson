@@ -205,9 +205,11 @@
     <Compile Include="PB_Extensions\RCONClient.cs" />
     <Compile Include="PB_GameObjects\AutoSave.cs" />
     <Compile Include="PB_GameObjects\Sync.cs" />
+    <Compile Include="PB_Library\lib_EventRunner.cs" />
     <Compile Include="PB_Library\lib_PluginManager.cs" />
     <Compile Include="PB_Library\lib_Sync.cs" />
     <Compile Include="PB_Overridables\Override_CommandWindow.cs" />
+    <Compile Include="PB_Overridables\Override_Provider.cs" />
     <Compile Include="PB_Threads\RCON.cs" />
     <Compile Include="PB_Library\lib_AutoSave.cs" />
     <Compile Include="PB_Library\lib_CodeReplacer.cs" />

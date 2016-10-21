@@ -41,7 +41,7 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
-            PBLogging.log("Loading plugin manager...");
+            PBLogging.logImportant("Loading plugin manager...");
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(onResolve);
         }

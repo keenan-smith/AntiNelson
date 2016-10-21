@@ -31,7 +31,7 @@ namespace PointBlank.API
         public ulong f;
     }
 
-    public static class RedirectionHelper
+    internal static class RedirectionHelper
     {
         /// <summary>
         /// Redirects any method to another method.
