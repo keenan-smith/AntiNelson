@@ -56,7 +56,7 @@ namespace PointBlank.API
         {
             Debug.Log("[PointBlank] " + text);
             if (inConsole)
-                Tool.runMethod(typeof(CommandWindow), "Log", new object[] { text, ConsoleColor.Blue });
+                Tool.runMethod(typeof(CommandWindow), "Log", new object[] { text, ConsoleColor.Cyan });
         }
         #endregion
     }

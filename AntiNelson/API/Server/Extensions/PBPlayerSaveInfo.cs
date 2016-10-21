@@ -70,21 +70,13 @@ namespace PointBlank.API.Server.Extensions
                     _groups.Add(group);
                 }
             }
-            if (_groups.Count < 1)
-            {
-                foreach (PBGroup group in PBServer.groups)
-                {
-                    if (group.isDefault)
-                        _groups.Add(group);
-                }
-            }
 
             foreach (XmlElement tmp in ele.SelectSingleNode("permissions").SelectNodes("permission"))
             {
                 _permissions.Add(tmp.InnerText);
             }
 
-            foreach (XmlElement tmp in ele.SelectSingleNode("_customVariables").SelectNodes("variable"))
+            foreach (XmlElement tmp in ele.SelectSingleNode("customVariables").SelectNodes("variable"))
             {
                 string key = tmp.SelectSingleNode("key").InnerText;
                 ECustomVariableType type = (ECustomVariableType)Enum.Parse(typeof(ECustomVariableType), tmp.SelectSingleNode("type").InnerText);

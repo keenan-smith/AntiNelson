@@ -187,8 +187,14 @@ namespace PointBlank.API.Server
                                 break;
                         }
                     }
-                    break;
+                    return;
                 }
+            }
+
+            foreach (PBGroup group in PBServer.groups)
+            {
+                if (group.isDefault)
+                    player.groups.Add(group);
             }
         }
 
