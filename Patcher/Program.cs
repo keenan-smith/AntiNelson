@@ -38,7 +38,7 @@ namespace Patcher
             if ((patched = isPatched()) != null)
             {
 
-                if (version == patched.Fields.ToArray()[0].Name.Split('_')[1])
+                if (version == patched.Fields.ToArray()[0].Name.Substring("VERSION_".Length))
                 {
 
                     Console.WriteLine("Already patched!");
