@@ -92,10 +92,12 @@
             <hierarchyType id="T:PointBlank.API.Server.PBChat.ChatMessageHandler" displayName="PBChat.ChatMessageHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBPlayer.PlayerHurtHandler" displayName="PBPlayer.PlayerHurtHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBPlayer.PlayerKilledHandler" displayName="PBPlayer.PlayerKilledHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
+            <hierarchyType id="T:PointBlank.API.Server.PBPlayer.PlayerMoveHandler" displayName="PBPlayer.PlayerMoveHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBServer.ClientJoinHandler" displayName="PBServer.ClientJoinHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBServer.ClientLeaveHandler" displayName="PBServer.ClientLeaveHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBServer.ConsoleInputTextHandler" displayName="PBServer.ConsoleInputTextHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
             <hierarchyType id="T:PointBlank.API.Server.PBServer.ConsoleOutputTextHandler" displayName="PBServer.ConsoleOutputTextHandler" namespace="PointBlank.API.Server" assembly="PointBlank" />
+            <hierarchyType id="T:PointBlank.API.Server.PBServer.PreClientConnect" displayName="PBServer.PreClientConnect" namespace="PointBlank.API.Server" assembly="PointBlank" />
           </hierarchyType>
         </hierarchyType>
       </hierarchyType>
@@ -106,7 +108,6 @@
         <hierarchyType id="T:PointBlank.API.PB" displayName="PB" namespace="PointBlank.API" assembly="PointBlank" />
         <hierarchyType id="T:PointBlank.API.PBConfig" displayName="PBConfig" namespace="PointBlank.API" assembly="PointBlank" />
         <hierarchyType id="T:PointBlank.API.PBLogging" displayName="PBLogging" namespace="PointBlank.API" assembly="PointBlank" />
-        <hierarchyType id="T:PointBlank.API.RedirectionHelper" displayName="RedirectionHelper" namespace="PointBlank.API" assembly="PointBlank" />
         <hierarchyType id="T:System.Delegate" displayName="Delegate" namespace="System" assembly="mscorlib">
           <hierarchyInterfaces>
             <hierarchyInterface id="T:System.ICloneable" displayName="ICloneable" namespace="System" fullName="System.ICloneable" assembly="mscorlib" />
@@ -146,7 +147,6 @@
     <assemblyReference name="System.Xml" />
     <assemblyReference name="System" />
     <assemblyReference name="System.Core" />
-    <assemblyReference name="Interop.Shell32" />
     <attribute name="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" target="assembly">
       <property name="WrapNonExceptionThrows" type="System.Boolean" value="True" />
     </attribute>
@@ -447,6 +447,16 @@
               <attribute name="System.Runtime.InteropServices.OptionalAttribute" />
             </parameter>
           </method>
+          <method name="logImportant" displayName="logImportant" id="M:PointBlank.API.PBLogging.logImportant(System.String,System.Boolean)" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Logs important messages. </summary>
+<param name="text">The text.</param>
+<param name="inConsole">Print in console.</param></documentation>
+            <parameter name="text" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+            <parameter name="inConsole" optional="true" defaultValue="True" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true">
+              <attribute name="System.Runtime.InteropServices.OptionalAttribute" />
+            </parameter>
+          </method>
           <method name="ToString" displayName="ToString" id="M:PointBlank.API.PBLogging.ToString" access="Public" contract="Virtual" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.ToString">
             <returnType typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
           </method>
@@ -516,47 +526,6 @@
           <event name="OnPBPreInit" id="E:PointBlank.API.PB.OnPBPreInit" access="Public" contract="Static" typeId="T:PointBlank.API.PB.PBPreInit" valueType="false" multicast="true">
             <documentation><summary> Ran before everything is executed. </summary></documentation>
           </event>
-        </class>
-        <class name="RedirectionHelper" displayName="RedirectionHelper" namespace="PointBlank.API" id="T:PointBlank.API.RedirectionHelper" access="Public" static="true">
-          <method name="RedirectCalls" displayName="RedirectCalls" id="M:PointBlank.API.RedirectionHelper.RedirectCalls(System.Reflection.MethodInfo,System.Reflection.MethodInfo)" access="Public" contract="Static" valueType="true">
-            <returnType typeId="T:PointBlank.API.RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" assembly="PointBlank" nullable="false" valueType="true" />
-            <documentation><summary> Redirects any method to another method. </summary>
-<param name="from">MethodInfo of the original method.</param>
-<param name="to">MethodInfo of the custom method.</param></documentation>
-            <parameter name="from" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
-            <parameter name="to" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
-          </method>
-          <method name="RevertRedirect" displayName="RevertRedirect" id="M:PointBlank.API.RedirectionHelper.RevertRedirect(System.Reflection.MethodInfo,PointBlank.API.RedirectCallsState)" access="Public" contract="Static" valueType="true">
-            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
-            <documentation><summary> Reverts the redirection. </summary>
-<param name="from">MethodInfo of the original method.</param>
-<param name="state">The previous state of the redirection.</param></documentation>
-            <parameter name="from" typeId="T:System.Reflection.MethodInfo" displayName="MethodInfo" namespace="System.Reflection" assembly="mscorlib" nullable="false" valueType="false" />
-            <parameter name="state" typeId="T:PointBlank.API.RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" assembly="PointBlank" nullable="false" valueType="true" />
-          </method>
-          <method name="ToString" displayName="ToString" id="M:PointBlank.API.RedirectionHelper.ToString" access="Public" contract="Virtual" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.ToString">
-            <returnType typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
-          </method>
-          <method name="Equals" displayName="Equals" id="M:PointBlank.API.RedirectionHelper.Equals(System.Object)" access="Public" contract="Virtual" valueType="true" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.Equals(System.Object)">
-            <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
-            <parameter name="obj" typeId="T:System.Object" displayName="Object" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
-          </method>
-          <method name="GetHashCode" displayName="GetHashCode" id="M:PointBlank.API.RedirectionHelper.GetHashCode" access="Public" contract="Virtual" valueType="true" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.GetHashCode">
-            <returnType typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
-          </method>
-          <method name="GetType" displayName="GetType" id="M:PointBlank.API.RedirectionHelper.GetType" access="Public" contract="Normal" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.GetType">
-            <returnType typeId="T:System.Type" displayName="Type" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
-          </method>
-          <method name="Finalize" displayName="Finalize" id="M:PointBlank.API.RedirectionHelper.Finalize" access="Family" contract="Override" valueType="true" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.Finalize">
-            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
-            <attribute name="System.Runtime.ConstrainedExecution.ReliabilityContractAttribute">
-              <property name="ConsistencyGuarantee" type="System.Runtime.ConstrainedExecution.Consistency" value="Consistency.WillNotCorruptState" />
-              <property name="Cer" type="System.Runtime.ConstrainedExecution.Cer" value="Cer.Success" />
-            </attribute>
-          </method>
-          <method name="MemberwiseClone" displayName="MemberwiseClone" id="M:PointBlank.API.RedirectionHelper.MemberwiseClone" access="Family" contract="Normal" valueType="false" declaringType="System.Object" declaringAssembly="mscorlib" declaringId="M:System.Object.MemberwiseClone">
-            <returnType typeId="T:System.Object" displayName="Object" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
-          </method>
         </class>
         <structure name="RedirectCallsState" displayName="RedirectCallsState" namespace="PointBlank.API" id="T:PointBlank.API.RedirectCallsState" access="Public">
           <field name="a" id="F:PointBlank.API.RedirectCallsState.a" access="Public" contract="Normal" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
@@ -1978,6 +1947,9 @@
           <event name="OnPlayerKilled" id="E:PointBlank.API.Server.PBPlayer.OnPlayerKilled" access="Public" contract="Static" typeId="T:PointBlank.API.Server.PBPlayer.PlayerKilledHandler" valueType="false" multicast="true">
             <documentation><summary> Called when player is killed. </summary></documentation>
           </event>
+          <event name="OnPlayerMove" id="E:PointBlank.API.Server.PBPlayer.OnPlayerMove" access="Public" contract="Static" typeId="T:PointBlank.API.Server.PBPlayer.PlayerMoveHandler" valueType="false" multicast="true">
+            <documentation><summary> Called when a player moves. </summary></documentation>
+          </event>
         </class>
         <class name="PBSaving" displayName="PBSaving" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBSaving" access="Public">
           <constructor name=".ctor" id="M:PointBlank.API.Server.PBSaving.#ctor(System.String,PointBlank.API.Enumerables.ESaveType)" access="Public" contract="Normal">
@@ -2087,6 +2059,38 @@
           <property name="server" id="P:PointBlank.API.Server.PBServer.server" access="Public" contract="Static" get="Public" set="false" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false">
             <documentation><summary> Gets the server player. </summary></documentation>
           </property>
+          <method name="addPrefix" displayName="addPrefix" id="M:PointBlank.API.Server.PBServer.addPrefix(System.UInt64,System.String)" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Adds a prefix to the player. </summary>
+<param name="steam64">Steam64 of the player to add the prefix to.</param>
+<param name="prefix">The prefix you wanna add.</param></documentation>
+            <parameter name="steam64" typeId="T:System.UInt64" displayName="UInt64" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <parameter name="prefix" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+          <method name="removePrefix" displayName="removePrefix" id="M:PointBlank.API.Server.PBServer.removePrefix(System.UInt64,System.String)" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Removes the prefix from the player. </summary>
+<param name="steam64">The steam64 of the player.</param>
+<param name="prefix">The prefix you wanna remove.</param></documentation>
+            <parameter name="steam64" typeId="T:System.UInt64" displayName="UInt64" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <parameter name="prefix" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+          <method name="addSuffix" displayName="addSuffix" id="M:PointBlank.API.Server.PBServer.addSuffix(System.UInt64,System.String)" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Adds a suffix to the player. </summary>
+<param name="steam64">The steam64 of the player.</param>
+<param name="suffix">The suffix you wanna add.</param></documentation>
+            <parameter name="steam64" typeId="T:System.UInt64" displayName="UInt64" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <parameter name="suffix" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
+          <method name="removeSuffix" displayName="removeSuffix" id="M:PointBlank.API.Server.PBServer.removeSuffix(System.UInt64,System.String)" access="Public" contract="Static" valueType="true">
+            <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <documentation><summary> Removes the suffix from the player. </summary>
+<param name="steam64">The steam64 of the player.</param>
+<param name="suffix">The suffix you wanna remove.</param></documentation>
+            <parameter name="steam64" typeId="T:System.UInt64" displayName="UInt64" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+            <parameter name="suffix" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+          </method>
           <method name="findCommand" displayName="findCommand" id="M:PointBlank.API.Server.PBServer.findCommand(System.String)" access="Public" contract="Static" valueType="false">
             <returnType typeId="T:PointBlank.API.Server.Extensions.PBCommand" displayName="PBCommand" namespace="PointBlank.API.Server.Extensions" assembly="PointBlank" nullable="false" valueType="false" />
             <documentation><summary> Find a command based on the execution command. </summary>
@@ -2151,6 +2155,11 @@
             <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
             <documentation><summary> Restarts the server. </summary>
 <returns>If the server has been restarted.</returns></documentation>
+            <attribute name="System.ObsoleteAttribute">
+              <property name="Message" type="System.String" value="&quot;Not functional&quot;" />
+              <property name="IsError" type="System.Boolean" value="False" />
+            </attribute>
+            <obsolete>Not functional</obsolete>
           </method>
           <method name="reloadPlugins" displayName="reloadPlugins" id="M:PointBlank.API.Server.PBServer.reloadPlugins" access="Public" contract="Static" valueType="true">
             <returnType typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
@@ -2227,6 +2236,9 @@
           </event>
           <event name="OnConsoleOutput" id="E:PointBlank.API.Server.PBServer.OnConsoleOutput" access="Public" contract="Static" typeId="T:PointBlank.API.Server.PBServer.ConsoleOutputTextHandler" valueType="false" multicast="true">
             <documentation><summary> Gets called when the console outputs text. </summary></documentation>
+          </event>
+          <event name="OnPreClientConnect" id="E:PointBlank.API.Server.PBServer.OnPreClientConnect" access="Public" contract="Static" typeId="T:PointBlank.API.Server.PBServer.PreClientConnect" valueType="false" multicast="true">
+            <documentation><summary> Ran before client gets registered as connected. </summary></documentation>
           </event>
         </class>
         <class name="PBSkills" displayName="PBSkills" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBSkills" access="Public">
@@ -2359,8 +2371,7 @@
           <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
           <parameter name="victim" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
           <parameter name="attacker" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
-          <parameter name="died" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
-          <parameter name="cause" typeId="T:SDG.Unturned.EDeathCause" displayName="EDeathCause" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
+          <parameter name="damage" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
           <parameter name="limb" typeId="T:SDG.Unturned.ELimb" displayName="ELimb" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
           <parameter name="force" typeId="T:UnityEngine.Vector3" displayName="Vector3" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
         </delegate>
@@ -2368,9 +2379,16 @@
           <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
           <parameter name="victim" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
           <parameter name="attacker" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
+          <parameter name="damage" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
           <parameter name="cause" typeId="T:SDG.Unturned.EDeathCause" displayName="EDeathCause" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
           <parameter name="limb" typeId="T:SDG.Unturned.ELimb" displayName="ELimb" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
           <parameter name="force" typeId="T:UnityEngine.Vector3" displayName="Vector3" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
+        </delegate>
+        <delegate name="PBPlayer.PlayerMoveHandler" displayName="PBPlayer.PlayerMoveHandler" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBPlayer.PlayerMoveHandler" access="NestedPublic" valueType="true">
+          <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="player" typeId="T:PointBlank.API.Server.PBPlayer" displayName="PBPlayer" namespace="PointBlank.API.Server" assembly="PointBlank" nullable="false" valueType="false" />
+          <parameter name="position" typeId="T:UnityEngine.Vector3" displayName="Vector3" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
+          <parameter name="rotation" typeId="T:UnityEngine.Quaternion" displayName="Quaternion" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
         </delegate>
         <delegate name="PBServer.ClientJoinHandler" displayName="PBServer.ClientJoinHandler" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBServer.ClientJoinHandler" access="NestedPublic" valueType="true">
           <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
@@ -2387,6 +2405,32 @@
         <delegate name="PBServer.ConsoleOutputTextHandler" displayName="PBServer.ConsoleOutputTextHandler" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBServer.ConsoleOutputTextHandler" access="NestedPublic" valueType="true">
           <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
           <parameter name="text" typeId="T:System.String" displayName="String" namespace="System" assembly="mscorlib" nullable="false" valueType="false" />
+        </delegate>
+        <delegate name="PBServer.PreClientConnect" displayName="PBServer.PreClientConnect" namespace="PointBlank.API.Server" id="T:PointBlank.API.Server.PBServer.PreClientConnect" access="NestedPublic" valueType="true">
+          <returnType typeId="T:System.Void" displayName="Void" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="playerID" typeId="T:SDG.Unturned.SteamPlayerID" displayName="SteamPlayerID" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="false" />
+          <parameter name="point" typeId="T:UnityEngine.Vector3" displayName="Vector3" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
+          <parameter name="angle" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="isPro" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="isAdmin" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="channel" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="face" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="hair" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="beard" typeId="T:System.Byte" displayName="Byte" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="skin" typeId="T:UnityEngine.Color" displayName="Color" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
+          <parameter name="color" typeId="T:UnityEngine.Color" displayName="Color" namespace="UnityEngine" assembly="UnityEngine" nullable="false" valueType="true" />
+          <parameter name="hand" typeId="T:System.Boolean" displayName="Boolean" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="shirtItem" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="pantsItem" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="hatItem" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="backpackItem" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="vestItem" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="maskItem" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="glassesItem" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="true" />
+          <parameter name="skinItems" typeId="T:System.Int32" displayName="Int32" namespace="System" assembly="mscorlib" nullable="false" valueType="false">
+            <array rank="1" />
+          </parameter>
+          <parameter name="skillset" typeId="T:SDG.Unturned.EPlayerSkillset" displayName="EPlayerSkillset" namespace="SDG.Unturned" assembly="Assembly-CSharp" nullable="false" valueType="true" />
         </delegate>
       </namespace>
       <namespace name="PointBlank.API.Server.Attributes">
@@ -2517,8 +2561,8 @@
         </documentation>
         <class name="ReplaceCodeAttribute" displayName="ReplaceCodeAttribute" namespace="PointBlank.API.Attributes" id="T:PointBlank.API.Attributes.ReplaceCodeAttribute" access="Public">
           <attribute name="System.AttributeUsageAttribute">
-            <property name="AllowMultiple" type="System.Boolean" value="False" />
             <property name="ValidOn" type="System.AttributeTargets" value="AttributeTargets.Method" />
+            <property name="AllowMultiple" type="System.Boolean" value="False" />
             <property name="Inherited" type="System.Boolean" value="True" />
           </attribute>
           <baseType name="Attribute" id="T:System.Attribute" displayName="Attribute" namespace="System" assembly="mscorlib" />

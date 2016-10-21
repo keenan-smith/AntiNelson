@@ -12,6 +12,8 @@ namespace PointBlank
     {
         public static GameObject obj_Commands = null;
 
+        public static GameObject obj_Extras = null;
+
         public static string serverPath = Directory.GetCurrentDirectory() + @"\Servers\" + Tool.getServerName();
 
         public static string modsPathServer = serverPath + @"\Mods\";

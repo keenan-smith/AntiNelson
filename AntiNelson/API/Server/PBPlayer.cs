@@ -212,6 +212,7 @@ namespace PointBlank.API.Server
         #region Handlers
         public delegate void PlayerHurtHandler(PBPlayer victim, PBPlayer attacker, byte damage, ELimb limb, Vector3 force);
         public delegate void PlayerKilledHandler(PBPlayer victim, PBPlayer attacker, byte damage, EDeathCause cause, ELimb limb, Vector3 force);
+        public delegate void PlayerMoveHandler(PBPlayer player, Vector3 position, Quaternion rotation);
         #endregion
 
         #region Events
@@ -223,6 +224,10 @@ namespace PointBlank.API.Server
         /// Called when player is killed.
         /// </summary>
         public static event PlayerKilledHandler OnPlayerKilled;
+        /// <summary>
+        /// Called when a player moves.
+        /// </summary>
+        public static event PlayerMoveHandler OnPlayerMove;
         #endregion
 
         /// <summary>
@@ -261,6 +266,12 @@ namespace PointBlank.API.Server
             if (ply.life.isDead || ply.life.health < 1 || ply.life.health - damage < 1)
                 if (OnPlayerKilled != null)
                     OnPlayerKilled(PBServer.findPlayer(ply), PBServer.findPlayer(killer), damage, cause, limb, force);
+        }
+
+        internal static void playerMoveEvent(PBPlayer player, Vector3 position, Quaternion rotation)
+        {
+            if (OnPlayerMove != null)
+                OnPlayerMove(player, position, rotation);
         }
 
         /// <summary>

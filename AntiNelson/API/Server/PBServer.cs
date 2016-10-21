@@ -24,6 +24,9 @@ namespace PointBlank.API.Server
         private static List<PBGroup> _groups = new List<PBGroup>();
         private static List<PBSteamGroup> _steamGroups = new List<PBSteamGroup>();
 
+        private static Dictionary<ulong, List<string>> _prefixes = new Dictionary<ulong, List<string>>();
+        private static Dictionary<ulong, List<string>> _suffixes = new Dictionary<ulong, List<string>>();
+
         private static PBSaving _playerSave;
         private static PBSaving _groupSave;
         private static PBSaving _steamGroupSave;
@@ -202,6 +205,7 @@ namespace PointBlank.API.Server
         public delegate void ClientLeaveHandler(PBPlayer player);
         public delegate void ConsoleInputTextHandler(string command);
         public delegate void ConsoleOutputTextHandler(string text);
+        public delegate void PreClientConnect(SteamPlayerID playerID, Vector3 point, byte angle, bool isPro, bool isAdmin, int channel, byte face, byte hair, byte beard, Color skin, Color color, bool hand, int shirtItem, int pantsItem, int hatItem, int backpackItem, int vestItem, int maskItem, int glassesItem, int[] skinItems, EPlayerSkillset skillset);
         #endregion
 
         #region Events
@@ -221,9 +225,73 @@ namespace PointBlank.API.Server
         /// Gets called when the console outputs text.
         /// </summary>
         public static event ConsoleOutputTextHandler OnConsoleOutput;
+        /// <summary>
+        /// Ran before client gets registered as connected.
+        /// </summary>
+        public static event PreClientConnect OnPreClientConnect;
         #endregion
 
         #region Functions
+        /// <summary>
+        /// Adds a prefix to the player.
+        /// </summary>
+        /// <param name="steam64">Steam64 of the player to add the prefix to.</param>
+        /// <param name="prefix">The prefix you wanna add.</param>
+        public static void addPrefix(ulong steam64, string prefix)
+        {
+            if (_prefixes.ContainsKey(steam64))
+            {
+                _prefixes[steam64].Add(prefix);
+            }
+            else
+            {
+                List<string> str = new List<string>();
+                str.Add(prefix);
+                _prefixes.Add(steam64, str);
+            }
+        }
+
+        /// <summary>
+        /// Removes the prefix from the player.
+        /// </summary>
+        /// <param name="steam64">The steam64 of the player.</param>
+        /// <param name="prefix">The prefix you wanna remove.</param>
+        public static void removePrefix(ulong steam64, string prefix)
+        {
+            if (_prefixes.ContainsKey(steam64))
+                _prefixes[steam64].Remove(prefix);
+        }
+
+        /// <summary>
+        /// Adds a suffix to the player.
+        /// </summary>
+        /// <param name="steam64">The steam64 of the player.</param>
+        /// <param name="suffix">The suffix you wanna add.</param>
+        public static void addSuffix(ulong steam64, string suffix)
+        {
+            if (_suffixes.ContainsKey(steam64))
+            {
+                _suffixes[steam64].Add(suffix);
+            }
+            else
+            {
+                List<string> str = new List<string>();
+                str.Add(suffix);
+                _suffixes.Add(steam64, str);
+            }
+        }
+
+        /// <summary>
+        /// Removes the suffix from the player.
+        /// </summary>
+        /// <param name="steam64">The steam64 of the player.</param>
+        /// <param name="suffix">The suffix you wanna remove.</param>
+        public static void removeSuffix(ulong steam64, string suffix)
+        {
+            if (_suffixes.ContainsKey(steam64))
+                _suffixes[steam64].Remove(suffix);
+        }
+
         /// <summary>
         /// Find a command based on the execution command.
         /// </summary>
@@ -318,6 +386,12 @@ namespace PointBlank.API.Server
         {
             if(OnConsoleInput != null)
                 OnConsoleOutput(text);
+        }
+
+        internal static void preJoinServer(SteamPlayerID playerID, Vector3 point, byte angle, bool isPro, bool isAdmin, int channel, byte face, byte hair, byte beard, Color skin, Color color, bool hand, int shirtItem, int pantsItem, int hatItem, int backpackItem, int vestItem, int maskItem, int glassesItem, int[] skinItems, EPlayerSkillset skillset)
+        {
+            if(OnPreClientConnect != null)
+                OnPreClientConnect(playerID, point, angle, isPro, isAdmin, channel, face, hair, beard, skin, color, hand, shirtItem, pantsItem, hatItem, backpackItem, vestItem, maskItem, glassesItem, skinItems, skillset);
         }
 
         /// <summary>
@@ -550,6 +624,22 @@ namespace PointBlank.API.Server
                 players.Remove(ply);
                 ply.player.life.onHurt -= new Hurt(PBPlayer.playerHurtEvent);
             }
+        }
+
+        internal static void PreConnected(SteamPlayerID playerID, Vector3 point, byte angle, bool isPro, bool isAdmin, int channel, byte face, byte hair, byte beard, Color skin, Color color, bool hand, int shirtItem, int pantsItem, int hatItem, int backpackItem, int vestItem, int maskItem, int glassesItem, int[] skinItems, EPlayerSkillset skillset)
+        {
+            string prefix = "";
+            string suffix = "";
+
+            if(_prefixes.ContainsKey(playerID.steamID.m_SteamID))
+                foreach (string a in _prefixes[playerID.steamID.m_SteamID])
+                    prefix += "[" + a + "]";
+            if(_suffixes.ContainsKey(playerID.steamID.m_SteamID))
+                foreach (string a in _suffixes[playerID.steamID.m_SteamID])
+                    suffix += "[" + a + "]";
+
+            typeof(SteamPlayerID).GetField("_characterName", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(playerID, prefix + playerID.characterName + suffix);
+            typeof(SteamPlayerID).GetField("_playerName", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(playerID, prefix + playerID.characterName + suffix);
         }
         #endregion
     }

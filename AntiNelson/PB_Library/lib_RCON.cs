@@ -68,7 +68,7 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
-            PBLogging.log("Loading RCON...");
+            PBLogging.logImportant("Loading RCON...");
             string path = Variables.currentPath + "\\Settings\\RCON.dat";
             if (ReadWrite.fileExists(path, false, false))
             {

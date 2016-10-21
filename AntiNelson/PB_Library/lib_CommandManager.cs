@@ -20,7 +20,7 @@ namespace PointBlank.PB_Library
         {
             if (!PB.isServer())
                 return;
-            PBLogging.log("Loading CommandManager...");
+            PBLogging.logImportant("Loading CommandManager...");
             loadCommands(AppDomain.CurrentDomain);
         }
 

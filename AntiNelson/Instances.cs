@@ -17,5 +17,6 @@ namespace PointBlank
         public static lib_EventInitalizer eventInitalizer;
         public static lib_RCON RCON;
         public static lib_Sync sync;
+        public static lib_EventRunner eventRunner;
     }
 }

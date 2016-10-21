@@ -13,7 +13,7 @@ namespace PointBlank.PB_Library
     {
         public lib_EventInitalizer()
         {
-            PBLogging.log("Loading EventInitalizer...");
+            PBLogging.logImportant("Loading EventInitalizer...");
             initChat();
             initServer();
             initAutoSave();
@@ -39,6 +39,7 @@ namespace PointBlank.PB_Library
             PB.OnPBPreInit += new PB.PBPreInit(PBServer.PBPreInit);
             PB.OnPBPostInit += new PB.PBPostInit(PBAudio.Init);
             PBServer.OnConsoleInput += new PBServer.ConsoleInputTextHandler(PBServer.ParseInputCommand);
+            PBServer.OnPreClientConnect += new PBServer.PreClientConnect(PBServer.PreConnected);
         }
 
         private void initRCON()
