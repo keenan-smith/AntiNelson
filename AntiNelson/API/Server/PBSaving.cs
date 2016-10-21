@@ -25,6 +25,9 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The xml document of the save file.
+        /// </summary>
         public XmlDocument document
         {
             get
@@ -33,6 +36,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// The root element of the save file.
+        /// </summary>
         public XmlElement rootElement
         {
             get
@@ -41,6 +47,9 @@ namespace PointBlank.API.Server
             }
         }
 
+        /// <summary>
+        /// The path to the save file.
+        /// </summary>
         public string path
         {
             get
@@ -50,6 +59,11 @@ namespace PointBlank.API.Server
         }
         #endregion
 
+        /// <summary>
+        /// Used for saving and loading things from/into save files.
+        /// </summary>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="saveType">The type of save.</param>
         public PBSaving(string path, ESaveType saveType)
         {
             _path = path;
@@ -82,6 +96,9 @@ namespace PointBlank.API.Server
         }
 
         #region Functions
+        /// <summary>
+        /// Saves the save file.
+        /// </summary>
         public void save()
         {
             document.Save(path);
@@ -89,6 +106,23 @@ namespace PointBlank.API.Server
         #endregion
 
         #region Functions - Player
+        /// <summary>
+        /// Sends back the offline save data of a player.
+        /// </summary>
+        /// <param name="steam64">The steam64 of the player.</param>
+        /// <returns>Offline save data of player.</returns>
+        public PBPlayerSaveInfo loadPlayer(ulong steam64)
+        {
+            foreach (XmlElement ele in rootElement.SelectNodes("player"))
+                if (ele.SelectSingleNode("steam64").InnerText == steam64.ToString())
+                    return new PBPlayerSaveInfo(ele);
+            return null;
+        }
+
+        /// <summary>
+        /// Loads a player save file.
+        /// </summary>
+        /// <param name="player">The player to load.</param>
         public void loadPlayer(PBPlayer player)
         {
             foreach (XmlElement ele in rootElement.SelectNodes("player"))
@@ -153,10 +187,15 @@ namespace PointBlank.API.Server
                                 break;
                         }
                     }
+                    break;
                 }
             }
         }
 
+        /// <summary>
+        /// Saves the player save file.
+        /// </summary>
+        /// <param name="player">The player to save.</param>
         public void savePlayer(PBPlayer player)
         {
             XmlElement ele = null;

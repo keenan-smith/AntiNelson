@@ -162,6 +162,7 @@
     <Compile Include="API\Enumerables\ECryptoType.cs" />
     <Compile Include="API\Enumerables\ESaveType.cs" />
     <Compile Include="API\PBCrypto.cs" />
+    <Compile Include="API\Server\Extensions\PBPlayerSaveInfo.cs" />
     <Compile Include="API\Server\Extensions\PBPlugin.cs" />
     <Compile Include="API\Server\PBSync.cs" />
     <Compile Include="API\Server\Attributes\CommandAttribute.cs" />
