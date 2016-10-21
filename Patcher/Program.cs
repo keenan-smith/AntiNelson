@@ -85,9 +85,8 @@ namespace Patcher
 
             }
 
-            TypeDefinition IP = new TypeDefinition("", "IsPatched", Mono.Cecil.TypeAttributes.Class);
-            IP.Fields.Add(new FieldDefinition("VERSION_" + version, Mono.Cecil.FieldAttributes.Static, UE.MainModule.Import(typeof(bool))));
-            UE.MainModule.Types.Add(IP);
+            TypeDefinition UE_Module = getClass(UE, "<Module>");
+            UE_Module.Fields.Add(new FieldDefinition("VERSION_" + version, Mono.Cecil.FieldAttributes.Static, UE.MainModule.Import(typeof(bool))));
 
             if (downloadPB())
             {
@@ -109,7 +108,6 @@ namespace Patcher
                 TypeDefinition EP = getClass(PB, "EntryPoint");
                 MethodDefinition launch = getMethod(EP, "Launch");
 
-                TypeDefinition UE_Module = getClass(UE, "<Module>");
                 MethodDefinition cctor = createStaticConstructor(UE_Module);
                 cctor.Body.GetILProcessor().Append(Instruction.Create(OpCodes.Call, UE.MainModule.Import(launch)));
                 cctor.Body.GetILProcessor().Append(Instruction.Create(OpCodes.Ret));
@@ -144,7 +142,7 @@ namespace Patcher
             {
 
                 Console.WriteLine("Checking PointBlank version...");
-                version = new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/VERSION");
+                version = new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/VERSION").Trim();
 
             }
             catch (Exception e)
@@ -172,7 +170,7 @@ namespace Patcher
             {
 
                 Console.WriteLine("Donwloading PointBlank...");
-                pbArr = decompress(new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/DATA"));
+                pbArr = decompress(new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/DATA").Trim());
                 Console.WriteLine("Size: " + pbArr.Length);
             }
             catch (Exception e)
@@ -231,8 +229,11 @@ namespace Patcher
         {
 
             foreach (TypeDefinition type in UE.MainModule.Types)
-                if (type.Name == "IsPatched")
-                    return type;
+                if (type.Name == "<Module>")
+                    if (type.Fields.Count != 0)
+                        foreach (FieldDefinition fd in type.Fields)
+                            if (fd.Name.ToLower().IndexOf("version") != -1)
+                                return type;
 
             return null;
 
