@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patcher", "Patcher\Patcher.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBExporter", "PBExporter\PBExporter.csproj", "{5AC4F796-D25D-4021-AC54-FD1B823D498D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{C12D430B-E1D4-49D8-A6E9-C5191F22FEC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrefixAndSuffix", "PrefixAndSuffix\PrefixAndSuffix.csproj", "{FCB18595-5C04-4DAF-808E-0B2D845218FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,8 +76,19 @@ Global
 		{5AC4F796-D25D-4021-AC54-FD1B823D498D}.Release|x64.Build.0 = Release|Any CPU
 		{5AC4F796-D25D-4021-AC54-FD1B823D498D}.Release|x86.ActiveCfg = Release|Any CPU
 		{5AC4F796-D25D-4021-AC54-FD1B823D498D}.Release|x86.Build.0 = Release|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FCB18595-5C04-4DAF-808E-0B2D845218FD} = {C12D430B-E1D4-49D8-A6E9-C5191F22FEC6}
 	EndGlobalSection
 EndGlobal
