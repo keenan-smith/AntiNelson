@@ -15,6 +15,11 @@ namespace PointBlank.Anticheat
     [Plugin("Velocitiy Anticheat", "Kunii & AtiLion", false, false)]
     internal class VeAC : PBPlugin
     {
+        #region Variables
+        private GameObject _object_system;
+        private List<MonoBehaviour> _systems = new List<MonoBehaviour>();
+        #endregion
+
         public override void onLoad()
         {
             PBLogging.logImportant("Loading Velocity Anticheat...");
@@ -31,6 +36,8 @@ namespace PointBlank.Anticheat
                 PBConfig config = new PBConfig();
                 config_Save(config, config_path);
             }
+
+            loadModules();
 
             PBLogging.logImportant("Velocity Anticheat loaded!");
         }
@@ -59,11 +66,21 @@ namespace PointBlank.Anticheat
             VeAC_Settings.anti_client_HashBypass = (config.getText("anti_client_HashBypass") == "true");
             VeAC_Settings.anti_client_Execution = (config.getText("anti_client_Execution") == "true");
             VeAC_Settings.anti_client_SkinHack = (config.getText("anti_client_SkinHack") == "true");
+            VeAC_Settings.max_detection = int.Parse(config.getText("max_detection"));
+            VeAC_Settings.ban_user = (config.getText("ban_user") == "true");
+            VeAC_Settings.kick_user = (config.getText("kick_user") == "true");
+            VeAC_Settings.warn_admins = (config.getText("warn_admins") == "true");
+            VeAC_Settings.warn_user = (config.getText("warn_user") == "true");
         }
 
         private void config_Save(PBConfig config, string path)
         {
             config.addTextElement("enabled", VeAC_Settings.enabled.ToString());
+            config.addTextElement("ban_user", VeAC_Settings.ban_user.ToString());
+            config.addTextElement("kick_user", VeAC_Settings.kick_user.ToString());
+            config.addTextElement("warn_admins", VeAC_Settings.warn_admins.ToString());
+            config.addTextElement("warn_user", VeAC_Settings.warn_user.ToString());
+            config.addTextElement("max_detection", VeAC_Settings.max_detection.ToString());
             config.addTextElement("anti_ESP", VeAC_Settings.anti_ESP.ToString());
             config.addTextElement("esp_prevent", VeAC_Settings.esp_prevent.ToString());
             config.addTextElement("esp_distance", VeAC_Settings.esp_distance.ToString());
@@ -85,6 +102,19 @@ namespace PointBlank.Anticheat
             config.addTextElement("anti_client_Execution", VeAC_Settings.anti_client_Execution.ToString());
             config.addTextElement("anti_client_SkinHack", VeAC_Settings.anti_client_SkinHack.ToString());
             config.save(path);
+        }
+        #endregion
+
+        #region Gameobject Functions
+        private void loadModules()
+        {
+            if (!VeAC_Settings.enabled)
+                return;
+
+            _object_system = new GameObject();
+            DontDestroyOnLoad(_object_system);
+
+            _systems.Add(_object_system.AddComponent<VeAC_ModuleManager>());
         }
         #endregion
     }

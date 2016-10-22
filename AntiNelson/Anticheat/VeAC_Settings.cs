@@ -26,8 +26,15 @@ namespace PointBlank.Anticheat
         public static bool anti_InWallGlitch = true;
         public static bool anti_InstantDisconnect = true;
         public static bool instantdisconnect_keepinserver = true;
+
         public static bool anti_client_HashBypass = true;
         public static bool anti_client_Execution = true;
         public static bool anti_client_SkinHack = true;
+
+        public static int max_detection = 5;
+        public static bool ban_user = true;
+        public static bool kick_user = false;
+        public static bool warn_admins = true;
+        public static bool warn_user = false;
     }
 }
