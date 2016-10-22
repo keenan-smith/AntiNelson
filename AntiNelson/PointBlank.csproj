@@ -156,6 +156,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Anticheat\Enumerables\EAntiESP.cs" />
+    <Compile Include="Anticheat\VeAC.cs" />
+    <Compile Include="Anticheat\VeAC_Settings.cs" />
     <Compile Include="API\Client\Attributes\ModAttribute.cs" />
     <Compile Include="API\Client\PBPlayer.cs" />
     <Compile Include="API\Client\PBSkills.cs" />
