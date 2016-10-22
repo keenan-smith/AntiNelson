@@ -7,6 +7,7 @@ using UnityEngine;
 using SDG.Unturned;
 using PointBlank.Anticheat.Extensions;
 using PointBlank.API;
+using PointBlank.API.Server;
 
 namespace PointBlank.Anticheat
 {
@@ -15,6 +16,7 @@ namespace PointBlank.Anticheat
         #region Variables
         private GameObject _object_Modules;
         private List<VeAC_Module> _modules = new List<VeAC_Module>();
+        private Dictionary<PBPlayer, Dictionary<string, int>> _detections = new Dictionary<PBPlayer, Dictionary<string, int>>();
         #endregion
 
         #region Mono Functions
@@ -24,6 +26,11 @@ namespace PointBlank.Anticheat
             DontDestroyOnLoad(_object_Modules);
 
             loadModules();
+        }
+
+        public void Update()
+        {
+
         }
         #endregion
 
