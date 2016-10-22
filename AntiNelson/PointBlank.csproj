@@ -157,7 +157,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Anticheat\Enumerables\EAntiESP.cs" />
+    <Compile Include="Anticheat\Extensions\VeAC_Module.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_Aimbot.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_AntiAim.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_AntiScreenshot.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_ESP.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_InstantDisconnect.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_MapHack.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_NoWall.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_Triggerbot.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_VehicleFly.cs" />
+    <Compile Include="Anticheat\Modules\VeAC_WallGlitch.cs" />
     <Compile Include="Anticheat\VeAC.cs" />
+    <Compile Include="Anticheat\VeAC_ModuleManager.cs" />
     <Compile Include="Anticheat\VeAC_Settings.cs" />
     <Compile Include="API\Client\Attributes\ModAttribute.cs" />
     <Compile Include="API\Client\PBPlayer.cs" />
