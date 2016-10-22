@@ -13,10 +13,9 @@ namespace PointBlank.Anticheat
         public static EAntiESP esp_prevent = EAntiESP.WALL_BLOCK;
         public static float esp_distance = 2000f;
         public static bool anti_Aimbot = true;
-        public static bool aimbot_antismooth = false;
         public static bool anti_Triggerbot = true;
         public static bool triggerbot_useMemory = true;
-        public static float triggerbot_time = 0.1f;
+        public static float triggerbot_time = 1f;
         public static bool anti_VehicleFly = true;
         public static bool anti_NoWall = true;
         public static bool anti_AntiAim = true;
@@ -26,6 +25,7 @@ namespace PointBlank.Anticheat
         public static bool anti_InWallGlitch = true;
         public static bool anti_InstantDisconnect = true;
         public static bool instantdisconnect_keepinserver = true;
+        public static bool anti_Reach = true;
 
         public static bool anti_client_HashBypass = true;
         public static bool anti_client_Execution = true;

@@ -17,7 +17,27 @@ namespace PointBlank.Anticheat
     {
         #region Variables
         private GameObject _object_system;
-        private List<MonoBehaviour> _systems = new List<MonoBehaviour>();
+
+        private VeAC_ModuleManager _moduleManager;
+        private static VeAC _instance;
+        #endregion
+
+        #region Properties
+        public static VeAC instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+
+        public VeAC_ModuleManager moduleManager
+        {
+            get
+            {
+                return _moduleManager;
+            }
+        }
         #endregion
 
         public override void onLoad()
@@ -38,6 +58,7 @@ namespace PointBlank.Anticheat
             }
 
             loadModules();
+            _instance = this;
 
             PBLogging.logImportant("Velocity Anticheat loaded!");
         }
@@ -50,7 +71,6 @@ namespace PointBlank.Anticheat
             VeAC_Settings.esp_prevent = (EAntiESP)Enum.Parse(typeof(EAntiESP), config.getText("esp_prevent"));
             VeAC_Settings.esp_distance = float.Parse(config.getText("esp_distance"));
             VeAC_Settings.anti_Aimbot = (config.getText("anti_Aimbot") == "true");
-            VeAC_Settings.aimbot_antismooth = (config.getText("aimbot_antismooth") == "true");
             VeAC_Settings.anti_Triggerbot = (config.getText("anti_Triggerbot") == "true");
             VeAC_Settings.triggerbot_useMemory = (config.getText("triggerbot_useMemory") == "true");
             VeAC_Settings.triggerbot_time = float.Parse(config.getText("triggerbot_time"));
@@ -61,6 +81,7 @@ namespace PointBlank.Anticheat
             VeAC_Settings.anti_AntiScreenshot = (config.getText("anti_AntiScreenshot") == "true");
             VeAC_Settings.antiscreenshot_usescreenshotdatabase = (config.getText("antiscreenshot_usescreenshotdatabase") == "true");
             VeAC_Settings.anti_InWallGlitch = (config.getText("anti_InWallGlitch") == "true");
+            VeAC_Settings.anti_Reach = (config.getText("anti_Reach") == "true");
             VeAC_Settings.anti_InstantDisconnect = (config.getText("anti_InstantDisconnect") == "true");
             VeAC_Settings.instantdisconnect_keepinserver = (config.getText("instantdisconnect_keepinserver") == "true");
             VeAC_Settings.anti_client_HashBypass = (config.getText("anti_client_HashBypass") == "true");
@@ -85,7 +106,6 @@ namespace PointBlank.Anticheat
             config.addTextElement("esp_prevent", VeAC_Settings.esp_prevent.ToString());
             config.addTextElement("esp_distance", VeAC_Settings.esp_distance.ToString());
             config.addTextElement("anti_Aimbot", VeAC_Settings.anti_Aimbot.ToString());
-            config.addTextElement("aimbot_antismooth", VeAC_Settings.aimbot_antismooth.ToString());
             config.addTextElement("anti_Triggerbot", VeAC_Settings.anti_Triggerbot.ToString());
             config.addTextElement("triggerbot_useMemory", VeAC_Settings.triggerbot_useMemory.ToString());
             config.addTextElement("triggerbot_time", VeAC_Settings.triggerbot_time.ToString());
@@ -96,6 +116,7 @@ namespace PointBlank.Anticheat
             config.addTextElement("anti_AntiScreenshot", VeAC_Settings.anti_AntiScreenshot.ToString());
             config.addTextElement("antiscreenshot_usescreenshotdatabase", VeAC_Settings.antiscreenshot_usescreenshotdatabase.ToString());
             config.addTextElement("anti_InWallGlitch", VeAC_Settings.anti_InWallGlitch.ToString());
+            config.addTextElement("anti_Reach", VeAC_Settings.anti_Reach.ToString());
             config.addTextElement("anti_InstantDisconnect", VeAC_Settings.anti_InstantDisconnect.ToString());
             config.addTextElement("instantdisconnect_keepinserver", VeAC_Settings.instantdisconnect_keepinserver.ToString());
             config.addTextElement("anti_client_HashBypass", VeAC_Settings.anti_client_HashBypass.ToString());
@@ -114,7 +135,7 @@ namespace PointBlank.Anticheat
             _object_system = new GameObject();
             DontDestroyOnLoad(_object_system);
 
-            _systems.Add(_object_system.AddComponent<VeAC_ModuleManager>());
+            _moduleManager = _object_system.AddComponent<VeAC_ModuleManager>();
         }
         #endregion
     }
