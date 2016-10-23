@@ -32,6 +32,12 @@ namespace PointBlank.Anticheat
             loadModules();
         }
 
+        public void OnDestory()
+        {
+            unloadModules();
+            GameObject.Destroy(_object_Modules);
+        }
+
         public void Update()
         {
             if ((DateTime.Now - _detectionUpdate).TotalMilliseconds >= 5000)
@@ -80,20 +86,32 @@ namespace PointBlank.Anticheat
 
         private void loadModules()
         {
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if (t.IsClass && typeof(VeAC_Module).IsAssignableFrom(t))
+                foreach (Type t in asm.GetTypes())
                 {
-                    VeAC_Module module = _object_Modules.AddComponent(t) as VeAC_Module;
-                    if (!module.check())
+                    if (t != null && t.IsClass && typeof(VeAC_Module).IsAssignableFrom(t) && t.Name != "VeAC_Module")
                     {
-                        GameObject.Destroy(module);
-                        continue;
+                        VeAC_Module module = _object_Modules.AddComponent(t) as VeAC_Module;
+                        if (module == null || !module.check())
+                        {
+                            GameObject.Destroy(module);
+                            continue;
+                        }
+                        PBLogging.log("Loaded: " + t.Name, false);
+                        _modules.Add(module);
                     }
-                    PBLogging.log("Loaded: " + t.Name);
-                    _modules.Add(module);
                 }
             }
+        }
+
+        private void unloadModules()
+        {
+            foreach (VeAC_Module module in _modules)
+            {
+                GameObject.Destroy(module);
+            }
+            _modules.Clear();
         }
         #endregion
     }

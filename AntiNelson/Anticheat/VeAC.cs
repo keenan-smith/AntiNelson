@@ -63,35 +63,41 @@ namespace PointBlank.Anticheat
             PBLogging.logImportant("Velocity Anticheat loaded!");
         }
 
+        public override void onUnload()
+        {
+            _instance = null;
+            unloadModules();
+        }
+
         #region Config Functions
         private void config_Load(PBConfig config)
         {
-            VeAC_Settings.enabled = (config.getText("enabled") == "true");
-            VeAC_Settings.anti_ESP = (config.getText("anti_ESP") == "true");
+            VeAC_Settings.enabled = (config.getText("enabled") == "True");
+            VeAC_Settings.anti_ESP = (config.getText("anti_ESP") == "True");
             VeAC_Settings.esp_prevent = (EAntiESP)Enum.Parse(typeof(EAntiESP), config.getText("esp_prevent"));
             VeAC_Settings.esp_distance = float.Parse(config.getText("esp_distance"));
-            VeAC_Settings.anti_Aimbot = (config.getText("anti_Aimbot") == "true");
-            VeAC_Settings.anti_Triggerbot = (config.getText("anti_Triggerbot") == "true");
-            VeAC_Settings.triggerbot_useMemory = (config.getText("triggerbot_useMemory") == "true");
+            VeAC_Settings.anti_Aimbot = (config.getText("anti_Aimbot") == "True");
+            VeAC_Settings.anti_Triggerbot = (config.getText("anti_Triggerbot") == "True");
+            VeAC_Settings.triggerbot_useMemory = (config.getText("triggerbot_useMemory") == "True");
             VeAC_Settings.triggerbot_time = float.Parse(config.getText("triggerbot_time"));
-            VeAC_Settings.anti_VehicleFly = (config.getText("anti_VehicleFly") == "true");
-            VeAC_Settings.anti_NoWall = (config.getText("anti_NoWall") == "true");
-            VeAC_Settings.anti_AntiAim = (config.getText("anti_AntiAim") == "true");
-            VeAC_Settings.anti_MapHack = (config.getText("anti_MapHack") == "true");
-            VeAC_Settings.anti_AntiScreenshot = (config.getText("anti_AntiScreenshot") == "true");
-            VeAC_Settings.antiscreenshot_usescreenshotdatabase = (config.getText("antiscreenshot_usescreenshotdatabase") == "true");
-            VeAC_Settings.anti_InWallGlitch = (config.getText("anti_InWallGlitch") == "true");
-            VeAC_Settings.anti_Reach = (config.getText("anti_Reach") == "true");
-            VeAC_Settings.anti_InstantDisconnect = (config.getText("anti_InstantDisconnect") == "true");
-            VeAC_Settings.instantdisconnect_keepinserver = (config.getText("instantdisconnect_keepinserver") == "true");
-            VeAC_Settings.anti_client_HashBypass = (config.getText("anti_client_HashBypass") == "true");
-            VeAC_Settings.anti_client_Execution = (config.getText("anti_client_Execution") == "true");
-            VeAC_Settings.anti_client_SkinHack = (config.getText("anti_client_SkinHack") == "true");
+            VeAC_Settings.anti_VehicleFly = (config.getText("anti_VehicleFly") == "True");
+            VeAC_Settings.anti_NoWall = (config.getText("anti_NoWall") == "True");
+            VeAC_Settings.anti_AntiAim = (config.getText("anti_AntiAim") == "True");
+            VeAC_Settings.anti_MapHack = (config.getText("anti_MapHack") == "True");
+            VeAC_Settings.anti_AntiScreenshot = (config.getText("anti_AntiScreenshot") == "True");
+            VeAC_Settings.antiscreenshot_usescreenshotdatabase = (config.getText("antiscreenshot_usescreenshotdatabase") == "True");
+            VeAC_Settings.anti_InWallGlitch = (config.getText("anti_InWallGlitch") == "True");
+            VeAC_Settings.anti_Reach = (config.getText("anti_Reach") == "True");
+            VeAC_Settings.anti_InstantDisconnect = (config.getText("anti_InstantDisconnect") == "True");
+            VeAC_Settings.instantdisconnect_keepinserver = (config.getText("instantdisconnect_keepinserver") == "True");
+            VeAC_Settings.anti_client_HashBypass = (config.getText("anti_client_HashBypass") == "True");
+            VeAC_Settings.anti_client_Execution = (config.getText("anti_client_Execution") == "True");
+            VeAC_Settings.anti_client_SkinHack = (config.getText("anti_client_SkinHack") == "True");
             VeAC_Settings.max_detection = int.Parse(config.getText("max_detection"));
-            VeAC_Settings.ban_user = (config.getText("ban_user") == "true");
-            VeAC_Settings.kick_user = (config.getText("kick_user") == "true");
-            VeAC_Settings.warn_admins = (config.getText("warn_admins") == "true");
-            VeAC_Settings.warn_user = (config.getText("warn_user") == "true");
+            VeAC_Settings.ban_user = (config.getText("ban_user") == "True");
+            VeAC_Settings.kick_user = (config.getText("kick_user") == "True");
+            VeAC_Settings.warn_admins = (config.getText("warn_admins") == "True");
+            VeAC_Settings.warn_user = (config.getText("warn_user") == "True");
         }
 
         private void config_Save(PBConfig config, string path)
@@ -136,6 +142,14 @@ namespace PointBlank.Anticheat
             DontDestroyOnLoad(_object_system);
 
             _moduleManager = _object_system.AddComponent<VeAC_ModuleManager>();
+        }
+
+        private void unloadModules()
+        {
+            if (!VeAC_Settings.enabled)
+                return;
+
+            GameObject.Destroy(_object_system);
         }
         #endregion
     }

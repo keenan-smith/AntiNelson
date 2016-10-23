@@ -80,6 +80,8 @@ namespace PointBlank.PB_Library
 
         public void loadPlugins()
         {
+            foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
+                loadPlugin(asm);
             foreach (string path in Directory.GetFiles(Variables.pluginsPathServer, "*.dll"))
                 loadPlugin(path);
         }
@@ -118,6 +120,42 @@ namespace PointBlank.PB_Library
             catch (Exception ex)
             {
                 PBLogging.logError("Failed to load " + Path.GetFileName(fullpath), ex);
+                return false;
+            }
+        }
+
+        public bool loadPlugin(Assembly asm)
+        {
+            try
+            {
+                if (Array.Exists(_loadedPaths.ToArray(), a => a == asm.FullName))
+                    return true;
+
+                foreach (Type a in asm.GetTypes())
+                {
+                    if (a.IsClass && typeof(PBPlugin).IsAssignableFrom(a))
+                    {
+                        PluginAttribute pa = (PluginAttribute)Attribute.GetCustomAttribute(a, typeof(PluginAttribute));
+                        if (pa != null)
+                        {
+                            GameObject obj = new GameObject(pa.pluginName);
+                            PBPlugin plugin = obj.AddComponent(a) as PBPlugin;
+
+                            DontDestroyOnLoad(obj);
+                            plugin.pluginObject = obj;
+                            plugin.onLoad();
+
+                            _plugins.Add(pa, plugin);
+                            _loadedPaths.Add(asm.FullName);
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PBLogging.logError("Failed to load " + asm.FullName, ex);
                 return false;
             }
         }
