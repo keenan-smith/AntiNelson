@@ -10,5 +10,18 @@ namespace PointBlank.Anticheat.Modules
 {
     internal class VeAC_MapHack : VeAC_Module
     {
+        #region Mono Functions
+        public void Start()
+        {
+
+        }
+        #endregion
+
+        #region Functions
+        public override bool check()
+        {
+            return VeAC_Settings.anti_MapHack && !VeAC_Settings.anti_ESP;
+        }
+        #endregion
     }
 }

@@ -55,24 +55,21 @@ namespace PointBlank.PB_Library
         public PluginAttribute getAttribute(PBPlugin plugin)
         {
             foreach (KeyValuePair<PluginAttribute, PBPlugin> pair in _plugins)
-            {
                 if (pair.Value == plugin)
                     return pair.Key;
-            }
             return null;
         }
 
         public void unloadPlugin(PBPlugin plugin)
         {
+            plugin.onUnload();
             GameObject.Destroy(plugin.pluginObject);
         }
 
         public void unloadAllPlugins()
         {
             foreach (KeyValuePair<PluginAttribute, PBPlugin> pair in _plugins)
-            {
-                GameObject.Destroy(pair.Value.pluginObject);
-            }
+                unloadPlugin(pair.Value);
         }
 
         public void loadLibraries()

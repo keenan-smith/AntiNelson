@@ -35,6 +35,11 @@ namespace PointBlank.API.Server.Extensions
         /// Called when the plugin is loaded.
         /// </summary>
         public virtual void onLoad() { }
+
+        /// <summary>
+        /// Called when the plugin is unloading.
+        /// </summary>
+        public virtual void onUnload() { }
         #endregion
     }
 }
