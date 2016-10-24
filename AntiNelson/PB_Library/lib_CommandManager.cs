@@ -40,7 +40,7 @@ namespace PointBlank.PB_Library
                 {
                     if (!ReadWrite.folderExists(Variables.currentPath + "\\Locals\\" + att.pluginName, false))
                         ReadWrite.createFolder(Variables.currentPath + "\\Locals\\" + att.pluginName, false);
-                    byte[] s = Tool.getResource(att.commandName);
+                    byte[] s = Tool.getResource(att.commandName, t.Assembly);
                     if (s != null && s.Length > 0)
                     {
                         File.WriteAllBytes(path, s);

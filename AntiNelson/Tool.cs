@@ -39,12 +39,24 @@ namespace PointBlank
             return "";
         }
 
-        public static byte[] getResource(string name)
+        public static byte[] getResource(string name, Assembly asm)
         {
-            Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("PointBlank.Properties.Resources.resources");
-            using (ResourceSet set = new ResourceSet(st))
+            try
             {
-                return (byte[])set.GetObject(name, true);
+                foreach(string rName in asm.GetManifestResourceNames())
+                {
+                    //Stream st = asm.GetManifestResourceStream(pluginNamespace + ".Properties.Resources.resources");
+                    Stream st = asm.GetManifestResourceStream(rName);
+                    using (ResourceSet set = new ResourceSet(st))
+                    {
+                        return (byte[])set.GetObject(name, true);
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
 

@@ -31,20 +31,30 @@ namespace PointBlank.Anticheat.Modules
         {
             if (_queue.Count > 0)
             {
+                List<PBPlayer> plys = new List<PBPlayer>();
                 foreach (KeyValuePair<PBPlayer, DateTime> que in _queue)
                 {
                     if ((DateTime.Now - que.Value).TotalMilliseconds >= 3000)
                     {
                         que.Key.player.sendScreenshot(CSteamID.Nil, Event_PlayerReady);
-                        _queue.Remove(que.Key);
+                        plys.Add(que.Key);
                     }
                 }
+                foreach (PBPlayer ply in plys)
+                    _queue.Remove(ply);
+                plys.Clear();
             }
 
             if (_screenshots.Count > 0)
+            {
+                List<byte[]> bts = new List<byte[]>();
                 foreach (KeyValuePair<byte[], DateTime> screenshot in _screenshots)
                     if ((DateTime.Now - screenshot.Value).TotalMilliseconds >= 10000)
-                        _screenshots.Remove(screenshot.Key);
+                        bts.Add(screenshot.Key);
+                foreach (byte[] bt in bts)
+                    _screenshots.Remove(bt);
+                bts.Clear();
+            }
         }
         #endregion
 
