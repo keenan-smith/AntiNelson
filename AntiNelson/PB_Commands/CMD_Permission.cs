@@ -42,6 +42,8 @@ namespace PointBlank.PB_Commands
             string permission = args[1];
             if (args.Length >= 3)
                 player = PBServer.findPlayer(args[2]);
+            if (player == null)
+                player = orgPlayer;
 
             if (action.ToLower() == "set")
             {
