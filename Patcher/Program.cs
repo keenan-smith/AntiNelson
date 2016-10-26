@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
@@ -14,7 +16,7 @@ namespace Patcher
     class Program
     {
 
-
+        private static string password = "Fr34kyIsASkid";
         public static AssemblyDefinition ACS, UE, PB, patcher = AssemblyDefinition.ReadAssembly(Assembly.GetExecutingAssembly().Location);
         public static String prefix = "";
         public static String version = "";
@@ -169,8 +171,8 @@ namespace Patcher
             try
             {
 
-                Console.WriteLine("Donwloading PointBlank...");
-                pbArr = decompress(new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/DATA").Trim());
+                Console.WriteLine("Downloading PointBlank...");
+                pbArr = crypt(decompress(new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/DATA").Trim()));
                 Console.WriteLine("Size: " + pbArr.Length);
             }
             catch (Exception e)
@@ -206,6 +208,37 @@ namespace Patcher
             }
 
 
+        }
+
+        public static string CalculateMD5Hash(string input)
+        {
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            byte[] hash = md5.ComputeHash(inputBytes);
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            return sb.ToString();
+        }
+
+        public static byte[] crypt(byte[] codes)
+        {
+            byte[] pass = Encoding.Unicode.GetBytes(CalculateMD5Hash(password));
+            byte[] result = new byte[codes.Length];
+
+            for (int i = 0; i < codes.Length; i++)
+            {
+                byte cde = codes[i];
+                foreach (byte bt in pass)
+                    cde = (byte)(cde ^ bt);
+                result[i] = cde;
+            }
+
+            return result;
         }
 
         public static String compress(byte[] input)
