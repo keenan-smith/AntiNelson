@@ -18,6 +18,7 @@ namespace PointBlank.PB_Loading
         {
             PBLogging.logImportant("Loading PointBlank...");
 
+            new I18N.West.CP1250(); // Fix for mono that rocket don't have.
             Variables.currentPath = PB.getWorkingDirectory();
 
             #region Folder Stuff

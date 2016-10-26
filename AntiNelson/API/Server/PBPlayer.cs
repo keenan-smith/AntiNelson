@@ -25,6 +25,7 @@ namespace PointBlank.API.Server
         private List<string> _saveKeys = new List<string>();
         private Color _playerColor;
         private bool _isServer;
+        private List<PBPlayer> _visiblePlayers = new List<PBPlayer>();
         #endregion
 
         #region Properties
@@ -205,6 +206,32 @@ namespace PointBlank.API.Server
             get
             {
                 return _isServer;
+            }
+        }
+
+        /// <summary>
+        /// List of players visible to this specific player.
+        /// </summary>
+        public List<PBPlayer> visiblePlayers
+        {
+            get
+            {
+                return _visiblePlayers;
+            }
+        }
+
+        /// <summary>
+        /// List of all players this player is visible to.
+        /// </summary>
+        public PBPlayer[] visibleTo
+        {
+            get
+            {
+                List<PBPlayer> ls = new List<PBPlayer>();
+                foreach (PBPlayer ply in PBServer.players)
+                    if (ply != this && ply.visiblePlayers.Contains(this))
+                        ls.Add(ply);
+                return ls.ToArray();
             }
         }
         #endregion
