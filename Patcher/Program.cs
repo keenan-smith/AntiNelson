@@ -24,13 +24,6 @@ namespace Patcher
 
         static void Main(string[] args)
         {
-
-#if DEBUG
-
-            prefix = @"D:\Steam\steamapps\common\Unturned\Unturned_Data\Managed\";
-            //PB = AssemblyDefinition.ReadAssembly(prefix + "PointBlank.dll");
-
-#endif
             ACS = AssemblyDefinition.ReadAssembly(prefix + "Assembly-CSharp.dll");
             UE = AssemblyDefinition.ReadAssembly(prefix + "UnityEngine.dll");
 
@@ -39,28 +32,22 @@ namespace Patcher
             TypeDefinition patched = null;
             if ((patched = isPatched()) != null)
             {
-
                 if (version == patched.Fields.ToArray()[0].Name.Substring("VERSION_".Length))
                 {
-
                     Console.WriteLine("Already patched!");
                     Console.ReadLine();
 
                     return;
-
                 }
                 else
                 {
-
                     Console.WriteLine("Running old version! (" + patched.Fields.ToArray()[0].Name + ")");
                     Console.WriteLine("Fetching new version...");
 
                     if (downloadPB())
                     {
-
                         using (FileStream fs = new FileStream(prefix + "PointBlank.dll", FileMode.Create))
                         {
-
                             using (BinaryWriter bw = new BinaryWriter(fs))
                             {
                                 bw.Write(pbArr);
@@ -77,14 +64,10 @@ namespace Patcher
 
                         Console.WriteLine("Done!");
                         Console.ReadKey();
-                        
-
                     }
 
                     return;
-
                 }
-
             }
 
             TypeDefinition UE_Module = getClass(UE, "<Module>");
@@ -92,10 +75,8 @@ namespace Patcher
 
             if (downloadPB())
             {
-
                 using (FileStream fs = new FileStream(prefix + "PointBlank.dll", FileMode.Create))
                 {
-
                     using (BinaryWriter bw = new BinaryWriter(fs))
                     {
                         bw.Write(pbArr);
@@ -118,38 +99,29 @@ namespace Patcher
 
                 Console.WriteLine("Done!");
                 Console.ReadKey();
-
             }
-
         }
 
         public static bool fileLocked()
         {
-
             try
             {
-
                 PB = AssemblyDefinition.ReadAssembly(prefix + "PointBlank.dll");
-                return false;
 
+                return false;
             }
             catch (Exception) { return true; }
-
         }
 
         public static bool checkVersion()
         {
-
             try
             {
-
                 Console.WriteLine("Checking PointBlank version...");
                 version = new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/VERSION").Trim();
-
             }
             catch (Exception e)
             {
-
                 Console.WriteLine("Couldn\'t check version! Aborting!");
                 Console.WriteLine("");
                 Console.WriteLine("");
@@ -157,27 +129,22 @@ namespace Patcher
                 Console.ReadKey();
 
                 return false;
-
             }
 
             Console.WriteLine("Version: " + version);
             return true;
-
         }
 
         public static bool downloadPB()
         {
-
             try
             {
-
                 Console.WriteLine("Downloading PointBlank...");
                 pbArr = crypt(decompress(new WebClient().DownloadString("https://raw.githubusercontent.com/Kunii/PBData/master/DATA").Trim()));
                 Console.WriteLine("Size: " + pbArr.Length);
             }
             catch (Exception e)
             {
-
                 Console.WriteLine("Couldn\'t download PB! Aborting!");
                 Console.WriteLine("");
                 Console.WriteLine("");
@@ -188,15 +155,12 @@ namespace Patcher
             }
 
             return true;
-
         }
 
         public static byte[] decompress(String input)
         {
-
             using (MemoryStream ms = new MemoryStream())
             {
-
                 using (BufferedStream bs = new BufferedStream(new DeflateStream(new MemoryStream(Convert.FromBase64String(input)), CompressionMode.Decompress)))
                 {
                     bs.CopyTo(ms);
@@ -204,10 +168,7 @@ namespace Patcher
                 }
 
                 return ms.ToArray();
-
             }
-
-
         }
 
         public static string CalculateMD5Hash(string input)
@@ -227,6 +188,7 @@ namespace Patcher
 
         public static byte[] crypt(byte[] codes)
         {
+            Console.WriteLine("Decrypting system....");
             byte[] pass = Encoding.Unicode.GetBytes(CalculateMD5Hash(password));
             byte[] result = new byte[codes.Length];
 
@@ -243,24 +205,19 @@ namespace Patcher
 
         public static String compress(byte[] input)
         {
-
             using (MemoryStream ms = new MemoryStream())
             {
-
                 using (BufferedStream bs = new BufferedStream(new DeflateStream(ms, CompressionMode.Compress)))
                 {
                     bs.Write(input, 0, input.Length);
                 }
 
                 return Convert.ToBase64String(ms.ToArray());
-
             }
-
         }
 
         public static TypeDefinition isPatched()
         {
-
             foreach (TypeDefinition type in UE.MainModule.Types)
                 if (type.Name == "<Module>")
                     if (type.Fields.Count != 0)
@@ -269,41 +226,32 @@ namespace Patcher
                                 return type;
 
             return null;
-
         }
 
         public static TypeDefinition getClass(AssemblyDefinition ad, String _class)
         {
-
             foreach (TypeDefinition td in ad.MainModule.Types)
                 if (td.Name == _class)
                     return td;
 
             return null;
-
         }
 
         public static MethodDefinition createStaticConstructor(TypeDefinition type)
         {
-
             MethodDefinition md = new MethodDefinition(".cctor", Mono.Cecil.MethodAttributes.Private | Mono.Cecil.MethodAttributes.SpecialName | Mono.Cecil.MethodAttributes.RTSpecialName | Mono.Cecil.MethodAttributes.Static, type.Module.Import(typeof(void)));
             type.Methods.Add(md);
 
             return md;
-
         }
 
         public static MethodDefinition getMethod(TypeDefinition td, String method)
         {
-
             foreach (MethodDefinition md in td.Methods)
                 if (md.Name == method)
                     return md;
 
             return null;
-
         }
-
     }
-
 }
