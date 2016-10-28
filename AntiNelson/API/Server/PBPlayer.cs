@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -118,13 +119,24 @@ namespace PointBlank.API.Server
         }
 
         /// <summary>
-        /// The IP of the player.
+        /// Same as the IP property except it returns the UInt version.
         /// </summary>
-        public uint IP
+        public uint INT_IP
         {
             get
             {
                 return _IP;
+            }
+        }
+
+        /// <summary>
+        /// The IP of the player.
+        /// </summary>
+        public string IP
+        {
+            get
+            {
+                return new IPAddress(_IP).ToString();
             }
         }
 
@@ -314,7 +326,7 @@ namespace PointBlank.API.Server
                 return;
             SteamBlacklist.ban(
                 steamID,
-                (IPBan ? IP : 0u),
+                (IPBan ? INT_IP : 0u),
                 judge,
                 reason,
                 duration

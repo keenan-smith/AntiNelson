@@ -158,7 +158,7 @@ namespace PointBlank.API.Server
 				    }));
 			    }
 		    }
-		    Color color = Color.white;
+            Color color = PBServer.findPlayer(player).playerColor;
             if (player.isAdmin && !Provider.hideAdmins)
 		    {
 			    color = Palette.ADMIN;

@@ -32,7 +32,7 @@ namespace PointBlank.PB_Commands
                 return;
             }
 
-            orgPlayer.sendChatMessage(Parser.getIPFromUInt32(player.IP), Color.magenta);
+            orgPlayer.sendChatMessage(Parser.getIPFromUInt32(player.INT_IP), Color.magenta);
         }
         #endregion
     }
