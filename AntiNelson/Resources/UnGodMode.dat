@@ -1,9 +1,0 @@
-Help Removes godmode from player!
-Usage /ungodmode, /ungodmode [Player Name]
-CommandPermission Not enough permissions!
-CommandLimit You have reached the command limit!
-CommandCooldown You have a command cooldown!
-InvalidPlayer Invalid Player!
-UnGodmodeSuccess Removed godmode from player!
-UnGodmoded You are no longer in godmode!
-UnGodmodeFail Failed to ungodmode player!

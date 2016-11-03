@@ -1,9 +1,0 @@
-Help Prevents a player from moving.
-Usage /freeze, /freeze [Player Name]
-CommandPermission Not enough permissions!
-CommandLimit You have reached the command limit!
-CommandCooldown You have a command cooldown!
-InvalidPlayer Invalid Player!
-FreezeSuccess Player Frozen!
-Frozen You have been frozen!
-FreezeFail Failed to freeze player!

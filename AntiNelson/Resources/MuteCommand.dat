@@ -1,9 +1,0 @@
-Help Prevents player from speaking.
-Usage /mute, /mute [Player Name]
-CommandPermission Not enough permissions!
-CommandLimit You have reached the command limit!
-CommandCooldown You have a command cooldown!
-InvalidPlayer Invalid Player!
-MuteSuccess Muted player!
-Muted You have been muted!
-MuteFail Failed to mute player!

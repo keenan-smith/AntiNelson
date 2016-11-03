@@ -1,9 +1,0 @@
-Help Removes mute from player
-Usage /unmute, /unmute [Player Name]
-CommandPermission Not enough permissions!
-CommandLimit You have reached the command limit!
-CommandCooldown You have a command cooldown!
-InvalidPlayer Invalid Player!
-UnmuteSuccess Player unmuted!
-Unmuted You are no longer muted!
-UnmuteFail Failed to mute player!

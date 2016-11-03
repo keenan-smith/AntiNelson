@@ -1,9 +1,0 @@
-Help Removes freeze from player
-Usage /unfreeze, /unfreeze [Player Name]
-CommandPermission Not enough permissions!
-CommandLimit You have reached the command limit!
-CommandCooldown You have a command cooldown!
-InvalidPlayer Invalid Player!
-UnfreezeSuccess Player no longer frozen!
-Unfrozen You are no longer frozen!
-UnfreezeFail Failed to unfreeze player!
