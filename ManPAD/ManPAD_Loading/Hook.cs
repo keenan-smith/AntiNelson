@@ -11,12 +11,12 @@ namespace ManPAD.ManPAD_Loading
     public class Hook : MonoBehaviour
     {
         #region Variables
-        private ManPAD _instance_ManPAD = null;
-        private bool _crashed = false;
+        public ManPAD _instance_ManPAD = null;
+        public bool _crashed = false;
 
-        private static GameObject _gameobject_Hook = null;
-        private static Thread _thread_Hook = null;
-        private static bool _shuttingdown = false;
+        public static GameObject _gameobject_Hook = null;
+        public static Thread _thread_Hook = null;
+        public static bool _shuttingdown = false;
         #endregion
 
         #region Properties
@@ -63,9 +63,9 @@ namespace ManPAD.ManPAD_Loading
             _shuttingdown = false;
             try
             {
-                Thread _thread_Hook1 = new Thread(new ThreadStart(hookLoop));
+                _thread_Hook = new Thread(new ThreadStart(hookLoop));
 
-                _thread_Hook1.Start();
+                _thread_Hook.Start();
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace ManPAD.ManPAD_Loading
             }
         }
 
-        private static void hookLoop()
+        public static void hookLoop()
         {
             try
             {
@@ -84,9 +84,7 @@ namespace ManPAD.ManPAD_Loading
                     {
                         MPAD_Logging.Log("Hooking...");
                         _gameobject_Hook = new GameObject();
-
                         _gameobject_Hook.AddComponent<Hook>();
-
                         DontDestroyOnLoad(_gameobject_Hook);
                     }
                     Thread.Sleep(5000);
@@ -183,6 +181,7 @@ namespace ManPAD.ManPAD_Loading
                 ShutdownThread();
                 _thread_Hook = null;
                 callMeToHook();
+                _crashed = false;
             }
             catch (Exception ex)
             {
@@ -200,6 +199,7 @@ namespace ManPAD.ManPAD_Loading
 
                 _instance_ManPAD = null;
                 hooked = false;
+                _crashed = false;
             }
             catch (Exception ex)
             {
@@ -220,6 +220,7 @@ namespace ManPAD.ManPAD_Loading
                 ShutdownThread();
                 _thread_Hook = null;
                 callMeToHook();
+                _crashed = false;
             }
             catch (Exception ex)
             {
@@ -239,6 +240,7 @@ namespace ManPAD.ManPAD_Loading
                 _instance_ManPAD = null;
                 hooked = false;
                 _thread_Hook = null;
+                _crashed = false;
             }
             catch (Exception ex)
             {
