@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using ManPAD.ManPAD_API;
 
 namespace ManPAD.ManPAD_Loading
 {
     public class Hook : MonoBehaviour
     {
+        #region Unmanaged Functions
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+        #endregion
+
         #region Variables
         public ManPAD _instance_ManPAD = null;
         public bool _crashed = false;
 
         public static GameObject _gameobject_Hook = null;
+        public static Hook _instance = null;
         public static Thread _thread_Hook = null;
         public static bool _shuttingdown = false;
         #endregion
 
         #region Properties
-        private static bool hooked
+        public static bool hooked
         {
             get
             {
@@ -40,7 +47,7 @@ namespace ManPAD.ManPAD_Loading
         {
             try
             {
-                Debug.Log("Starting up ManPAD...");
+                Console.WriteLine("Starting up ManPAD...");
                 if (_instance_ManPAD != null)
                     return;
 
@@ -56,15 +63,14 @@ namespace ManPAD.ManPAD_Loading
         #region Hooking
         public static void callMeToHook()
         {
-            if (hooked && _thread_Hook != null)
-                return;
-
-            MPAD_Logging.enableConsole();
-            _shuttingdown = false;
             try
             {
-                _thread_Hook = new Thread(new ThreadStart(hookLoop));
+                if (_thread_Hook != null)
+                    return;
 
+                _shuttingdown = false;
+                AllocConsole();
+                _thread_Hook = new Thread(new ThreadStart(hook));
                 _thread_Hook.Start();
             }
             catch (Exception ex)
@@ -73,7 +79,7 @@ namespace ManPAD.ManPAD_Loading
             }
         }
 
-        public static void hookLoop()
+        public static void hook()
         {
             try
             {
@@ -82,12 +88,11 @@ namespace ManPAD.ManPAD_Loading
                     Thread.Sleep(1000);
                     if (!hooked)
                     {
-                        MPAD_Logging.Log("Hooking...");
-                        _gameobject_Hook = new GameObject();
-                        _gameobject_Hook.AddComponent<Hook>();
+                        Console.WriteLine("Hooking...");
+                        hooked = true;
+                        _instance = _gameobject_Hook.AddComponent<Hook>();
                         DontDestroyOnLoad(_gameobject_Hook);
                     }
-                    Thread.Sleep(5000);
                 }
             }
             catch (Exception ex)

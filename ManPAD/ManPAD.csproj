@@ -51,7 +51,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ManPAD_API\MPAD_Logging.cs" />
     <Compile Include="ManPAD_Loading\Hook.cs" />
     <Compile Include="ManPAD_Loading\ManPAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

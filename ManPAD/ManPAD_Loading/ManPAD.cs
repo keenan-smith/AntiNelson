@@ -8,7 +8,7 @@ namespace ManPAD.ManPAD_Loading
 {
     public class ManPAD : MonoBehaviour
     {
-        //private ManPAD errorCauser = null;
+        private ManPAD errorCauser = null;
 
         public ManPAD()
         {
@@ -22,8 +22,8 @@ namespace ManPAD.ManPAD_Loading
 
         public void _Update()
         {
-            /*if (Input.GetKeyDown(KeyCode.F1))
-                errorCauser._Start(); // Crash the hack*/
+            if (Input.GetKeyDown(KeyCode.F1))
+                errorCauser._Start(); // Crash the hack
         }
 
         public void _OnGUI()
