@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using ManPAD.ManPAD_API;
 
 namespace ManPAD.ManPAD_Loading
 {
     public class ManPAD : MonoBehaviour
     {
-        #region Unmanaged Functions
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
-        #endregion
-
         public ManPAD()
         {
-            AllocConsole();
+            MP_Logging.enableConsole();
         }
 
         #region Mono Functions
