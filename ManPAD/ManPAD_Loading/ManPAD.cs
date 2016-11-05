@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -8,32 +9,33 @@ namespace ManPAD.ManPAD_Loading
 {
     public class ManPAD : MonoBehaviour
     {
-        private ManPAD errorCauser = null;
+        #region Unmanaged Functions
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+        #endregion
 
         public ManPAD()
         {
-
+            AllocConsole();
         }
 
-        public void _Start()
+        #region Mono Functions
+        public void Start()
         {
-
         }
 
-        public void _Update()
+        public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F1))
-                errorCauser._Start(); // Crash the hack
         }
 
-        public void _OnGUI()
+        public void OnGUI()
         {
-
         }
 
-        public void _OnDestroy()
+        public void OnDestroy()
         {
-
         }
+        #endregion
     }
 }

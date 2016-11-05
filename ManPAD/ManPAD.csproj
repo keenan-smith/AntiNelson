@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ManPAD_Loading\Hook.cs" />
+    <Compile Include="ManPAD_Loading\Hook_OLD.cs" />
     <Compile Include="ManPAD_Loading\ManPAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
