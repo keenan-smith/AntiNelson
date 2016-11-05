@@ -52,6 +52,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ManPAD_API\Attributes\CodeReplaceAttribute.cs" />
+    <Compile Include="ManPAD_API\Extensions\MP_Hack.cs" />
+    <Compile Include="ManPAD_API\MP_GOLoader.cs" />
     <Compile Include="ManPAD_API\MP_Logging.cs" />
     <Compile Include="ManPAD_API\MP_Redirector.cs" />
     <Compile Include="ManPAD_Library\lib_MethodReplacer.cs" />

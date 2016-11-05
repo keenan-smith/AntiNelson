@@ -31,7 +31,7 @@ namespace ManPAD.ManPAD_API
         public ulong f;
     }
 
-    public static class RedirectionHelper
+    public static class MP_Redirector
     {
         public static RedirectCallsState RedirectCalls(MethodInfo from, MethodInfo to)
         {
