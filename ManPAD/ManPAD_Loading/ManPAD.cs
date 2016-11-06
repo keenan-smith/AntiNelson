@@ -19,6 +19,7 @@ namespace ManPAD.ManPAD_Loading
         public void Start()
         {
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
+            MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
         }
 
         public void Update()

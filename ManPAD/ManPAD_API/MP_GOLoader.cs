@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using ManPAD.ManPAD_API.Extensions;
+using ManPAD.ManPAD_API.GUI.Extensions;
 
 namespace ManPAD.ManPAD_API
 {
     public class MP_GOLoader : MonoBehaviour
     {
         #region Variables
-        private static Dictionary<Type, MP_Hack> _list_hack = new Dictionary<Type, MP_Hack>();
+        private static Dictionary<Type, MonoBehaviour> _list_hack = new Dictionary<Type, MonoBehaviour>();
         private static Dictionary<Type, MonoBehaviour> _list_library = new Dictionary<Type, MonoBehaviour>();
         private static Dictionary<Type, MonoBehaviour> _list_system = new Dictionary<Type, MonoBehaviour>();
 
@@ -26,28 +26,63 @@ namespace ManPAD.ManPAD_API
             DontDestroyOnLoad(_go_hack);
         }
 
-        public static MP_Hack hack_getByType(Type t)
+        public static MenuOption hack_getMenuOptionByType(Type t)
         {
             if (!_list_hack.ContainsKey(t))
                 return null;
 
-            return _list_hack[t];
+            return (MenuOption)_list_hack[t];
         }
 
-        public static MP_Hack hack_addHack(Type t)
+        public static OverlayOption hack_getOverlayOptionByType(Type t)
+        {
+            if (!_list_hack.ContainsKey(t))
+                return null;
+
+            return (OverlayOption)_list_hack[t];
+        }
+
+        public static MenuOption hack_addMenuOption(Type t)
         {
             if (_list_hack.ContainsKey(t))
-                return _list_hack[t];
+                return (MenuOption)_list_hack[t];
             if (_go_hack == null)
                 hack_createObject();
 
-            MP_Hack inst = _go_hack.AddComponent(t) as MP_Hack;
+            MenuOption inst = _go_hack.AddComponent(t) as MenuOption;
 
             _list_hack.Add(t, inst);
             return inst;
         }
 
-        public static void hack_removeHackByInstance(MP_Hack inst)
+        public static OverlayOption hack_addOverlayOption(Type t)
+        {
+            if (_list_hack.ContainsKey(t))
+                return (OverlayOption)_list_hack[t];
+            if (_go_hack == null)
+                hack_createObject();
+
+            OverlayOption inst = _go_hack.AddComponent(t) as OverlayOption;
+
+            _list_hack.Add(t, inst);
+            return inst;
+        }
+
+        public static void hack_removeMenuOptionByInstance(MenuOption inst)
+        {
+            if (!_list_hack.ContainsValue(inst))
+                return;
+
+            Type t = _list_hack.Where(a => a.Value == inst).Select(a => a.Key).First() as Type;
+
+            if (t == null)
+                return;
+
+            GameObject.Destroy(_list_hack[t]);
+            _list_hack.Remove(t);
+        }
+
+        public static void hack_removeOverlayOptionByInstance(OverlayOption inst)
         {
             if (!_list_hack.ContainsValue(inst))
                 return;

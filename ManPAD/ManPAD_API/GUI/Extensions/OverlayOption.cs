@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace ManPAD.ManPAD_API.Extensions
+namespace ManPAD.ManPAD_API.GUI.Extensions
 {
-    public class MP_Hack : MonoBehaviour
+    public class OverlayOption : MonoBehaviour
     {
     }
 }

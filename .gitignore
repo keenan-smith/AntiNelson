@@ -1,1 +1,7 @@
 *.suo
+ManPAD/bin/Debug/ManPAD.dll
+ManPAD/bin/Debug/ManPAD.pdb
+*.dll
+*.cache
+ManPAD/obj/Debug/ManPAD.pdb
+*.pdb

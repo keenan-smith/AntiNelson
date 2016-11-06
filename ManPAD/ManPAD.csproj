@@ -53,17 +53,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ManPAD_API\Attributes\CodeReplaceAttribute.cs" />
-    <Compile Include="ManPAD_API\Extensions\MP_Hack.cs" />
+    <Compile Include="ManPAD_API\GUI\Attributes\MenuOptionAttribute.cs" />
+    <Compile Include="ManPAD_API\GUI\Extensions\MenuOption.cs" />
+    <Compile Include="ManPAD_API\GUI\Extensions\OverlayOption.cs" />
+    <Compile Include="ManPAD_API\GUI\MP_MainMenu.cs" />
     <Compile Include="ManPAD_API\MP_GOLoader.cs" />
     <Compile Include="ManPAD_API\MP_Logging.cs" />
     <Compile Include="ManPAD_API\MP_Redirector.cs" />
+    <Compile Include="ManPAD_Library\lib_MainMenu.cs" />
     <Compile Include="ManPAD_Library\lib_MethodReplacer.cs" />
     <Compile Include="ManPAD_Loading\Hook.cs" />
     <Compile Include="ManPAD_Loading\Hook_OLD.cs" />
     <Compile Include="ManPAD_Loading\ManPAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ManPAD_API\Extensions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
