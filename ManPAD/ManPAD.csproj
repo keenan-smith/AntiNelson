@@ -57,6 +57,7 @@
     <Compile Include="ManPAD_API\GUI\Extensions\MenuOption.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\OverlayOption.cs" />
     <Compile Include="ManPAD_API\GUI\MP_MainMenu.cs" />
+    <Compile Include="ManPAD_API\MP_Config.cs" />
     <Compile Include="ManPAD_API\MP_GOLoader.cs" />
     <Compile Include="ManPAD_API\MP_Logging.cs" />
     <Compile Include="ManPAD_API\MP_Redirector.cs" />

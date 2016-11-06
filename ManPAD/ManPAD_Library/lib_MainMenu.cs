@@ -14,6 +14,7 @@ namespace ManPAD.ManPAD_Library
     {
         #region Variables
         private Rect _rect_ListMenu;
+        private GUISkin _skin;
         #endregion
 
         #region Mono Functions
@@ -43,15 +44,61 @@ namespace ManPAD.ManPAD_Library
                         }
 
                         for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
-                        {
                             MP_MainMenu.attributes[i].UI_X -= jump;
-                        }
                     }
                 }
             }
             else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // Backward
             {
+                if (_rect_ListMenu.Contains(MP_MainMenu.mouse_position))
+                {
+                    if (MP_MainMenu.attributes[0].button.x < 1f)
+                    {
+                        float jump = 0f;
+                        for (int i = MP_MainMenu.attributes.Length - 1; i > -1; i--)
+                        {
+                            if (MP_MainMenu.attributes[i].button.x < 1f)
+                            {
+                                jump = -MP_MainMenu.attributes[i].button.x + 1f;
+                                break;
+                            }
+                        }
 
+                        for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
+                            MP_MainMenu.attributes[i].UI_X += jump;
+                    }
+                }
+            }
+        }
+
+        public void OnGUI()
+        {
+            if (GUI.skin != _skin) // TEMPRORAY! REMOVE LATER!!!!!!
+            {
+                GUISkin skin = Resources.Load("MPResources") as GUISkin;
+                _skin = skin;
+                GUI.skin = skin;
+            }
+
+            GUI.Box(_rect_ListMenu, "");
+            for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
+            {
+                GUI.contentColor = Color.black;
+                if (MP_MainMenu.attributes[i].isActive)
+                {
+
+                }
+                else
+                {
+
+                }
+                GUI.Button(MP_MainMenu.attributes[i].button, MP_MainMenu.attributes[i].text);
+
+                if (MP_MainMenu.attributes[i].isActive)
+                {
+                    MP_MainMenu.attributes[i].option.open = true;
+
+                }
             }
         }
         #endregion
