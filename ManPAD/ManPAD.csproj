@@ -61,6 +61,8 @@
     <Compile Include="ManPAD_API\MP_GOLoader.cs" />
     <Compile Include="ManPAD_API\MP_Logging.cs" />
     <Compile Include="ManPAD_API\MP_Redirector.cs" />
+    <Compile Include="ManPAD_Hacks\MainMenu\MP_Aimbot.cs" />
+    <Compile Include="ManPAD_Hacks\MainMenu\MP_ESP.cs" />
     <Compile Include="ManPAD_Library\lib_MainMenu.cs" />
     <Compile Include="ManPAD_Library\lib_MethodReplacer.cs" />
     <Compile Include="ManPAD_Loading\Hook.cs" />

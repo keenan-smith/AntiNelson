@@ -17,6 +17,7 @@ namespace ManPAD.ManPAD_Library
             MP_Logging.Log("Loading Method Replacer....");
 
             doTypes();
+            MP_Logging.Log("Method Replacer Loaded!");
         }
         #endregion
 

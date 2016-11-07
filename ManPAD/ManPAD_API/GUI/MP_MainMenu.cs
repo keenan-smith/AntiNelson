@@ -60,7 +60,7 @@ namespace ManPAD.ManPAD_API.GUI
         {
             get
             {
-                return _menuOptions.Keys.ToArray();
+                return _menuOptions.Keys.ToArray().OrderByDescending(a => a.ID).ToArray();
             }
         }
 
@@ -68,7 +68,7 @@ namespace ManPAD.ManPAD_API.GUI
         {
             get
             {
-                return _menuOptions.Values.ToArray();
+                return _menuOptions.Values.ToArray().OrderByDescending(a => a.attrib.ID).ToArray();
             }
         }
         #endregion

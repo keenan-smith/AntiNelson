@@ -22,6 +22,8 @@ namespace ManPAD.ManPAD_API.GUI.Attributes
         #region Properties
         public string text { get; set; }
 
+        public int ID { get; set; }
+
         public MenuOption option
         {
             get
@@ -68,8 +70,9 @@ namespace ManPAD.ManPAD_API.GUI.Attributes
         }
         #endregion
 
-        public MenuOptionAttribute(string text, float UI_Width, float UI_Height)
+        public MenuOptionAttribute(int ID, string text, float UI_Width, float UI_Height)
         {
+            this.ID = ID;
             this.text = text;
             this._UI_Width = UI_Width;
             this._UI_Height = UI_Height;
