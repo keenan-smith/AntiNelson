@@ -34,32 +34,23 @@ namespace ManPAD.ManPAD_Library
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.F1)) // TEMPRORAY! REMOVE LATER!!!!!!
+            {
                 _isOpen = !_isOpen;
+                //PlayerPauseUI.active = _isOpen;
+            }
 
             if (_blur == null && _isOpen)
-                _blur = Camera.main.gameObject.AddComponent<BlurEffect>();
-            if (_isOpen && _blur != null)
             {
+                _blur = MainCamera.instance.gameObject.AddComponent<BlurEffect>(); //Camera.main doesnt work, nor does this
                 _blur.iterations = 3;
                 _blur.blurSpread = 0.075f;
                 _blur.enabled = true;
-            }
-            else if (!_isOpen && _blur != null)
-            {
-                _blur.enabled = false;
-            }
-
-            /*if (_blur == null && _isOpen)
-            {
-                _blur = Camera.main.gameObject.AddComponent<BlurEffect>();
-                _blur.iterations = 3;
-                _blur.blurSpread = 0.075f;
             }
             else if (_blur != null && !_isOpen)
             {
                 GameObject.Destroy(_blur);
                 _blur = null;
-            }*/
+            }
 
             if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected)
                 return;
