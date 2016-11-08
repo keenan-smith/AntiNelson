@@ -37,6 +37,19 @@ namespace ManPAD.ManPAD_Library
                 _isOpen = !_isOpen;
 
             if (_blur == null && _isOpen)
+                _blur = Camera.main.gameObject.AddComponent<BlurEffect>();
+            if (_isOpen && _blur != null)
+            {
+                _blur.iterations = 3;
+                _blur.blurSpread = 0.075f;
+                _blur.enabled = true;
+            }
+            else if (!_isOpen && _blur != null)
+            {
+                _blur.enabled = false;
+            }
+
+            /*if (_blur == null && _isOpen)
             {
                 _blur = Camera.main.gameObject.AddComponent<BlurEffect>();
                 _blur.iterations = 3;
@@ -46,7 +59,7 @@ namespace ManPAD.ManPAD_Library
             {
                 GameObject.Destroy(_blur);
                 _blur = null;
-            }
+            }*/
 
             if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected)
                 return;

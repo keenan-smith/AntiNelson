@@ -7,3 +7,12 @@ C:\Users\EliteInfinity\Documents\GitHub\AntiNelson\ManPAD\bin\Debug\UnityEngine.
 C:\Users\EliteInfinity\Documents\GitHub\AntiNelson\ManPAD\obj\Debug\ManPAD.csprojResolveAssemblyReference.cache
 C:\Users\EliteInfinity\Documents\GitHub\AntiNelson\ManPAD\obj\Debug\ManPAD.dll
 C:\Users\EliteInfinity\Documents\GitHub\AntiNelson\ManPAD\obj\Debug\ManPAD.pdb
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\bin\Debug\ManPAD.dll
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\bin\Debug\ManPAD.pdb
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\bin\Debug\Assembly-CSharp.dll
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\bin\Debug\Assembly-UnityScript-firstpass.dll
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\bin\Debug\UnityEngine.dll
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\obj\Debug\ManPAD.csprojResolveAssemblyReference.cache
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\obj\Debug\ManPAD.dll
+C:\Users\ic3w0lf.IC3\Desktop\ManPAD\AntiNelson\ManPAD\obj\Debug\ManPAD.pdb
