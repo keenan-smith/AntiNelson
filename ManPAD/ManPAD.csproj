@@ -55,7 +55,9 @@
     <Compile Include="ManPAD_API\Attributes\CodeReplaceAttribute.cs" />
     <Compile Include="ManPAD_API\GUI\Attributes\MenuOptionAttribute.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\MenuOption.cs" />
+    <Compile Include="ManPAD_API\GUI\Extensions\MPGUIElement.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\OverlayOption.cs" />
+    <Compile Include="ManPAD_API\GUI\GUIUtility\MPButton.cs" />
     <Compile Include="ManPAD_API\GUI\MP_MainMenu.cs" />
     <Compile Include="ManPAD_API\MP_Config.cs" />
     <Compile Include="ManPAD_API\MP_GOLoader.cs" />

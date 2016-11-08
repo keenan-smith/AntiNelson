@@ -18,7 +18,6 @@ namespace ManPAD.ManPAD_Library
         private Rect _rect_ListMenu;
         private GUISkin _skin;
         private bool _isOpen = false;
-        private BlurEffect _blur = null;
         #endregion
 
         #region Mono Functions
@@ -33,23 +32,29 @@ namespace ManPAD.ManPAD_Library
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F1)) // TEMPRORAY! REMOVE LATER!!!!!!
+            if (Input.GetKeyDown(KeyCode.F1) || Input.GetKeyDown(KeyCode.Escape)) // TEMPRORAY! REMOVE LATER!!!!!!
             {
-                _isOpen = !_isOpen;
-                //PlayerPauseUI.active = _isOpen;
-            }
-
-            if (_blur == null && _isOpen)
-            {
-                _blur = MainCamera.instance.gameObject.AddComponent<BlurEffect>(); //Camera.main doesnt work, nor does this
-                _blur.iterations = 3;
-                _blur.blurSpread = 0.075f;
-                _blur.enabled = true;
-            }
-            else if (_blur != null && !_isOpen)
-            {
-                GameObject.Destroy(_blur);
-                _blur = null;
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    if (_isOpen && PlayerPauseUI.active)
+                    {
+                        PlayerPauseUI.active = false;
+                        _isOpen = false;
+                    }
+                }
+                else
+                {
+                    if (_isOpen)
+                    {
+                        PlayerPauseUI.active = false;
+                        _isOpen = false;
+                    }
+                    else if(!PlayerPauseUI.active)
+                    {
+                        PlayerPauseUI.active = true;
+                        _isOpen = true;
+                    }
+                }
             }
 
             if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected)
@@ -139,7 +144,7 @@ namespace ManPAD.ManPAD_Library
                     MP_MainMenu.options[i].open = false;
                 }
             }
-            PlayerUI.window.showCursor = true;
+            //PlayerUI.window.showCursor = true;
         }
         #endregion
 
