@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class OverlayScript : MonoBehaviour
 {
    public GUISkin skin;
-    public GUITexture Black;
-    public GUITexture White;
+
     public float UIX = 10f;
     public float UIY = 10f;
 
@@ -32,10 +31,10 @@ public class OverlayScript : MonoBehaviour
     }
 
 	void Update()
-	{       
-        
+	{
+
 		 if (Input.GetKeyDown (KeyCode.UpArrow))
-         
+
 			 if (menu_selected <= 0)
 				menu_selected = menu_selections.Length -1;
 			else
@@ -74,14 +73,14 @@ public class OverlayScript : MonoBehaviour
 			if (menu_active [i]) {
 				GUI.backgroundColor = Color.black; // Background color when the option is enabled
 				GUI.contentColor = Color.green; // Foreground color when the option is enabled
-                
+
 			}
             else if (i == menu_selected)
             {
 
 				GUI.backgroundColor = Color.black; // Background color when the option is selected
 				GUI.contentColor = Color.red; // Foreground color when the option is selected
-             
+
             }
             else
             {
@@ -89,7 +88,7 @@ public class OverlayScript : MonoBehaviour
 				GUI.contentColor = Color.black; // Foreground color when the option isn't selected
             }
 			GUI.Button(new Rect(UIX, UIY + (i * (button_height + 1)), menu_width, button_height), menu_selections[i]);
-     
+
 
             }
     }

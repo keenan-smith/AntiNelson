@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using AssemblyCSharp;
@@ -6,8 +6,7 @@ using AssemblyCSharp;
 public class MainMenuScript : MonoBehaviour {
 
     public GUISkin skin;
-    public Texture2D DragWhite;
-    public Texture2D DragBlack;
+
 
 
     public float UIX = 1f;
@@ -68,7 +67,7 @@ public class MainMenuScript : MonoBehaviour {
 							break;
 						}
 					}
-                    
+
 
 					for (int i = 0; i < menu.Count; i++) {
 						menu [i].button.x += newJump;
@@ -80,19 +79,19 @@ public class MainMenuScript : MonoBehaviour {
 
 	void OnGUI(){
                GUI.skin = skin;
-     
+
 		GUI.Box (new Rect (UIX, UIY, Screen.width - 1f, ButtonHeight + 1f), "");
 		for (int i = 0; i < menu.Count; i++) {
             GUI.contentColor = Color.black;
-            //  GUI.skin.button.hover.background = DragWhite;
-            if (menu [i].isMouseOver ()) {
-               GUI.skin.button.hover.background = DragBlack;
 
-                //GUI.backgroundColor = Color.cyan; // Changes the background color when the button is active
+            if (menu [i].isMouseOver ()) {
+
+
+                GUI.backgroundColor = Color.black; // Changes the background color when the button is active
                 GUI.contentColor = Color.red;
                 //  GUI.te// Changes the foreground color when the button is active
             } else {
-                
+
                 GUI.backgroundColor = Color.white; // Changes the background color when the button is inactive
                 GUI.contentColor = Color.black; // Changes the foreground color when the button is inactive
 
@@ -100,13 +99,14 @@ public class MainMenuScript : MonoBehaviour {
             }
 			GUI.Button (menu [i].button, menu [i].text);
 
-          
+
             GUI.skin = skin;
-            //GUI.backgroundColor = Color.white; // Change the color for the dropdown menu
-            GUI.skin.button.hover.background = DragWhite;
-            GUI.contentColor = Color.black;
+
+
+     GUI.backgroundColor = Color.white;
+          GUI.contentColor = Color.black;
             if (menu [i].isMouseOver ()) {
-            
+
 				menu [i].open = true;
 				GUI.Box (new Rect (menu [i].button.x, UIY + ButtonHeight + 2f, menu [i].UIWidth, menu [i].UIHeight), "");
 				GUILayout.BeginArea (new Rect (menu [i].button.x, UIY + ButtonHeight + 2f, menu [i].UIWidth, menu [i].UIHeight));
@@ -119,7 +119,7 @@ public class MainMenuScript : MonoBehaviour {
 				menu [i].open = false;
 
             }
-         
+
         }
 	}
 
