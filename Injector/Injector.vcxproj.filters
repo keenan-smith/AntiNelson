@@ -15,7 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
     <Text Include="..\Internal_Injector\bin\Release\Internal_Injector.txt" />
   </ItemGroup>
   <ItemGroup>

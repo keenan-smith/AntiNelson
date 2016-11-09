@@ -143,7 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="..\Internal_Injector\bin\Release\Internal_Injector.txt" />
-    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Injector.cpp" />
