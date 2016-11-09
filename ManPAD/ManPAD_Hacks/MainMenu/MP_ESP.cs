@@ -80,38 +80,35 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
         private string getZombieName(Zombie z)
         {
-            if (z.speciality == EZombieSpeciality.ACID)
+            string str = "";
+            switch (z.speciality)
             {
-                return "Acid Zombie";
+                case EZombieSpeciality.ACID:
+                    str = "Acid Zombie";
+                    break;
+                case EZombieSpeciality.BURNER:
+                    str = "Burner Zombie";
+                    break;
+                case EZombieSpeciality.CRAWLER:
+                    str = "Crawler Zombie";
+                    break;
+                case EZombieSpeciality.FLANKER_FRIENDLY:
+                    str = "Friendly Flanker Zombie";
+                    break;
+                case EZombieSpeciality.FLANKER_STALK:
+                    str = "Flanker Zombie";
+                    break;
+                case EZombieSpeciality.MEGA:
+                    str = "Mega Zombie";
+                    break;
+                case EZombieSpeciality.SPRINTER:
+                    str = "Sprinter Zombie";
+                    break;
+                default:
+                    str = "Normal Zombie";
+                    break;
             }
-            else if (z.speciality == EZombieSpeciality.BURNER)
-            {
-                return "Burner Zombie";
-            }
-            else if (z.speciality == EZombieSpeciality.CRAWLER)
-            {
-                return "Crawler Zombie";
-            }
-            else if (z.speciality == EZombieSpeciality.FLANKER_FRIENDLY)
-            {
-                return "Friendly Flanker Zombie";
-            }
-            else if (z.speciality == EZombieSpeciality.FLANKER_STALK)
-            {
-                return "Stalker Zombie";
-            }
-            else if (z.speciality == EZombieSpeciality.MEGA)
-            {
-                return "Mega Zombie";
-            }
-            else if (z.speciality == EZombieSpeciality.SPRINTER)
-            {
-                return "Spitter Zombie";
-            }
-            else
-            {
-                return "Normal Zombie";
-            }
+            return str;
         }
         #endregion
 
