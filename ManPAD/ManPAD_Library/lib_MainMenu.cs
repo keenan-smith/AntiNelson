@@ -17,6 +17,7 @@ namespace ManPAD.ManPAD_Library
         private Rect _rect_ListMenu;
         private GUISkin _skin;
         private bool _isOpen = false;
+        private Texture _logo;
         #endregion
 
         #region Mono Functions
@@ -110,11 +111,13 @@ namespace ManPAD.ManPAD_Library
 
             if (GUI.skin != _skin) // TEMPRORAY! REMOVE LATER!!!!!!
             {
-                GUISkin skin = Variables.bundle.LoadAsset("Manpad.guiskin") as GUISkin;
+                GUISkin skin = Variables.bundle.LoadAsset("Skins/White.guiskin") as GUISkin;
                 _skin = skin;
                 GUI.skin = skin;
+                //_logo = Variables.bundle.LoadAsset("") as Texture;
             }
 
+            //GUI.DrawTexture(new Rect((float)Math.Round((double)Screen.width / 2 - 50), (float)Math.Round((double)Screen.height / 2 - 50), 100f, 100f))
             GUI.Box(_rect_ListMenu, "");
             for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
             {
