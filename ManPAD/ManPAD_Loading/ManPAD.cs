@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -18,6 +18,7 @@ namespace ManPAD.ManPAD_Loading
         #region Mono Functions
         public void Start()
         {
+            StartCoroutine(loadAsset());
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
         }
@@ -32,6 +33,18 @@ namespace ManPAD.ManPAD_Loading
 
         public void OnDestroy()
         {
+        }
+        #endregion
+
+        #region Coroutines
+        private IEnumerator loadAsset()
+        {
+            MP_Logging.Log("Loading asset bundle...");
+            WWW www = new WWW("file://" + Application.dataPath + "/Manpad.assetbundle");
+            yield return www;
+
+            Variables.bundle = www.assetBundle;
+            MP_Logging.Log("Asset bundle loaded!");
         }
         #endregion
     }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SDG.Unturned;
 using UnityEngine;
-using UnityStandardAssets;
 using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_API.GUI;
 using ManPAD.ManPAD_API.GUI.Attributes;
@@ -25,20 +24,9 @@ namespace ManPAD.ManPAD_Library
         {
             MP_Logging.Log("Loading Main Menu...");
             _rect_ListMenu = new Rect(MP_MainMenu.menu_Start_X, MP_MainMenu.menu_Start_Y, Screen.width, MP_MainMenu.button_Height + 1f);
-            StartCoroutine(loadAsset());
 
             findMenuOptions();
             MP_Logging.Log("Main Menu Loaded!");
-        }
-
-        private IEnumerator loadAsset()
-        {
-            MP_Logging.Log("Loading asset bundle...");
-            WWW www = new WWW("file://" + Application.dataPath + "/Manpad.assetbundle");
-            yield return www;
-
-            Variables.bundle = www.assetBundle;
-            MP_Logging.Log("Asset bundle loaded!");
         }
 
         public void Update()
