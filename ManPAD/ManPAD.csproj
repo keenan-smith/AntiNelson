@@ -56,6 +56,7 @@
     <Compile Include="ManPAD_API\Enumerables\EESPItem.cs" />
     <Compile Include="ManPAD_API\GUI\Attributes\MenuOptionAttribute.cs" />
     <Compile Include="ManPAD_API\GUI\Attributes\OverlayOptionAttribute.cs" />
+    <Compile Include="ManPAD_API\GUI\Enumerables\EThemes.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\MenuOption.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\MPGUIElement.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\OverlayOption.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="ManPAD_API\Types\ESPDraw.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Aimbot.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_ESP.cs" />
+    <Compile Include="ManPAD_Hacks\MainMenu\MP_Themes.cs" />
     <Compile Include="ManPAD_Library\lib_InfoUpdater.cs" />
     <Compile Include="ManPAD_Library\lib_MainMenu.cs" />
     <Compile Include="ManPAD_Library\lib_MethodReplacer.cs" />

@@ -8,6 +8,7 @@ using UnityEngine;
 using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_API.GUI;
 using ManPAD.ManPAD_API.GUI.Attributes;
+using ManPAD.ManPAD_API.GUI.Enumerables;
 
 namespace ManPAD.ManPAD_Library
 {
@@ -18,6 +19,9 @@ namespace ManPAD.ManPAD_Library
         private GUISkin _skin;
         private bool _isOpen = false;
         private Texture _logo;
+        private Texture _cursor;
+        private Rect _cursorRect = new Rect(0f, 0f, 20f, 20f);
+        private EThemes _theme;
         #endregion
 
         #region Mono Functions
@@ -32,7 +36,24 @@ namespace ManPAD.ManPAD_Library
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F1) || Input.GetKeyDown(KeyCode.Escape)) // TEMPRORAY! REMOVE LATER!!!!!!
+            if (_cursor == null || _logo == null || (_theme == null || _theme != MP_Config.instance.getTheme()))
+            {
+                _cursor = Resources.Load("UI/Cursor") as Texture;
+                if (Variables.bundle != null)
+                {
+                    _logo = Variables.bundle.LoadAsset("ManpadLogo.png") as Texture;
+                    _theme = MP_Config.instance.getTheme();
+                    if (_theme == EThemes.WHITE)
+                        _skin = Variables.bundle.LoadAsset("White.guiskin") as GUISkin;
+                    else if (_theme == EThemes.INVERTED)
+                        _skin = Variables.bundle.LoadAsset("Inverted.guiskin") as GUISkin;
+                    else if (_theme == EThemes.AQUA)
+                        _skin = Variables.bundle.LoadAsset("Aqua.guiskin") as GUISkin;
+                    else if (_theme == EThemes.MAGIC)
+                        _skin = Variables.bundle.LoadAsset("Magic.guiskin") as GUISkin;
+                }
+            }
+            if (Input.GetKeyDown(MP_Config.instance.getKeybind("MainMenu")) || Input.GetKeyDown(KeyCode.Escape))
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
@@ -109,15 +130,11 @@ namespace ManPAD.ManPAD_Library
             if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected)
                 return;
 
-            if (GUI.skin != _skin) // TEMPRORAY! REMOVE LATER!!!!!!
-            {
-                GUISkin skin = Variables.bundle.LoadAsset("Skins/White.guiskin") as GUISkin;
-                _skin = skin;
-                GUI.skin = skin;
-                //_logo = Variables.bundle.LoadAsset("") as Texture;
-            }
-
-            //GUI.DrawTexture(new Rect((float)Math.Round((double)Screen.width / 2 - 50), (float)Math.Round((double)Screen.height / 2 - 50), 100f, 100f))
+            GUI.skin = _skin;
+            Color sv = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, 0.8f);
+            GUI.DrawTexture(new Rect((float)Math.Round((double)Screen.width / 2 - 150), (float)Math.Round((double)Screen.height / 2 - 150), 300f, 300f), _logo, ScaleMode.ScaleToFit);
+            GUI.color = sv;
             GUI.Box(_rect_ListMenu, "");
             for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
             {
@@ -137,6 +154,13 @@ namespace ManPAD.ManPAD_Library
                 {
                     MP_MainMenu.options[i].open = false;
                 }
+            }
+            if (_cursor != null)
+            {
+                GUI.color = new Color(1f, 1f, 1f, 0.8f);
+                _cursorRect.x = Input.mousePosition.x;
+                _cursorRect.y = Screen.height - Input.mousePosition.y;
+                GUI.DrawTexture(_cursorRect, _cursor);
             }
         }
         #endregion
