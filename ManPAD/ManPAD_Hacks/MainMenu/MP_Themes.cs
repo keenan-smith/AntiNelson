@@ -10,7 +10,7 @@ using ManPAD.ManPAD_API.GUI.Enumerables;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(2, "Themes", 130f, 130f)]
+    [MenuOption(2, "Themes", 130f, 105f)]
     public class MP_Themes : MenuOption
     {
         #region Functions

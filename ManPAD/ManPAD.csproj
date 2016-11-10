@@ -62,6 +62,7 @@
     <Compile Include="ManPAD_API\GUI\Extensions\MPGUIElement.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\OverlayOption.cs" />
     <Compile Include="ManPAD_API\GUI\GUIUtilitys\MP_ColorSelector.cs" />
+    <Compile Include="ManPAD_API\GUI\GUIUtilitys\MP_ItemPicker.cs" />
     <Compile Include="ManPAD_API\GUI\MP_MainMenu.cs" />
     <Compile Include="ManPAD_API\GUI\MP_Overlay.cs" />
     <Compile Include="ManPAD_API\MP_Config.cs" />

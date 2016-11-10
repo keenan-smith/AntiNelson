@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using SDG.Unturned;
 using ManPAD.ManPAD_API.GUI.Enumerables;
 
 namespace ManPAD.ManPAD_API
@@ -74,6 +75,12 @@ namespace ManPAD.ManPAD_API
             XmlElement keybind_menu = _doc.CreateElement("MainMenu");
             keybind_menu.InnerText = KeyCode.F1.ToString();
             keybinds.AppendChild(keybind_menu);
+
+            XmlElement itemTypes = _doc.CreateElement("ItemTypes");
+            _root.AppendChild(itemTypes);
+
+            XmlElement itemTypes_ESP = _doc.CreateElement("ESP");
+            itemTypes.AppendChild(itemTypes_ESP);
 
             XmlElement ESPColors = _doc.CreateElement("ESPColors");
             _root.AppendChild(ESPColors);
@@ -173,6 +180,18 @@ namespace ManPAD.ManPAD_API
 
             return new Color(float.Parse(colorCodes[0]), float.Parse(colorCodes[1]), float.Parse(colorCodes[2]));
         }
+
+        public EUseableType[] getItemTypes(string itemTypeName)
+        {
+            if (string.IsNullOrEmpty(_root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText))
+                return new EUseableType[0];
+            List<EUseableType> itemTypes = new List<EUseableType>();
+
+            foreach (string s in _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText.Split(','))
+                itemTypes.Add((EUseableType)Enum.Parse(typeof(EUseableType), s));
+
+            return itemTypes.ToArray();
+        }
         #endregion
 
         #region Set Functions
@@ -197,7 +216,13 @@ namespace ManPAD.ManPAD_API
         public void setESPColor(string ESPName, Color color)
         {
             _root.SelectSingleNode("ESPColors/" + ESPName).InnerText = color.r + "," + color.g + "," + color.b;
-            // Note: Don't put a fucking save here because it will cause hell. ;D
+            save();
+        }
+
+        public void setItemType(string itemTypeName, EUseableType[] itemTypes)
+        {
+            _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText = string.Join(",", itemTypes.Select(a => a.ToString()) as string[]);
+            save();
         }
         #endregion
     }
