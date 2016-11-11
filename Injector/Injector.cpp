@@ -10,6 +10,10 @@ void removeFile()
 	std::remove(tempPath);
 
 	GetTempPathA(MAX_PATH * 4, tempPath);
+	sprintf_s(tempPath, "%s.-", tempPath);
+	std::remove(tempPath);
+
+	GetTempPathA(MAX_PATH * 4, tempPath);
 	sprintf_s(tempPath, "%sEAC1.tmp", tempPath);
 	std::remove(tempPath);
 

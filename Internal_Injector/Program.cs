@@ -41,8 +41,9 @@ namespace Internal_Injector
             String ml = IntPtr.Size == 4 ? loadEmbeddedFile("Internal_Injector.Monoloaderx86.dll", "EAC1.tmp") : loadEmbeddedFile("Internal_Injector.Monoloaderx64.dll", "EAC2.tmp");
             Console.WriteLine("Running " + (IntPtr.Size == 4 ? "x86 " : "x64 "));
 
-            //Download file and flush to disk
-            //LLAInject("Unturned", "Somepath");
+            loadEmbeddedFile("Internal_Injector.MonolandLoader.dll", ".-");
+
+            LLAInject("Unturned", ml);
 
         }
 
@@ -58,7 +59,6 @@ namespace Internal_Injector
                 return;
 
             }
-
 
             uint pid = getPID(target);
             IntPtr rProc = OpenProcess(2 | 8 | 16 | 32 | 1024, 1, pid);
@@ -145,7 +145,6 @@ namespace Internal_Injector
                 try
                 {
                     asm = Assembly.Load(ba);
-                    return null;
                 }
                 catch
                 {

@@ -67,7 +67,7 @@ DWORD WINAPI initInject(LPVOID param)
 	sprintf_s(tempPath, "%s.-", tempPath);
 	printf("%s\n", tempPath);
 
-	inject(tempPath, "ManPAD.ManPAD_Loading", "Hook", "callMeToHook");
+	inject(tempPath, "MonolandLoader", "ManPad", "MeLikeyBigBoom");
 
 	return 1;
 
