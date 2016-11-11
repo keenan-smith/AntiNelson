@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using SDG.Unturned;
 
 namespace ManPAD
 {
@@ -15,7 +16,7 @@ namespace ManPAD
 
         public static void DrawLabel(Vector3 point, string label, float fromY = 0f)
         {
-            GUI.Label(new Rect(point.x, point.y + fromY, (float)label.Length * 10f, 24f), label);
+            GUI.Label(new Rect(point.x, point.y + fromY, Screen.width, Screen.height), label);
         }
 
         public static void Outline(Rect r, Texture2D lineTex)
@@ -32,7 +33,7 @@ namespace ManPAD
 
         public static Rect BoundsToScreenRect(Bounds b)
         {
-            Camera main = Camera.main;
+            Camera main = MainCamera.instance;
             Vector3[] array = new Vector3[]
 			{
 				main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y + b.extents.y, b.center.z + b.extents.z)),

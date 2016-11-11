@@ -181,14 +181,14 @@ namespace ManPAD.ManPAD_API
             return new Color(float.Parse(colorCodes[0]), float.Parse(colorCodes[1]), float.Parse(colorCodes[2]));
         }
 
-        public EUseableType[] getItemTypes(string itemTypeName)
+        public EItemType[] getItemTypes(string itemTypeName)
         {
             if (string.IsNullOrEmpty(_root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText))
-                return new EUseableType[0];
-            List<EUseableType> itemTypes = new List<EUseableType>();
+                return new EItemType[0];
+            List<EItemType> itemTypes = new List<EItemType>();
 
             foreach (string s in _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText.Split(','))
-                itemTypes.Add((EUseableType)Enum.Parse(typeof(EUseableType), s));
+                itemTypes.Add((EItemType)Enum.Parse(typeof(EItemType), s));
 
             return itemTypes.ToArray();
         }
@@ -219,7 +219,7 @@ namespace ManPAD.ManPAD_API
             save();
         }
 
-        public void setItemType(string itemTypeName, EUseableType[] itemTypes)
+        public void setItemType(string itemTypeName, EItemType[] itemTypes)
         {
             _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText = string.Join(",", itemTypes.Select(a => a.ToString()) as string[]);
             save();

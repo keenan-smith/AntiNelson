@@ -24,8 +24,7 @@ namespace ManPAD.ManPAD_API.GUI.GUIUtilitys
         {
             Color prevCol = UnityEngine.GUI.color;
 
-            GUILayout.Label(text);
-            shown = GUILayout.Toggle(shown, (shown ? "Close" : "Open") + " Color Menu");
+            shown = GUILayout.Toggle(shown, text);
             if (shown)
             {
                 GUILayout.Label("Red: " + (selectedColor.r * 100f));

@@ -22,6 +22,7 @@ namespace ManPAD.ManPAD_Loading
             new MP_Config(Application.persistentDataPath + "\\ManPADConfig.dat");
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
+            MP_GOLoader.library_addLibrary(typeof(lib_InfoUpdater));
         }
 
         public void Update()

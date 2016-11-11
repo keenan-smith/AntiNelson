@@ -67,8 +67,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     if (GUILayout.Button(skin.name))
                     {
                         ushort itemId = Provider.provider.economyService.getInventoryItemID(skin.itemdefid);
-                        if (Provider.provider.economyService.getInventoryType(skin.item_id))
-                            Player.player.channel.owner.skins.Remove(itemId);
+                        //if (Provider.provider.economyService.getInventoryType(skin.item_id))
+                            //Player.player.channel.owner.skins.Remove(itemId);
                         Player.player.channel.owner.skins.Add(itemId, skin.itemdefid);
                     }
                 }
