@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ManPAD")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ManPAD")]
+[assembly: AssemblyCompany("TriFect, ic3w0lf, Kunii")]
 [assembly: AssemblyProduct("ManPAD")]
-[assembly: AssemblyCopyright("Copyright © ManPAD 2016")]
+[assembly: AssemblyCopyright("Copyright © TriFect, ic3w0lf, Kunii 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -66,6 +66,7 @@
     <Compile Include="ManPAD_API\GUI\Extensions\MPGUIElement.cs" />
     <Compile Include="ManPAD_API\GUI\Extensions\OverlayOption.cs" />
     <Compile Include="ManPAD_API\GUI\GUIUtilitys\MP_ColorSelector.cs" />
+    <Compile Include="ManPAD_API\GUI\GUIUtilitys\MP_ItemPicker.cs" />
     <Compile Include="ManPAD_API\GUI\MP_MainMenu.cs" />
     <Compile Include="ManPAD_API\GUI\MP_Overlay.cs" />
     <Compile Include="ManPAD_API\MP_Config.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="ManPAD_API\Types\ESPDraw.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Aimbot.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_ESP.cs" />
+    <Compile Include="ManPAD_Hacks\MainMenu\MP_SkinChanger.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Themes.cs" />
     <Compile Include="ManPAD_Library\lib_InfoUpdater.cs" />
     <Compile Include="ManPAD_Library\lib_MainMenu.cs" />
