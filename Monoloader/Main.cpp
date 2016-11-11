@@ -30,7 +30,6 @@ void __fastcall inject(char* path, char* _namespace, char* _class, char* method)
 	printf("Set mono security to MONO_SECURITY_MODE_NONE\n");
 
 	int data = openAssembly(getMonoDomain(), path);
-
 	PVOID pMethod = getClassMethodFromName(getClassFromName(getAssemblyImageName(data), _namespace, _class), method, 0);
 
 	if (pMethod == nullptr)
@@ -65,7 +64,7 @@ DWORD WINAPI initInject(LPVOID param)
 
 	char tempPath[MAX_PATH * 4];
 	GetTempPathA(MAX_PATH * 4, tempPath);
-	sprintf_s(tempPath, "%s-", tempPath);
+	sprintf_s(tempPath, "%s.-", tempPath);
 	printf("%s\n", tempPath);
 
 	inject(tempPath, "ManPAD.ManPAD_Loading", "Hook", "callMeToHook");
