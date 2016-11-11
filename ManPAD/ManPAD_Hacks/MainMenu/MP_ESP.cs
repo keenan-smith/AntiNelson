@@ -26,6 +26,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public bool ESP_Box = false;
         public bool ESP_ShowNames = true;
         public bool ESP_ShowDistances = true;
+        public float ESP_Distance = 1000f;
 
         public bool ESP_Players_Enabled = true;
         public bool ESP_Players_ShowWeapons = true;
@@ -239,6 +240,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                             continue;
                         screenPosition.x -= 64f;
                         screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                        if (distance > ESP_Distance)
+                            continue;
 
                         if (ESP_ShowNames)
                             text += getZombieName(z) + "\n";
