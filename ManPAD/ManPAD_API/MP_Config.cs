@@ -76,6 +76,9 @@ namespace ManPAD.ManPAD_API
             keybind_menu.InnerText = KeyCode.F1.ToString();
             keybinds.AppendChild(keybind_menu);
 
+            XmlElement friends = _doc.CreateElement("Friends");
+            _root.AppendChild(friends);
+
             XmlElement itemTypes = _doc.CreateElement("ItemTypes");
             _root.AppendChild(itemTypes);
 
@@ -192,6 +195,19 @@ namespace ManPAD.ManPAD_API
 
             return itemTypes.ToArray();
         }
+
+        public ulong[] getFriends()
+        {
+            if (string.IsNullOrEmpty(_root.SelectSingleNode("Friends").InnerText))
+                return new ulong[0];
+
+            List<ulong> friends = new List<ulong>();
+
+            foreach (string s in _root.SelectSingleNode("Friends").InnerText.Split(','))
+                friends.Add(ulong.Parse(s));
+
+            return friends.ToArray();
+        }
         #endregion
 
         #region Set Functions
@@ -222,6 +238,12 @@ namespace ManPAD.ManPAD_API
         public void setItemType(string itemTypeName, EItemType[] itemTypes)
         {
             _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText = string.Join(",", itemTypes.Select(a => a.ToString()) as string[]);
+            save();
+        }
+
+        public void setFriends(ulong[] friends)
+        {
+            _root.SelectSingleNode("Friends").InnerText = string.Join(",", friends.Select(a => a.ToString()) as string[]);
             save();
         }
         #endregion

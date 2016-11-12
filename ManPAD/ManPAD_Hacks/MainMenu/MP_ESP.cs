@@ -46,23 +46,19 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public MP_ItemPicker ESP_Items_Types = new MP_ItemPicker(MP_Config.instance.getItemTypes("ESP"));
 
         public bool ESP_Vehicles_Enabled = false;
-        public bool ESP_Vehicles_IgnoreDestroyed = true;
-        public bool ESP_Vehicles_IgnoreEmpty = true;
-        public bool ESP_Vehicles_IgnoreLocked = true;
+        public bool ESP_Vehicles_IgnoreDestroyed = false;
+        public bool ESP_Vehicles_IgnoreEmpty = false;
+        public bool ESP_Vehicles_IgnoreLocked = false;
         public bool ESP_Vehicles_ShowFuel = true;
         public bool ESP_Vehicles_ShowLocked = true;
         public MP_ColorSelector ESP_Vehicles_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Vehicles"));
 
         public bool ESP_Storages_Enabled = true;
-        public bool ESP_Storages_IgnoreLocked = true;
+        public bool ESP_Storages_IgnoreLocked = false;
         public bool ESP_Storages_ShowLocked = true;
         public MP_ColorSelector ESP_Storages_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Storages"));
 
         public bool ESP_Sentrys_Enabled = false;
-        public bool ESP_Sentrys_ShowFriendly = true;
-        public bool ESP_Sentrys_ShowBroken = true;
-        public bool ESP_Sentrys_IgnoreFriendly = true;
-        public bool ESP_Sentrys_IgnoreBroken = true;
         public MP_ColorSelector ESP_Sentrys_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Sentrys"));
         #endregion
 
@@ -83,32 +79,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             {
                 foreach (ESPDraw drawing in _draw)
                 {
-                    switch (drawing.type)
-                    {
-                        case EESPItem.ANIMAL:
-                            GUI.color = ESP_Animals_Color.selectedColor;
-                            break;
-                        case EESPItem.ITEM:
-                            GUI.color = ESP_Items_Color.selectedColor;
-                            break;
-                        case EESPItem.PLAYER:
-                            GUI.color = ESP_Players_Color.selectedColor;
-                            break;
-                        case EESPItem.SENTRY:
-                            GUI.color = ESP_Sentrys_Color.selectedColor;
-                            break;
-                        case EESPItem.STORAGE:
-                            GUI.color = ESP_Storages_Color.selectedColor;
-                            break;
-                        case EESPItem.VEHICLE:
-                            GUI.color = ESP_Vehicles_Color.selectedColor;
-                            break;
-                        case EESPItem.ZOMBIE:
-                            GUI.color = ESP_Zombies_Color.selectedColor;
-                            break;
-                        default:
-                            break;
-                    }
+                    GUI.color = drawing.color;
                     if (ESP_ShowNames && !string.IsNullOrEmpty(drawing.text))
                         Tools.DrawLabel(drawing.screenPoint, drawing.text);
                     if (ESP_Box)
@@ -165,10 +136,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
             GUILayout.Space(10f);
             ESP_Sentrys_Enabled = GUILayout.Toggle(ESP_Sentrys_Enabled, "Sentry ESP");
-            ESP_Sentrys_ShowFriendly = GUILayout.Toggle(ESP_Sentrys_ShowFriendly, "Show Friendly");
-            ESP_Sentrys_ShowBroken = GUILayout.Toggle(ESP_Sentrys_ShowBroken, "Show Broken");
-            ESP_Sentrys_IgnoreFriendly = GUILayout.Toggle(ESP_Sentrys_IgnoreFriendly, "Filter Friendly");
-            ESP_Sentrys_IgnoreBroken = GUILayout.Toggle(ESP_Sentrys_IgnoreBroken, "Filter Broken");
             ESP_Sentrys_Color.draw("Sentry ESP Color", "Sentrys");
         }
 
@@ -218,11 +185,49 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 }
 
                 _draw.Clear();
-                if (ESP_Players_Enabled)
+
+                #region ESP: Players
+                if (ESP_Players_Enabled && (Variables.players != null && Variables.players.Length > 0))
                 {
+                    foreach (SteamPlayer p in Variables.players)
+                    {
+                        if (p == null || p.player == null || p.player.gameObject == null || p.player == Player.player || p.player.life.isDead)
+                            continue;
 
+                        float distance = (float)Math.Round(Tools.getDistance(p.player.transform.position));
+                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(p.player.transform.position);
+                        Rect box = new Rect(0f, 0f, 0f, 0f);
+                        string text = "";
+                        Collider collider = p.player.gameObject.GetComponent<Collider>();
+                        bool isFriend = MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID);
+
+                        if (screenPosition.z <= 0)
+                            continue;
+                        screenPosition.x -= 64f;
+                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                        if (distance > ESP_Distance)
+                            continue;
+                        if (ESP_Players_FilterFriends && isFriend)
+                            continue;
+
+                        if (ESP_ShowNames)
+                            text += p.playerID.characterName + "\n";
+                        if (ESP_ShowDistances)
+                            text += "Distance: " + distance + "\n";
+                        if (ESP_Players_ShowWeapons)
+                            text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
+                        if (ESP_Players_ShowIsAdmin)
+                            text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
+                        if (ESP_Box && collider != null)
+                            box = Tools.BoundsToScreenRect(collider.bounds);
+
+                        _draw.Add(new ESPDraw(text, p.player.gameObject, EESPItem.PLAYER, screenPosition, box, (isFriend ? ESP_Friends_Color.selectedColor : ESP_Players_Color.selectedColor)));
+                    }
                 }
+                #endregion
 
+                #region ESP: Zombies
                 if (ESP_Zombies_Enabled && (Variables.zombies != null && Variables.zombies.Length > 0))
                 {
                     foreach (Zombie z in Variables.zombies)
@@ -247,14 +252,50 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         if (ESP_ShowNames)
                             text += getZombieName(z) + "\n";
                         if (ESP_ShowDistances)
-                            text += distance + "\n";
+                            text += "Distance: " + distance + "\n";
                         if (ESP_Box && collider != null)
                             box = Tools.BoundsToScreenRect(collider.bounds);
 
-                        _draw.Add(new ESPDraw(text, z.gameObject, EESPItem.ZOMBIE, screenPosition, box));
+                        _draw.Add(new ESPDraw(text, z.gameObject, EESPItem.ZOMBIE, screenPosition, box, ESP_Zombies_Color.selectedColor));
                     }
                 }
+                #endregion
 
+                #region ESP: Animals
+                if (ESP_Animals_Enabled && (Variables.animals != null && Variables.animals.Length > 0))
+                {
+                    foreach (Animal a in Variables.animals)
+                    {
+                        if (a == null || a.gameObject == null || a.isDead)
+                            continue;
+
+                        float distance = (float)Math.Round(Tools.getDistance(a.transform.position));
+                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(a.transform.position);
+                        Rect box = new Rect(0f, 0f, 0f, 0f);
+                        string text = "";
+                        Collider collider = a.gameObject.GetComponent<Collider>();
+
+                        if (screenPosition.z <= 0)
+                            continue;
+                        screenPosition.x -= 64f;
+                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                        if (distance > ESP_Distance)
+                            continue;
+
+                        if (ESP_ShowNames)
+                            text += a.name + "\n";
+                        if (ESP_ShowDistances)
+                            text += "Distance: " + distance + "\n";
+                        if (ESP_Box && collider != null)
+                            box = Tools.BoundsToScreenRect(collider.bounds);
+
+                        _draw.Add(new ESPDraw(text, a.gameObject, EESPItem.ANIMAL, screenPosition, box, ESP_Animals_Color.selectedColor));
+                    }
+                }
+                #endregion
+
+                #region ESP: Items
                 if (ESP_Items_Enabled && (Variables.items != null && Variables.items.Length > 0))
                 {
                     foreach (InteractableItem i in Variables.items)
@@ -278,6 +319,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                             on = false;
                         if (!on)
                             continue;
+                        if (distance > ESP_Distance)
+                            continue;
 
                         if (ESP_ShowNames)
                             text += i.asset.itemName + "\n";
@@ -286,10 +329,126 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         if (ESP_Box && collider != null)
                             box = Tools.BoundsToScreenRect(collider.bounds);
 
-                        _draw.Add(new ESPDraw(text, i.gameObject, EESPItem.ITEM, screenPosition, box));
+                        _draw.Add(new ESPDraw(text, i.gameObject, EESPItem.ITEM, screenPosition, box, ESP_Items_Color.selectedColor));
                     }
                 }
+                #endregion
 
+                #region ESP: Vehicles
+                if (ESP_Vehicles_Enabled && (Variables.vehicles != null && Variables.vehicles.Length > 0))
+                {
+                    foreach (InteractableVehicle v in Variables.vehicles)
+                    {
+                        if (v == null || v.gameObject == null)
+                            continue;
+
+                        float distance = (float)Math.Round(Tools.getDistance(v.transform.position));
+                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(v.transform.position);
+                        Rect box = new Rect(0f, 0f, 0f, 0f);
+                        string text = "";
+                        Collider collider = v.gameObject.GetComponent<Collider>();
+
+                        if (screenPosition.z <= 0)
+                            continue;
+                        screenPosition.x -= 64f;
+                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                        if (distance > ESP_Distance)
+                            continue;
+                        if (ESP_Vehicles_IgnoreDestroyed && (v.isDead || v.isDrowned))
+                            continue;
+                        if (ESP_Vehicles_IgnoreEmpty && v.fuel < 1)
+                            continue;
+                        if (ESP_Vehicles_IgnoreLocked && v.isLocked)
+                            continue;
+
+                        if (ESP_ShowNames)
+                            text += v.name + "\n";
+                        if (ESP_ShowDistances)
+                            text += "Distance: " + distance + "\n";
+                        if (ESP_Vehicles_ShowFuel)
+                            text += "Fuel: " + v.fuel + "\n";
+                        if (ESP_Vehicles_ShowLocked)
+                            text += "Locked: " + (v.isLocked ? "Yes" : "No") + "\n";
+                        if (ESP_Box && collider != null)
+                            box = Tools.BoundsToScreenRect(collider.bounds);
+
+                        _draw.Add(new ESPDraw(text, v.gameObject, EESPItem.VEHICLE, screenPosition, box, ESP_Vehicles_Color.selectedColor));
+                    }
+                }
+                #endregion
+
+                #region ESP: Storages
+                if (ESP_Storages_Enabled && (Variables.storages != null && Variables.storages.Length > 0))
+                {
+                    foreach (InteractableStorage s in Variables.storages)
+                    {
+                        if (s == null || s.gameObject == null)
+                            continue;
+
+                        float distance = (float)Math.Round(Tools.getDistance(s.transform.position));
+                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(s.transform.position);
+                        Rect box = new Rect(0f, 0f, 0f, 0f);
+                        string text = "";
+                        Collider collider = s.gameObject.GetComponent<Collider>();
+
+                        if (screenPosition.z <= 0)
+                            continue;
+                        screenPosition.x -= 64f;
+                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                        if (distance > ESP_Distance)
+                            continue;
+                        if (ESP_Storages_IgnoreLocked && !s.checkUseable())
+                            continue;
+
+                        if (ESP_ShowNames)
+                            text += "Storage\n";
+                        if (ESP_ShowDistances)
+                            text += "Distance: " + distance + "\n";
+                        if (ESP_Storages_ShowLocked)
+                            text += "Locked: " + (s.checkUseable() ? "No" : "Yes") + "\n";
+                        if (ESP_Box && collider != null)
+                            box = Tools.BoundsToScreenRect(collider.bounds);
+
+                        _draw.Add(new ESPDraw(text, s.gameObject, EESPItem.STORAGE, screenPosition, box, ESP_Storages_Color.selectedColor));
+                    }
+                }
+                #endregion
+
+                #region ESP: Sentrys
+                if (ESP_Sentrys_Enabled && (Variables.sentrys != null && Variables.sentrys.Length > 0))
+                {
+                    foreach (InteractableSentry s in Variables.sentrys)
+                    {
+                        if (s == null || s.gameObject == null)
+                            continue;
+
+                        float distance = (float)Math.Round(Tools.getDistance(s.transform.position));
+                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(s.transform.position);
+                        Rect box = new Rect(0f, 0f, 0f, 0f);
+                        string text = "";
+                        Collider collider = s.gameObject.GetComponent<Collider>();
+
+                        if (screenPosition.z <= 0)
+                            continue;
+                        screenPosition.x -= 64f;
+                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                        if (distance > ESP_Distance)
+                            continue;
+
+                        if (ESP_ShowNames)
+                            text += "Sentry\n";
+                        if (ESP_ShowDistances)
+                            text += "Distance: " + distance + "\n";
+                        if (ESP_Box && collider != null)
+                            box = Tools.BoundsToScreenRect(collider.bounds);
+
+                        _draw.Add(new ESPDraw(text, s.gameObject, EESPItem.SENTRY, screenPosition, box, ESP_Sentrys_Color.selectedColor));
+                    }
+                }
+                #endregion
 
                 yield return null;
             }
