@@ -36,6 +36,8 @@ namespace ManPAD.ManPAD_Loading
         public void OnDestroy()
         {
             MP_Config.instance.save();
+            Hook.thread_hook.Abort();
+            Hook.running = false;
         }
         #endregion
 
