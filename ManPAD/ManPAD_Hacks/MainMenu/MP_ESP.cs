@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(1, "ESP", 200f, 500f)]
+    [MenuOption(2, "ESP", 200f, 500f)]
     public class MP_ESP : MenuOption
     {
         #region Variables

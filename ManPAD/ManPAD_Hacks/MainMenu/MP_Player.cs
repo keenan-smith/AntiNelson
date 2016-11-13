@@ -7,13 +7,12 @@ using ManPAD.ManPAD_API.GUI.Extensions;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(1, "Aimbot", 130f, 130f)]
-    public class MP_Aimbot : MenuOption
+    [MenuOption(0, "Player", 130f, 130f)]
+    public class MP_Player : MenuOption
     {
         #region Functions
         public override void runGUI()
         {
-
         }
         #endregion
     }
