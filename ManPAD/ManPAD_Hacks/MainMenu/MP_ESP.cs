@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(2, "ESP", 200f, 500f)]
+    [MenuOption(2, "ESP", 200f, 830f)]
     public class MP_ESP : MenuOption
     {
         #region Variables
@@ -97,6 +97,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             ESP_Box = GUILayout.Toggle(ESP_Box, "Box");
             ESP_ShowNames = GUILayout.Toggle(ESP_ShowNames, "Show Names");
             ESP_ShowDistances = GUILayout.Toggle(ESP_ShowDistances, "Show Distances");
+            GUILayout.Label("Distance: " + ESP_Distance);
+            ESP_Distance = GUILayout.HorizontalSlider(ESP_Distance, 0f, 50000f);
 
             GUILayout.Space(10f);
             ESP_Players_Enabled = GUILayout.Toggle(ESP_Players_Enabled, "Player ESP");
@@ -199,7 +201,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         Rect box = new Rect(0f, 0f, 0f, 0f);
                         string text = "";
                         Collider collider = p.player.gameObject.GetComponent<Collider>();
-                        bool isFriend = MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID);
+                        bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
 
                         if (screenPosition.z <= 0)
                             continue;
