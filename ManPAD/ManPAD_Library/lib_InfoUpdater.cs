@@ -12,32 +12,32 @@ namespace ManPAD.ManPAD_Library
     public class lib_InfoUpdater : MonoBehaviour
     {
         #region Variables
-        private bool running = true;
+        public bool running = true;
+        public Thread t;
         #endregion
 
         #region Mono Functions
         public void Start()
         {
-            StartCoroutine(reloadInfo());
+            t = new Thread(new ThreadStart(reloadInfo));
+            t.Start();
         }
 
         public void OnDestroy()
         {
+            t.Abort();
             running = false;
         }
         #endregion
 
-        #region Coroutines
-        private IEnumerator reloadInfo()
+        #region Threads
+        private void reloadInfo()
         {
             while (running)
             {
-                Variables.isInGame = (!LoadingUI.isBlocked && Provider.isConnected);
+                Variables.isInGame = (!LoadingUI.isBlocked && Provider.isConnected && Provider.clients != null && Provider.clients.Count > 0);
                 if (!Variables.isInGame)
-                {
-                    yield return new WaitForSeconds(1f);
                     continue;
-                }
                 try
                 {
                     Variables.players = Provider.clients.ToArray();
@@ -53,9 +53,10 @@ namespace ManPAD.ManPAD_Library
                     Variables.sentrys = UnityEngine.Object.FindObjectsOfType(typeof(InteractableSentry)) as InteractableSentry[];
                     Variables.animals = AnimalManager.animals.ToArray();
                 }
-                catch (Exception ex) {}
-
-                yield return new WaitForSeconds(1f);
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
             }
         }
         #endregion

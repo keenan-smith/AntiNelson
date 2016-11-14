@@ -42,6 +42,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Mono Functions
         public void Update()
         {
+            if (!Variables.isInGame)
+                return;
+
             if (fly)
             {
                 if (Input.GetKey(ControlsSettings.jump))
