@@ -20,6 +20,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Variables
         private List<ESPDraw> _draw = new List<ESPDraw>();
         private Texture2D _ESPTexture = new Texture2D(1, 1);
+        private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
+        private WaitForSeconds wfs = new WaitForSeconds(0.015f);
 
         public bool ESP_Enabled = false;
         public bool ESP_Chams = true;
@@ -53,7 +55,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public bool ESP_Vehicles_ShowLocked = true;
         public MP_ColorSelector ESP_Vehicles_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Vehicles"));
 
-        public bool ESP_Storages_Enabled = true;
+        public bool ESP_Storages_Enabled = false;
         public bool ESP_Storages_IgnoreLocked = false;
         public bool ESP_Storages_ShowLocked = true;
         public MP_ColorSelector ESP_Storages_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Storages"));
@@ -65,7 +67,13 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Mono Functions
         public void Start()
         {
-            StartCoroutine(updateESP());
+            StartCoroutine(updateAnimalESP());
+            StartCoroutine(updateItemESP());
+            StartCoroutine(updatePlayerESP());
+            StartCoroutine(updateSentryESP());
+            StartCoroutine(updateStorageESP());
+            StartCoroutine(updateVehicleESP());
+            StartCoroutine(updateZombieESP());
         }
 
         public void OnGUI()
@@ -173,286 +181,345 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             }
             return str;
         }
+
+        private void clearDraw(EESPItem espItem)
+        {
+            _draw.RemoveAll(a => a.type == espItem);
+        }
         #endregion
 
         #region Coroutines
-        private IEnumerator updateESP()
+        private IEnumerator updatePlayerESP()
         {
             while (true)
             {
-                if (!ESP_Enabled || !Variables.isInGame)
+                if ((!ESP_Enabled || !ESP_Players_Enabled) || (Variables.players == null || Variables.players.Length < 1) || !Variables.isInGame)
                 {
-                    yield return null;
+                    yield return wfs;
                     continue;
                 }
+                clearDraw(EESPItem.PLAYER);
 
-                _draw.Clear();
-
-                #region ESP: Players
-                if (ESP_Players_Enabled && (Variables.players != null && Variables.players.Length > 0))
+                foreach (SteamPlayer p in Provider.clients)
                 {
-                    foreach (SteamPlayer p in Variables.players)
-                    {
-                        if (p == null || p.player == null || p.player.gameObject == null || p.player == Player.player || p.player.life.isDead)
-                            continue;
+                    if (p == null || p.player == null || p.player.gameObject == null || p.player == Player.player || p.player.life.isDead)
+                        continue;
 
-                        float distance = (float)Math.Round(Tools.getDistance(p.player.transform.position));
-                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(p.player.transform.position);
-                        Rect box = new Rect(0f, 0f, 0f, 0f);
-                        string text = "";
-                        Collider collider = p.player.gameObject.GetComponent<Collider>();
-                        bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
+                    float distance = (float)Math.Round(Tools.getDistance(p.player.transform.position));
+                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(p.player.transform.position);
+                    Rect box = new Rect(0f, 0f, 0f, 0f);
+                    string text = "";
+                    Collider collider = p.player.gameObject.GetComponent<Collider>();
+                    bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
 
-                        if (screenPosition.z <= 0)
-                            continue;
-                        screenPosition.x -= 64f;
-                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+                    if (screenPosition.z <= 0)
+                        continue;
+                    screenPosition.x -= 64f;
+                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                        if (distance > ESP_Distance)
-                            continue;
-                        if (ESP_Players_FilterFriends && isFriend)
-                            continue;
+                    if (distance > ESP_Distance)
+                        continue;
+                    if (ESP_Players_FilterFriends && isFriend)
+                        continue;
 
-                        if (ESP_ShowNames)
-                            text += p.playerID.characterName + "\n";
-                        if (ESP_ShowDistances)
-                            text += "Distance: " + distance + "\n";
-                        if (ESP_Players_ShowWeapons)
-                            text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
-                        if (ESP_Players_ShowIsAdmin)
-                            text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                        if (ESP_Box && collider != null)
-                            box = Tools.BoundsToScreenRect(collider.bounds);
+                    if (ESP_ShowNames)
+                        text += p.playerID.characterName + "\n";
+                    if (ESP_ShowDistances)
+                        text += "Distance: " + distance + "\n";
+                    if (ESP_Players_ShowWeapons)
+                        text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
+                    if (ESP_Players_ShowIsAdmin)
+                        text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
+                    if (ESP_Box && collider != null)
+                        box = Tools.BoundsToScreenRect(collider.bounds);
 
-                        _draw.Add(new ESPDraw(text, p.player.gameObject, EESPItem.PLAYER, screenPosition, box, (isFriend ? ESP_Friends_Color.selectedColor : ESP_Players_Color.selectedColor)));
-                    }
+                    _draw.Add(new ESPDraw(text, p.player.gameObject, EESPItem.PLAYER, screenPosition, box, (isFriend ? ESP_Friends_Color.selectedColor : ESP_Players_Color.selectedColor)));
                 }
-                #endregion
 
-                #region ESP: Zombies
-                if (ESP_Zombies_Enabled && (Variables.zombies != null && Variables.zombies.Length > 0))
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator updateZombieESP()
+        {
+            while (true)
+            {
+                if ((!ESP_Enabled || !ESP_Zombies_Enabled) || (Variables.zombies == null || Variables.zombies.Length < 1) || !Variables.isInGame)
                 {
-                    foreach (Zombie z in Variables.zombies)
-                    {
-                        if (z == null || z.gameObject == null || z.isDead)
-                            continue;
-
-                        float distance = (float)Math.Round(Tools.getDistance(z.transform.position));
-                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(z.transform.position);
-                        Rect box = new Rect(0f, 0f, 0f, 0f);
-                        string text = "";
-                        Collider collider = z.gameObject.GetComponent<Collider>();
-
-                        if (screenPosition.z <= 0)
-                            continue;
-                        screenPosition.x -= 64f;
-                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
-
-                        if (distance > ESP_Distance)
-                            continue;
-
-                        if (ESP_ShowNames)
-                            text += getZombieName(z) + "\n";
-                        if (ESP_ShowDistances)
-                            text += "Distance: " + distance + "\n";
-                        if (ESP_Box && collider != null)
-                            box = Tools.BoundsToScreenRect(collider.bounds);
-
-                        _draw.Add(new ESPDraw(text, z.gameObject, EESPItem.ZOMBIE, screenPosition, box, ESP_Zombies_Color.selectedColor));
-                    }
+                    yield return wfs;
+                    continue;
                 }
-                #endregion
+                clearDraw(EESPItem.ZOMBIE);
 
-                #region ESP: Animals
-                if (ESP_Animals_Enabled && (Variables.animals != null && Variables.animals.Length > 0))
+                foreach (Zombie z in Variables.zombies)
                 {
-                    foreach (Animal a in Variables.animals)
-                    {
-                        if (a == null || a.gameObject == null || a.isDead)
-                            continue;
+                    if (z == null || z.gameObject == null || z.isDead)
+                        continue;
 
-                        float distance = (float)Math.Round(Tools.getDistance(a.transform.position));
-                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(a.transform.position);
-                        Rect box = new Rect(0f, 0f, 0f, 0f);
-                        string text = "";
-                        Collider collider = a.gameObject.GetComponent<Collider>();
+                    float distance = (float)Math.Round(Tools.getDistance(z.transform.position));
+                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(z.transform.position);
+                    Rect box = new Rect(0f, 0f, 0f, 0f);
+                    string text = "";
+                    Collider collider = z.gameObject.GetComponent<Collider>();
 
-                        if (screenPosition.z <= 0)
-                            continue;
-                        screenPosition.x -= 64f;
-                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+                    if (screenPosition.z <= 0)
+                        continue;
+                    screenPosition.x -= 64f;
+                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                        if (distance > ESP_Distance)
-                            continue;
+                    if (distance > ESP_Distance)
+                        continue;
 
-                        if (ESP_ShowNames)
-                            text += a.name + "\n";
-                        if (ESP_ShowDistances)
-                            text += "Distance: " + distance + "\n";
-                        if (ESP_Box && collider != null)
-                            box = Tools.BoundsToScreenRect(collider.bounds);
+                    if (ESP_ShowNames)
+                        text += getZombieName(z) + "\n";
+                    if (ESP_ShowDistances)
+                        text += "Distance: " + distance + "\n";
+                    if (ESP_Box && collider != null)
+                        box = Tools.BoundsToScreenRect(collider.bounds);
 
-                        _draw.Add(new ESPDraw(text, a.gameObject, EESPItem.ANIMAL, screenPosition, box, ESP_Animals_Color.selectedColor));
-                    }
+                    _draw.Add(new ESPDraw(text, z.gameObject, EESPItem.ZOMBIE, screenPosition, box, ESP_Zombies_Color.selectedColor));
                 }
-                #endregion
 
-                #region ESP: Items
-                if (ESP_Items_Enabled && (Variables.items != null && Variables.items.Length > 0))
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator updateAnimalESP()
+        {
+            while (true)
+            {
+                if ((!ESP_Enabled || !ESP_Animals_Enabled) || (Variables.animals == null || Variables.animals.Length < 1) || !Variables.isInGame)
                 {
-                    foreach (InteractableItem i in Variables.items)
-                    {
-                        if (i == null || i.gameObject == null)
-                            continue;
-
-                        float distance = (float)Math.Round(Tools.getDistance(i.transform.position));
-                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(i.transform.position);
-                        Rect box = new Rect(0f, 0f, 0f, 0f);
-                        string text = "";
-                        Collider collider = i.gameObject.GetComponent<Collider>();
-
-                        if (screenPosition.z <= 0)
-                            continue;
-                        screenPosition.x -= 64f;
-                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
-
-                        bool on;
-                        if (!ESP_Items_Types.filter.TryGetValue(i.asset.type, out on))
-                            on = false;
-                        if (!on)
-                            continue;
-                        if (distance > ESP_Distance)
-                            continue;
-
-                        if (ESP_ShowNames)
-                            text += i.asset.itemName + "\n";
-                        if (ESP_ShowDistances)
-                            text += "Distance: " + distance + "\n";
-                        if (ESP_Box && collider != null)
-                            box = Tools.BoundsToScreenRect(collider.bounds);
-
-                        _draw.Add(new ESPDraw(text, i.gameObject, EESPItem.ITEM, screenPosition, box, ESP_Items_Color.selectedColor));
-                    }
+                    yield return wfs;
+                    continue;
                 }
-                #endregion
+                clearDraw(EESPItem.ANIMAL);
 
-                #region ESP: Vehicles
-                if (ESP_Vehicles_Enabled && (Variables.vehicles != null && Variables.vehicles.Length > 0))
+                foreach (Animal a in Variables.animals)
                 {
-                    foreach (InteractableVehicle v in Variables.vehicles)
-                    {
-                        if (v == null || v.gameObject == null)
-                            continue;
+                    if (a == null || a.gameObject == null || a.isDead)
+                        continue;
 
-                        float distance = (float)Math.Round(Tools.getDistance(v.transform.position));
-                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(v.transform.position);
-                        Rect box = new Rect(0f, 0f, 0f, 0f);
-                        string text = "";
-                        Collider collider = v.gameObject.GetComponent<Collider>();
+                    float distance = (float)Math.Round(Tools.getDistance(a.transform.position));
+                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(a.transform.position);
+                    Rect box = new Rect(0f, 0f, 0f, 0f);
+                    string text = "";
+                    Collider collider = a.gameObject.GetComponent<Collider>();
 
-                        if (screenPosition.z <= 0)
-                            continue;
-                        screenPosition.x -= 64f;
-                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+                    if (screenPosition.z <= 0)
+                        continue;
+                    screenPosition.x -= 64f;
+                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                        if (distance > ESP_Distance)
-                            continue;
-                        if (ESP_Vehicles_IgnoreDestroyed && (v.isDead || v.isDrowned))
-                            continue;
-                        if (ESP_Vehicles_IgnoreEmpty && v.fuel < 1)
-                            continue;
-                        if (ESP_Vehicles_IgnoreLocked && v.isLocked)
-                            continue;
+                    if (distance > ESP_Distance)
+                        continue;
 
-                        if (ESP_ShowNames)
-                            text += v.name + "\n";
-                        if (ESP_ShowDistances)
-                            text += "Distance: " + distance + "\n";
-                        if (ESP_Vehicles_ShowFuel)
-                            text += "Fuel: " + v.fuel + "\n";
-                        if (ESP_Vehicles_ShowLocked)
-                            text += "Locked: " + (v.isLocked ? "Yes" : "No") + "\n";
-                        if (ESP_Box && collider != null)
-                            box = Tools.BoundsToScreenRect(collider.bounds);
+                    if (ESP_ShowNames)
+                        text += a.name + "\n";
+                    if (ESP_ShowDistances)
+                        text += "Distance: " + distance + "\n";
+                    if (ESP_Box && collider != null)
+                        box = Tools.BoundsToScreenRect(collider.bounds);
 
-                        _draw.Add(new ESPDraw(text, v.gameObject, EESPItem.VEHICLE, screenPosition, box, ESP_Vehicles_Color.selectedColor));
-                    }
+                    _draw.Add(new ESPDraw(text, a.gameObject, EESPItem.ANIMAL, screenPosition, box, ESP_Animals_Color.selectedColor));
                 }
-                #endregion
 
-                #region ESP: Storages
-                if (ESP_Storages_Enabled && (Variables.storages != null && Variables.storages.Length > 0))
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator updateItemESP()
+        {
+            while (true)
+            {
+                if ((!ESP_Enabled || !ESP_Items_Enabled) || (Variables.items == null || Variables.items.Length < 1) || !Variables.isInGame)
                 {
-                    foreach (InteractableStorage s in Variables.storages)
-                    {
-                        if (s == null || s.gameObject == null)
-                            continue;
-
-                        float distance = (float)Math.Round(Tools.getDistance(s.transform.position));
-                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(s.transform.position);
-                        Rect box = new Rect(0f, 0f, 0f, 0f);
-                        string text = "";
-                        Collider collider = s.gameObject.GetComponent<Collider>();
-
-                        if (screenPosition.z <= 0)
-                            continue;
-                        screenPosition.x -= 64f;
-                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
-
-                        if (distance > ESP_Distance)
-                            continue;
-                        if (ESP_Storages_IgnoreLocked && !s.checkUseable())
-                            continue;
-
-                        if (ESP_ShowNames)
-                            text += "Storage\n";
-                        if (ESP_ShowDistances)
-                            text += "Distance: " + distance + "\n";
-                        if (ESP_Storages_ShowLocked)
-                            text += "Locked: " + (s.checkUseable() ? "No" : "Yes") + "\n";
-                        if (ESP_Box && collider != null)
-                            box = Tools.BoundsToScreenRect(collider.bounds);
-
-                        _draw.Add(new ESPDraw(text, s.gameObject, EESPItem.STORAGE, screenPosition, box, ESP_Storages_Color.selectedColor));
-                    }
+                    yield return wfs;
+                    continue;
                 }
-                #endregion
+                clearDraw(EESPItem.ITEM);
 
-                #region ESP: Sentrys
-                if (ESP_Sentrys_Enabled && (Variables.sentrys != null && Variables.sentrys.Length > 0))
+                foreach (InteractableItem i in Variables.items)
                 {
-                    foreach (InteractableSentry s in Variables.sentrys)
-                    {
-                        if (s == null || s.gameObject == null)
-                            continue;
+                    if (i == null || i.gameObject == null)
+                        continue;
 
-                        float distance = (float)Math.Round(Tools.getDistance(s.transform.position));
-                        Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(s.transform.position);
-                        Rect box = new Rect(0f, 0f, 0f, 0f);
-                        string text = "";
-                        Collider collider = s.gameObject.GetComponent<Collider>();
+                    float distance = (float)Math.Round(Tools.getDistance(i.transform.position));
+                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(i.transform.position);
+                    Rect box = new Rect(0f, 0f, 0f, 0f);
+                    string text = "";
+                    Collider collider = i.gameObject.GetComponent<Collider>();
 
-                        if (screenPosition.z <= 0)
-                            continue;
-                        screenPosition.x -= 64f;
-                        screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+                    if (screenPosition.z <= 0)
+                        continue;
+                    screenPosition.x -= 64f;
+                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                        if (distance > ESP_Distance)
-                            continue;
+                    bool on;
+                    if (!ESP_Items_Types.filter.TryGetValue(i.asset.type, out on))
+                        on = false;
+                    if (!on)
+                        continue;
+                    if (distance > ESP_Distance)
+                        continue;
 
-                        if (ESP_ShowNames)
-                            text += "Sentry\n";
-                        if (ESP_ShowDistances)
-                            text += "Distance: " + distance + "\n";
-                        if (ESP_Box && collider != null)
-                            box = Tools.BoundsToScreenRect(collider.bounds);
+                    if (ESP_ShowNames)
+                        text += i.asset.itemName + "\n";
+                    if (ESP_ShowDistances)
+                        text += "Distance: " + distance + "\n";
+                    if (ESP_Box && collider != null)
+                        box = Tools.BoundsToScreenRect(collider.bounds);
 
-                        _draw.Add(new ESPDraw(text, s.gameObject, EESPItem.SENTRY, screenPosition, box, ESP_Sentrys_Color.selectedColor));
-                    }
+                    _draw.Add(new ESPDraw(text, i.gameObject, EESPItem.ITEM, screenPosition, box, ESP_Items_Color.selectedColor));
                 }
-                #endregion
 
-                yield return null;
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator updateVehicleESP()
+        {
+            while (true)
+            {
+                if ((!ESP_Enabled || !ESP_Vehicles_Enabled) || (Variables.vehicles == null || Variables.vehicles.Length < 1) || !Variables.isInGame)
+                {
+                    yield return wfs;
+                    continue;
+                }
+                clearDraw(EESPItem.VEHICLE);
+
+                foreach (InteractableVehicle v in Variables.vehicles)
+                {
+                    if (v == null || v.gameObject == null)
+                        continue;
+
+                    float distance = (float)Math.Round(Tools.getDistance(v.transform.position));
+                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(v.transform.position);
+                    Rect box = new Rect(0f, 0f, 0f, 0f);
+                    string text = "";
+                    Collider collider = v.gameObject.GetComponent<Collider>();
+
+                    if (screenPosition.z <= 0)
+                        continue;
+                    screenPosition.x -= 64f;
+                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                    if (distance > ESP_Distance)
+                        continue;
+                    if (ESP_Vehicles_IgnoreDestroyed && (v.isDead || v.isDrowned))
+                        continue;
+                    if (ESP_Vehicles_IgnoreEmpty && v.fuel < 1)
+                        continue;
+                    if (ESP_Vehicles_IgnoreLocked && v.isLocked)
+                        continue;
+
+                    if (ESP_ShowNames)
+                        text += v.name + "\n";
+                    if (ESP_ShowDistances)
+                        text += "Distance: " + distance + "\n";
+                    if (ESP_Vehicles_ShowFuel)
+                        text += "Fuel: " + v.fuel + "\n";
+                    if (ESP_Vehicles_ShowLocked)
+                        text += "Locked: " + (v.isLocked ? "Yes" : "No") + "\n";
+                    if (ESP_Box && collider != null)
+                        box = Tools.BoundsToScreenRect(collider.bounds);
+
+                    _draw.Add(new ESPDraw(text, v.gameObject, EESPItem.VEHICLE, screenPosition, box, ESP_Vehicles_Color.selectedColor));
+                }
+
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator updateStorageESP()
+        {
+            while (true)
+            {
+                if ((!ESP_Enabled || !ESP_Storages_Enabled) || (Variables.storages == null || Variables.storages.Length < 1) || !Variables.isInGame)
+                {
+                    yield return wfs;
+                    continue;
+                }
+                clearDraw(EESPItem.STORAGE);
+
+                foreach (InteractableStorage s in Variables.storages)
+                {
+                    if (s == null || s.gameObject == null)
+                        continue;
+
+                    float distance = (float)Math.Round(Tools.getDistance(s.transform.position));
+                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(s.transform.position);
+                    Rect box = new Rect(0f, 0f, 0f, 0f);
+                    string text = "";
+                    Collider collider = s.gameObject.GetComponent<Collider>();
+
+                    if (screenPosition.z <= 0)
+                        continue;
+                    screenPosition.x -= 64f;
+                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                    if (distance > ESP_Distance)
+                        continue;
+                    if (ESP_Storages_IgnoreLocked && !s.checkUseable())
+                        continue;
+
+                    if (ESP_ShowNames)
+                        text += "Storage\n";
+                    if (ESP_ShowDistances)
+                        text += "Distance: " + distance + "\n";
+                    if (ESP_Storages_ShowLocked)
+                        text += "Locked: " + (s.checkUseable() ? "No" : "Yes") + "\n";
+                    if (ESP_Box && collider != null)
+                        box = Tools.BoundsToScreenRect(collider.bounds);
+
+                    _draw.Add(new ESPDraw(text, s.gameObject, EESPItem.STORAGE, screenPosition, box, ESP_Storages_Color.selectedColor));
+                }
+
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator updateSentryESP()
+        {
+            while (true)
+            {
+                if ((!ESP_Enabled || !ESP_Sentrys_Enabled) || (Variables.sentrys == null || Variables.sentrys.Length < 1) || !Variables.isInGame)
+                {
+                    yield return wfs;
+                    continue;
+                }
+                clearDraw(EESPItem.SENTRY);
+
+                foreach (InteractableSentry s in Variables.sentrys)
+                {
+                    if (s == null || s.gameObject == null)
+                        continue;
+
+                    float distance = (float)Math.Round(Tools.getDistance(s.transform.position));
+                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(s.transform.position);
+                    Rect box = new Rect(0f, 0f, 0f, 0f);
+                    string text = "";
+                    Collider collider = s.gameObject.GetComponent<Collider>();
+
+                    if (screenPosition.z <= 0)
+                        continue;
+                    screenPosition.x -= 64f;
+                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
+
+                    if (distance > ESP_Distance)
+                        continue;
+
+                    if (ESP_ShowNames)
+                        text += "Sentry\n";
+                    if (ESP_ShowDistances)
+                        text += "Distance: " + distance + "\n";
+                    if (ESP_Box && collider != null)
+                        box = Tools.BoundsToScreenRect(collider.bounds);
+
+                    _draw.Add(new ESPDraw(text, s.gameObject, EESPItem.SENTRY, screenPosition, box, ESP_Sentrys_Color.selectedColor));
+                }
+
+                yield return wfs;
             }
         }
         #endregion
