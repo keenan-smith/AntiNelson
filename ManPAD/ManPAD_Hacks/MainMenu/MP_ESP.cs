@@ -78,7 +78,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
         public void OnGUI()
         {
-            if (!Variables.isInGame || !ESP_Enabled)
+            if (!Variables.isInGame || !ESP_Enabled || Variables.isSpying)
                 return;
 
             if (Event.current.type != EventType.Repaint)
@@ -209,7 +209,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(p.player.transform.position);
                     Rect box = new Rect(0f, 0f, 0f, 0f);
                     string text = "";
-                    Collider collider = p.player.gameObject.GetComponent<Collider>();
+                    //Collider collider = p.player.gameObject.GetComponent<Collider>(); // the player doesnt have a collider
                     bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
 
                     if (screenPosition.z <= 0)
@@ -230,8 +230,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
                     if (ESP_Players_ShowIsAdmin)
                         text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                    if (ESP_Box && collider != null)
-                        box = Tools.BoundsToScreenRect(collider.bounds);
+                    if (ESP_Box)// && collider != null) // the player doesnt have a collider
+                    {
+                        //box = Tools.BoundsToScreenRect(collider.bounds);
+                        Bounds bounds = new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0));
+                        box = Tools.BoundsToScreenRect(bounds);
+                    }
 
                     _draw.Add(new ESPDraw(text, p.player.gameObject, EESPItem.PLAYER, screenPosition, box, (isFriend ? ESP_Friends_Color.selectedColor : ESP_Players_Color.selectedColor)));
                 }

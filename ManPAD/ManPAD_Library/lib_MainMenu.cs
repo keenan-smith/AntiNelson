@@ -127,7 +127,7 @@ namespace ManPAD.ManPAD_Library
 
         public void OnGUI()
         {
-            if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected)
+            if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected || Variables.isSpying)
                 return;
 
             GUI.skin = _skin;

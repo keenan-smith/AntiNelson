@@ -8,6 +8,7 @@ using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_API.Attributes;
 using System.Reflection;
 using Steamworks;
+using System.Collections;
 
 namespace ManPAD.ManPAD_Overridables
 {
@@ -18,8 +19,16 @@ namespace ManPAD.ManPAD_Overridables
         {
             if (Player.player.channel.checkServer(id))
             {
-                Player.player.StartCoroutine("takeScreenshot");
+                StartCoroutine(spyStuff());
             }
+        }
+
+        public IEnumerator spyStuff()
+        {
+            Variables.isSpying = true;
+            Player.player.StartCoroutine("takeScreenshot");
+            yield return new WaitForSeconds(0.05f);
+            Variables.isSpying = false;
         }
     }
 }

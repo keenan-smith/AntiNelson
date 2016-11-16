@@ -12,6 +12,7 @@ namespace ManPAD
         public static AssetBundle bundle;
 
         public static bool isInGame = false;
+        public static bool isSpying = false;
         public static Zombie[] zombies;
         public static SteamPlayer[] players;
         public static InteractableItem[] items;
