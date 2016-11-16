@@ -210,7 +210,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     Rect box = new Rect(0f, 0f, 0f, 0f);
                     string text = "";
                     //Collider collider = p.player.gameObject.GetComponent<Collider>(); // the player doesnt have a collider
-                    bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
+                    bool isFriend = false; //(MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
 
                     if (screenPosition.z <= 0)
                         continue;

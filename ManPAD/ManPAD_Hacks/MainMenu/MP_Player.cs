@@ -47,21 +47,24 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             if (!Variables.isInGame)
                 return;
 
-            if (fly)
+            if (Player.player != null && Player.player.transform != null)
             {
-                if (Input.GetKey(ControlsSettings.jump))
-                    fly_Y += 1f;
-                if (Input.GetKey(ControlsSettings.crouch) && fly_Y > 0f)
-                    fly_Y -= 1f;
-                Player.player.transform.position = new Vector3(Player.player.transform.position.x, fly_Y, Player.player.transform.position.z);
-                Player.player.movement.gravity = 0f;
-            }
-            else
-            {
-                if (fly_Y != Player.player.transform.position.y)
-                    fly_Y = Player.player.transform.position.y;
-                if(Player.player.movement.gravity == 0f)
-                    Player.player.movement.gravity = 1f;
+                if (fly)
+                {
+                    if (Input.GetKey(ControlsSettings.jump))
+                        fly_Y += 1f;
+                    if (Input.GetKey(ControlsSettings.crouch) && fly_Y > 0f)
+                        fly_Y -= 1f;
+                    Player.player.transform.position = new Vector3(Player.player.transform.position.x, fly_Y, Player.player.transform.position.z);
+                    Player.player.movement.gravity = 0f;
+                }
+                else
+                {
+                    if (fly_Y != Player.player.transform.position.y)
+                        fly_Y = Player.player.transform.position.y;
+                    if (Player.player.movement.gravity == 0f)
+                        Player.player.movement.gravity = 1f;
+                }
             }
         }
         #endregion
