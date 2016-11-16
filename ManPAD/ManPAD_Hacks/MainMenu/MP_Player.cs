@@ -69,12 +69,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Functions
         public override void runGUI()
         {
-            if (GUILayout.Button("TEST OVERRIDE"))
-            {
-                MethodInfo e1 = typeof(Provider).GetMethod("OnApplicationQuit", BindingFlags.Instance | BindingFlags.NonPublic);
-                MethodInfo e2 = typeof(OV_Provider).GetMethod("ov_OnApplicationQuit", BindingFlags.Instance | BindingFlags.Public);
-                RedirectCallsState state = MP_Redirector.RedirectCalls(e1, e2);
-            }
             fly = GUILayout.Toggle(fly, "Fly(Client)");
             noclip = GUILayout.Toggle(noclip, "Noclip(Client)");
             jumper = GUILayout.Toggle(jumper, "Jumper(Client)");
