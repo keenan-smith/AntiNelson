@@ -75,6 +75,9 @@
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Player.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_SkinChanger.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Themes.cs" />
+    <Compile Include="ManPAD_Overridables\OV_PlayerInteract.cs" />
+    <Compile Include="ManPAD_Overridables\OV_PlayerPauseUI.cs" />
+    <Compile Include="ManPAD_Overridables\OV_Player.cs" />
     <Compile Include="ManPAD_Library\lib_AntiSpy.cs" />
     <Compile Include="ManPAD_Library\lib_InfoUpdater.cs" />
     <Compile Include="ManPAD_Library\lib_MainMenu.cs" />
@@ -89,7 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ManPAD_API\Extensions\" />
-    <Folder Include="ManPAD_Overridables\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,6 +7,8 @@ using ManPAD.ManPAD_API.GUI.Attributes;
 using ManPAD.ManPAD_API.GUI.Extensions;
 using UnityEngine;
 using SDG.Unturned;
+using ManPAD.ManPAD_API;
+using Steamworks;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
@@ -67,6 +69,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Functions
         public override void runGUI()
         {
+            if (GUILayout.Button("TEST OVERRIDE"))
+            {
+                MethodInfo e1 = typeof(Provider).GetMethod("OnApplicationQuit", BindingFlags.Instance | BindingFlags.NonPublic);
+                MethodInfo e2 = typeof(OV_Provider).GetMethod("ov_OnApplicationQuit", BindingFlags.Instance | BindingFlags.Public);
+                RedirectCallsState state = MP_Redirector.RedirectCalls(e1, e2);
+            }
             fly = GUILayout.Toggle(fly, "Fly(Client)");
             noclip = GUILayout.Toggle(noclip, "Noclip(Client)");
             jumper = GUILayout.Toggle(jumper, "Jumper(Client)");
@@ -102,5 +110,13 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             jump_height = GUILayout.HorizontalSlider(jump_height, 0f, 10f);
         }
         #endregion
+    }
+    public class OV_Provider : MonoBehaviour
+    {
+        public void ov_OnApplicationQuit()
+        {
+            Provider.disconnect();
+            Provider.provider.shutdown();
+        }
     }
 }

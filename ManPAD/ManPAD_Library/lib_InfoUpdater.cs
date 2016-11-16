@@ -35,7 +35,7 @@ namespace ManPAD.ManPAD_Library
         {
             while (running)
             {
-                Variables.isInGame = (!LoadingUI.isBlocked && Provider.isConnected && Provider.clients != null && Provider.clients.Count > 0);
+                Variables.isInGame = (!LoadingUI.isBlocked && !Provider.isLoading && Provider.isConnected && Provider.clients != null && Provider.clients.Count > 0);
                 if (!Variables.isInGame)
                     continue;
                 try
