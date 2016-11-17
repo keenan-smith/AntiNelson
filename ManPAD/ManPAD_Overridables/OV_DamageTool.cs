@@ -47,8 +47,15 @@ namespace ManPAD.ManPAD_Overridables
                 }
                 if (MP_Aimbot.silentAim && MP_Aimbot.nextTarget != null)
                 {
-                    raycastInfo.player = (Player)MP_Aimbot.nextTarget;
+                    if (MP_Aimbot.nextTarget.GetType() == typeof(Player))
+                        raycastInfo.player = (Player)MP_Aimbot.nextTarget;
+                    else if (MP_Aimbot.nextTarget.GetType() == typeof(Zombie))
+                        raycastInfo.zombie = (Zombie)MP_Aimbot.nextTarget;
+                    else if (MP_Aimbot.nextTarget.GetType() == typeof(Animal))
+                        raycastInfo.animal = (Animal)MP_Aimbot.nextTarget;
                     raycastInfo.limb = MP_Aimbot.aimLocation;
+                    MP_Aimbot.nextTarget = null;
+                    MP_Aimbot.cDistance = -1f;
                 }
             }
             return raycastInfo;

@@ -20,7 +20,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
         private ELimb[] limbs = { ELimb.SKULL, ELimb.SPINE };
         private EAttackPriority[] prioritys = { EAttackPriority.DISTANCE, EAttackPriority.THREAT };
-        private float cDistance = -1f;
+        public static float cDistance = -1f;
         public static object nextTarget = null;
 
         public static bool ignoreFOV = false;
@@ -45,6 +45,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public void Start()
         {
             StartCoroutine(getAttackingPlayer());
+            StartCoroutine(getAttackingZombie());
+            StartCoroutine(getAttackingAnimal());
         }
         #endregion
 
@@ -82,8 +84,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             GUILayout.Space(10f);
             aim_players = GUILayout.Toggle(aim_players, "Attack Players");
             aim_friends = GUILayout.Toggle(aim_friends, "Attack Friends");
-            //aim_zombies = GUILayout.Toggle(aim_zombies, "Attack Zombies");
-            //aim_animals = GUILayout.Toggle(aim_animals, "Attack Animals");
+            aim_zombies = GUILayout.Toggle(aim_zombies, "Attack Zombies");
+            aim_animals = GUILayout.Toggle(aim_animals, "Attack Animals");
         }
         #endregion
 
@@ -92,8 +94,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
-                nextTarget = null;
-                cDistance = -1f;
                 if (!(aimbot || silentAim) || !aim_players || !Variables.isInGame || (Variables.players == null || Variables.players.Length < 1))
                 {
                     yield return wfs;
@@ -123,6 +123,72 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     else if (attackPriority == EAttackPriority.THREAT)
                     {
 
+                    }
+
+                    yield return wfeof;
+                }
+
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator getAttackingZombie()
+        {
+            while (true)
+            {
+                if (!(aimbot || silentAim) || !aim_zombies || !Variables.isInGame || (Variables.zombies == null || Variables.zombies.Length < 1))
+                {
+                    yield return wfs;
+                    continue;
+                }
+
+                foreach (Zombie z in Variables.zombies)
+                {
+                    if (z == null || z.gameObject == null || z.isDead)
+                        continue;
+
+                    float pDistance = Tools.getDistance(z.transform.position);
+
+                    if (pDistance > distance && !ignoreDistance)
+                        continue;
+
+                    if (cDistance == -1f || pDistance < cDistance)
+                    {
+                        cDistance = pDistance;
+                        nextTarget = z;
+                    }
+
+                    yield return wfeof;
+                }
+
+                yield return wfs;
+            }
+        }
+
+        private IEnumerator getAttackingAnimal()
+        {
+            while (true)
+            {
+                if (!(aimbot || silentAim) || !aim_animals || !Variables.isInGame || (Variables.animals == null || Variables.animals.Length < 1))
+                {
+                    yield return wfs;
+                    continue;
+                }
+
+                foreach (Animal a in Variables.animals)
+                {
+                    if (a == null || a.gameObject == null || a.isDead)
+                        continue;
+
+                    float pDistance = Tools.getDistance(a.transform.position);
+
+                    if (pDistance > distance && !ignoreDistance)
+                        continue;
+
+                    if (cDistance == -1f || pDistance < cDistance)
+                    {
+                        cDistance = pDistance;
+                        nextTarget = a;
                     }
 
                     yield return wfeof;

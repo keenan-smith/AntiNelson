@@ -9,7 +9,7 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(6, "Server", 200f, 100f)]
+    [MenuOption(6, "Server", 200f, 90f)]
     public class MP_Server : MenuOption
     {
         #region Variables
