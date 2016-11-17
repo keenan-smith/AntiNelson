@@ -4,51 +4,12 @@ using UnityEngine;
 using SDG.Unturned;
 using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_API.Attributes;
+using ManPAD.ManPAD_Hacks.MainMenu;
 
 namespace ManPAD.ManPAD_Overridables
 {
-    internal class OV_DamageTool : MonoBehaviour // dont worry bout my old trash code
+    public class OV_DamageTool : MonoBehaviour
     {
-        public static Player getNPlayer()
-        {
-            Player p = null;
-            SteamPlayer[] plrs = Provider.clients.ToArray();
-            for (int i = 0; i < plrs.Length; i++)
-            {
-                if (plrs[i].playerID.steamID != Provider.client && plrs[i].player.life != null && !plrs[i].player.life.isDead)
-                {
-                    if (Variables.fovBased)
-                    {
-                        Vector3 v3pos = Camera.main.WorldToScreenPoint(plrs[i].player.transform.position);
-                        if (v3pos.z > 0f)
-                        {
-                            Vector2 pos = new Vector2(v3pos.x, v3pos.y);
-                            float dist = Vector2.Distance(new Vector2(Screen.width / 2, Screen.height / 2), pos);
-                            if (dist <= Variables.aimFov* 2)
-                            {
-                                p = plrs[i].player;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (p == null)
-                        {
-                            p = plrs[i].player;
-                        }
-                        else
-                        {
-                            if (Tools.getDistance(p.transform.position) > Tools.getDistance(plrs[i].player.transform.position))
-                            {
-                                p = plrs[i].player;
-                            }
-                        }
-                    }
-                }
-            }
-            return p;
-        }
-
         [CodeReplace("raycast", typeof(DamageTool), BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)]
         public static RaycastInfo raycast(Ray ray, float range, int mask)
         {
@@ -84,10 +45,10 @@ namespace ManPAD.ManPAD_Overridables
                 {
                     raycastInfo.material = DamageTool.getMaterial(hit.point, hit.transform, hit.collider);
                 }
-                if (Variables.silentAim)
+                if (MP_Aimbot.silentAim && MP_Aimbot.nextTarget != null)
                 {
-                    raycastInfo.player = getNPlayer();
-                    raycastInfo.limb = ELimb.SKULL;
+                    raycastInfo.player = (Player)MP_Aimbot.nextTarget;
+                    raycastInfo.limb = MP_Aimbot.aimLocation;
                 }
             }
             return raycastInfo;

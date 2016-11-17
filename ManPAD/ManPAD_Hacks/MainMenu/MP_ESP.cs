@@ -23,45 +23,46 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
         private WaitForSeconds wfs = new WaitForSeconds(0.015f);
 
-        public bool ESP_Enabled = false;
-        public bool ESP_Chams = true;
-        public bool ESP_Box = false;
-        public bool ESP_ShowNames = true;
-        public bool ESP_ShowDistances = true;
-        public float ESP_Distance = 1000f;
+        public static bool ESP_Enabled = false;
+        public static bool ESP_Chams = true;
+        public static bool ESP_Box = false;
+        public static bool ESP_ShowNames = true;
+        public static bool ESP_ShowDistances = true;
+        public static bool ESP_IgnoreDistance = false;
+        public static float ESP_Distance = 1000f;
 
-        public bool ESP_Players_Enabled = true;
-        public bool ESP_Players_ShowWeapons = true;
-        public bool ESP_Players_FilterFriends = false;
-        public bool ESP_Players_ShowIsAdmin = false;
-        public MP_ColorSelector ESP_Players_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Players"));
-        public MP_ColorSelector ESP_Friends_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Friends"));
+        public static bool ESP_Players_Enabled = true;
+        public static bool ESP_Players_ShowWeapons = true;
+        public static bool ESP_Players_FilterFriends = false;
+        public static bool ESP_Players_ShowIsAdmin = false;
+        public static MP_ColorSelector ESP_Players_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Players"));
+        public static MP_ColorSelector ESP_Friends_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Friends"));
 
-        public bool ESP_Zombies_Enabled = false;
-        public MP_ColorSelector ESP_Zombies_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Zombies"));
+        public static bool ESP_Zombies_Enabled = false;
+        public static MP_ColorSelector ESP_Zombies_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Zombies"));
 
-        public bool ESP_Animals_Enabled = false;
-        public MP_ColorSelector ESP_Animals_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Animals"));
+        public static bool ESP_Animals_Enabled = false;
+        public static MP_ColorSelector ESP_Animals_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Animals"));
 
-        public bool ESP_Items_Enabled = false;
-        public MP_ColorSelector ESP_Items_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Items"));
-        public MP_ItemPicker ESP_Items_Types = new MP_ItemPicker(MP_Config.instance.getItemTypes("ESP"));
+        public static bool ESP_Items_Enabled = false;
+        public static MP_ColorSelector ESP_Items_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Items"));
+        public static MP_ItemPicker ESP_Items_Types = new MP_ItemPicker(MP_Config.instance.getItemTypes("ESP"));
 
-        public bool ESP_Vehicles_Enabled = false;
-        public bool ESP_Vehicles_IgnoreDestroyed = false;
-        public bool ESP_Vehicles_IgnoreEmpty = false;
-        public bool ESP_Vehicles_IgnoreLocked = false;
-        public bool ESP_Vehicles_ShowFuel = true;
-        public bool ESP_Vehicles_ShowLocked = true;
-        public MP_ColorSelector ESP_Vehicles_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Vehicles"));
+        public static bool ESP_Vehicles_Enabled = false;
+        public static bool ESP_Vehicles_IgnoreDestroyed = false;
+        public static bool ESP_Vehicles_IgnoreEmpty = false;
+        public static bool ESP_Vehicles_IgnoreLocked = false;
+        public static bool ESP_Vehicles_ShowFuel = true;
+        public static bool ESP_Vehicles_ShowLocked = true;
+        public static MP_ColorSelector ESP_Vehicles_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Vehicles"));
 
-        public bool ESP_Storages_Enabled = false;
-        public bool ESP_Storages_IgnoreLocked = false;
-        public bool ESP_Storages_ShowLocked = true;
-        public MP_ColorSelector ESP_Storages_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Storages"));
+        public static bool ESP_Storages_Enabled = false;
+        public static bool ESP_Storages_IgnoreLocked = false;
+        public static bool ESP_Storages_ShowLocked = true;
+        public static MP_ColorSelector ESP_Storages_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Storages"));
 
-        public bool ESP_Sentrys_Enabled = false;
-        public MP_ColorSelector ESP_Sentrys_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Sentrys"));
+        public static bool ESP_Sentrys_Enabled = false;
+        public static MP_ColorSelector ESP_Sentrys_Color = new MP_ColorSelector(MP_Config.instance.getESPColor("Sentrys"));
         #endregion
 
         #region Mono Functions
@@ -105,8 +106,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             ESP_Box = GUILayout.Toggle(ESP_Box, "Box");
             ESP_ShowNames = GUILayout.Toggle(ESP_ShowNames, "Show Names");
             ESP_ShowDistances = GUILayout.Toggle(ESP_ShowDistances, "Show Distances");
+            ESP_IgnoreDistance = GUILayout.Toggle(ESP_IgnoreDistance, "Ignore Distance");
             GUILayout.Label("Distance: " + ESP_Distance);
-            ESP_Distance = GUILayout.HorizontalSlider(ESP_Distance, 0f, 50000f);
+            ESP_Distance = (float)Math.Round(GUILayout.HorizontalSlider(ESP_Distance, 0f, 50000f));
 
             GUILayout.Space(10f);
             ESP_Players_Enabled = GUILayout.Toggle(ESP_Players_Enabled, "Player ESP");
@@ -193,12 +195,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
+                clearDraw(EESPItem.PLAYER);
                 if ((!ESP_Enabled || !ESP_Players_Enabled) || (Variables.players == null || Variables.players.Length < 1) || !Variables.isInGame)
                 {
                     yield return wfs;
                     continue;
                 }
-                clearDraw(EESPItem.PLAYER);
 
                 foreach (SteamPlayer p in Provider.clients)
                 {
@@ -209,15 +211,15 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(p.player.transform.position);
                     Rect box = new Rect(0f, 0f, 0f, 0f);
                     string text = "";
-                    //Collider collider = p.player.gameObject.GetComponent<Collider>(); // the player doesnt have a collider
-                    bool isFriend = false; //(MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
+                    //Collider collider = p.player.gameObject.GetComponent<Collider>();
+                    bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
 
                     if (screenPosition.z <= 0)
                         continue;
                     screenPosition.x -= 64f;
                     screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                    if (distance > ESP_Distance)
+                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
                         continue;
                     if (ESP_Players_FilterFriends && isFriend)
                         continue;
@@ -230,12 +232,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
                     if (ESP_Players_ShowIsAdmin)
                         text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                    if (ESP_Box)// && collider != null) // the player doesnt have a collider
+                    /*if (ESP_Box) && collider != null)
                     {
-                        //box = Tools.BoundsToScreenRect(collider.bounds);
+                        box = Tools.BoundsToScreenRect(collider.bounds);
                         Bounds bounds = new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0));
                         box = Tools.BoundsToScreenRect(bounds);
-                    }
+                    }*/
 
                     _draw.Add(new ESPDraw(text, p.player.gameObject, EESPItem.PLAYER, screenPosition, box, (isFriend ? ESP_Friends_Color.selectedColor : ESP_Players_Color.selectedColor)));
                 }
@@ -248,12 +250,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
+                clearDraw(EESPItem.ZOMBIE);
                 if ((!ESP_Enabled || !ESP_Zombies_Enabled) || (Variables.zombies == null || Variables.zombies.Length < 1) || !Variables.isInGame)
                 {
                     yield return wfs;
                     continue;
                 }
-                clearDraw(EESPItem.ZOMBIE);
 
                 foreach (Zombie z in Variables.zombies)
                 {
@@ -271,7 +273,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     screenPosition.x -= 64f;
                     screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                    if (distance > ESP_Distance)
+                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
                         continue;
 
                     if (ESP_ShowNames)
@@ -292,12 +294,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
+                clearDraw(EESPItem.ANIMAL);
                 if ((!ESP_Enabled || !ESP_Animals_Enabled) || (Variables.animals == null || Variables.animals.Length < 1) || !Variables.isInGame)
                 {
                     yield return wfs;
                     continue;
                 }
-                clearDraw(EESPItem.ANIMAL);
 
                 foreach (Animal a in Variables.animals)
                 {
@@ -315,11 +317,11 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     screenPosition.x -= 64f;
                     screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                    if (distance > ESP_Distance)
+                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
                         continue;
 
                     if (ESP_ShowNames)
-                        text += a.name + "\n";
+                        text += a.asset.animalName + "\n";
                     if (ESP_ShowDistances)
                         text += "Distance: " + distance + "\n";
                     if (ESP_Box && collider != null)
@@ -336,12 +338,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
+                clearDraw(EESPItem.ITEM);
                 if ((!ESP_Enabled || !ESP_Items_Enabled) || (Variables.items == null || Variables.items.Length < 1) || !Variables.isInGame)
                 {
                     yield return wfs;
                     continue;
                 }
-                clearDraw(EESPItem.ITEM);
 
                 foreach (InteractableItem i in Variables.items)
                 {
@@ -364,7 +366,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         on = false;
                     if (!on)
                         continue;
-                    if (distance > ESP_Distance)
+                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
                         continue;
 
                     if (ESP_ShowNames)
@@ -385,12 +387,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
+                clearDraw(EESPItem.VEHICLE);
                 if ((!ESP_Enabled || !ESP_Vehicles_Enabled) || (Variables.vehicles == null || Variables.vehicles.Length < 1) || !Variables.isInGame)
                 {
                     yield return wfs;
                     continue;
                 }
-                clearDraw(EESPItem.VEHICLE);
 
                 foreach (InteractableVehicle v in Variables.vehicles)
                 {
@@ -408,7 +410,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     screenPosition.x -= 64f;
                     screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                    if (distance > ESP_Distance)
+                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
                         continue;
                     if (ESP_Vehicles_IgnoreDestroyed && (v.isDead || v.isDrowned))
                         continue;
@@ -439,12 +441,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
+                clearDraw(EESPItem.STORAGE);
                 if ((!ESP_Enabled || !ESP_Storages_Enabled) || (Variables.storages == null || Variables.storages.Length < 1) || !Variables.isInGame)
                 {
                     yield return wfs;
                     continue;
                 }
-                clearDraw(EESPItem.STORAGE);
 
                 foreach (InteractableStorage s in Variables.storages)
                 {
@@ -462,7 +464,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     screenPosition.x -= 64f;
                     screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                    if (distance > ESP_Distance)
+                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
                         continue;
                     if (ESP_Storages_IgnoreLocked && !s.checkUseable())
                         continue;
@@ -487,12 +489,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
+                clearDraw(EESPItem.SENTRY);
                 if ((!ESP_Enabled || !ESP_Sentrys_Enabled) || (Variables.sentrys == null || Variables.sentrys.Length < 1) || !Variables.isInGame)
                 {
                     yield return wfs;
                     continue;
                 }
-                clearDraw(EESPItem.SENTRY);
 
                 foreach (InteractableSentry s in Variables.sentrys)
                 {
@@ -510,7 +512,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     screenPosition.x -= 64f;
                     screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
-                    if (distance > ESP_Distance)
+                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
                         continue;
 
                     if (ESP_ShowNames)

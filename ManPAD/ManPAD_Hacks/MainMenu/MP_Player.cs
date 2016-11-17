@@ -18,27 +18,27 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Variables
         private float fly_Y = 0f;
 
-        public bool fly = false;
-        public bool godMode = false;
-        public bool noclip = false;
-        public bool freecam = false;
-        public bool invisibility = false;
-        public bool jumper = false;
-        public bool walkOnWater = false;
-        public bool antiDrowning = false;
-        public bool infiniteStamina = false;
-        public bool antiAim = false;
-        public bool antiAim_Movement = false;
-        public bool noFall = false;
-        public bool autoDC = false;
-        public float autoDC_Health = 10f;
-        public float speed_walk = 4.5f;
-        public float speed_crouch = 2.5f;
-        public float speed_prone = 1.5f;
-        public float speed_sprint = 7f;
-        public float speed_climb = 4.5f;
-        public float speed_swim = 3f;
-        public float jump_height = 7f;
+        public static bool fly = false;
+        public static bool godMode = false;
+        public static bool noclip = false;
+        public static bool freecam = false;
+        public static bool invisibility = false;
+        public static bool jumper = false;
+        public static bool walkOnWater = false;
+        public static bool antiDrowning = false;
+        public static bool infiniteStamina = false;
+        public static bool antiAim = false;
+        public static bool antiAim_Movement = false;
+        public static bool noFall = false;
+        public static bool autoDC = false;
+        public static float autoDC_Health = 10f;
+        public static float speed_walk = 4.5f;
+        public static float speed_crouch = 2.5f;
+        public static float speed_prone = 1.5f;
+        public static float speed_sprint = 7f;
+        public static float speed_climb = 4.5f;
+        public static float speed_swim = 3f;
+        public static float jump_height = 7f;
         #endregion
 
         #region Mono Functions
@@ -107,13 +107,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             jump_height = GUILayout.HorizontalSlider(jump_height, 0f, 10f);
         }
         #endregion
-    }
-    public class OV_Provider : MonoBehaviour
-    {
-        public void ov_OnApplicationQuit()
-        {
-            Provider.disconnect();
-            Provider.provider.shutdown();
-        }
     }
 }

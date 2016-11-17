@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace ManPAD.ManPAD_Overridables
 {
-    internal class OV_Player : MonoBehaviour
+    public class OV_Player : MonoBehaviour
     {
         [CodeReplace("askScreenshot", typeof(Player), BindingFlags.Instance | BindingFlags.Public)]
         public void askScreenshot(CSteamID id)

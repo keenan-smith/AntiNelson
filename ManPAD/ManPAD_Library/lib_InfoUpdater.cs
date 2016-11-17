@@ -57,6 +57,7 @@ namespace ManPAD.ManPAD_Library
                 {
                     Debug.LogException(ex);
                 }
+                Thread.Sleep(1000);
             }
         }
         #endregion

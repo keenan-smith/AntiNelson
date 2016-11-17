@@ -12,7 +12,7 @@ using Steamworks;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(4, "Vehicle", 200f, 200f)]
+    [MenuOption(4, "Vehicle", 200f, 110f)]
     public class MP_Vehicle : MenuOption
     {
         #region Variables

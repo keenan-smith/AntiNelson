@@ -44,10 +44,42 @@ namespace ManPAD.ManPAD_API
         }
 
         #region Private Functions
+        private void fixConfig()
+        {
+            MP_Logging.Log("Integrity broken! Reloading....");
+            File.Delete(_path);
+            createConfig(_path);
+            MP_Logging.Log("Config reloaded!");
+        }
+
+        private void checkConfig()
+        {
+            try
+            {
+                if (_root.SelectSingleNode("Friends") == null)
+                    fixConfig();
+                if (_root.SelectSingleNode("ItemTypes") == null)
+                    fixConfig();
+                if (_root.SelectSingleNode("ESPColors") == null)
+                    fixConfig();
+                if (_root.SelectSingleNode("Keybinds") == null)
+                    fixConfig();
+                if (_root.SelectSingleNode("Overlay") == null)
+                    fixConfig();
+                if (_root.SelectSingleNode("Theme") == null)
+                    fixConfig();
+            }
+            catch (Exception ex)
+            {
+                fixConfig();
+            }
+        }
+
         private void loadConfig(string path)
         {
             _doc.Load(path);
             _root = _doc.DocumentElement;
+            checkConfig();
         }
 
         private void createConfig(string path)

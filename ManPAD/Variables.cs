@@ -13,9 +13,6 @@ namespace ManPAD
 
         public static bool isInGame = false;
         public static bool isSpying = false;
-        public static bool silentAim = false; // i dont know where 2 store global variables pls help
-        public static bool fovBased = false;
-        public static float aimFov = 20;
         public static Zombie[] zombies;
         public static SteamPlayer[] players;
         public static InteractableItem[] items;
