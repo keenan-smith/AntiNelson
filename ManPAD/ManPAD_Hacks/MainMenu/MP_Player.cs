@@ -150,7 +150,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 }
 
                 RaycastHit hit;
-                Physics.Raycast(Player.player.look.aim.position, Player.player.look.aim.forward, out hit, 48, RayMasks.VEHICLE | RayMasks.BARRICADE | RayMasks.ITEM | RayMasks.RESOURCE);
+                Physics.Raycast(Player.player.look.aim.position, Player.player.look.aim.forward, out hit, 64, RayMasks.VEHICLE | RayMasks.BARRICADE | RayMasks.ITEM | RayMasks.RESOURCE);
                 if (hit.transform != null)
                 {
                     Transform transform = hit.transform;

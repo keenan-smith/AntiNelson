@@ -232,12 +232,14 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
                     if (ESP_Players_ShowIsAdmin)
                         text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                    /*if (ESP_Box) && collider != null)
+                    if (ESP_Box)// && collider != null)
                     {
-                        box = Tools.BoundsToScreenRect(collider.bounds);
+                        //ati ur fat let me use player box esp!!!
+                        //also dis wurks just fine pls stawp11!
+                        //box = Tools.BoundsToScreenRect(collider.bounds);
                         Bounds bounds = new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0));
                         box = Tools.BoundsToScreenRect(bounds);
-                    }*/
+                    }
 
                     _draw.Add(new ESPDraw(text, p.player.gameObject, EESPItem.PLAYER, screenPosition, box, (isFriend ? ESP_Friends_Color.selectedColor : ESP_Players_Color.selectedColor)));
                 }
