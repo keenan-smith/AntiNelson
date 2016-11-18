@@ -9,6 +9,7 @@ using UnityEngine;
 using SDG.Unturned;
 using ManPAD.ManPAD_API;
 using Steamworks;
+using System.Collections;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
@@ -17,6 +18,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
     {
         #region Variables
         private float fly_Y = 0f;
+        private Interactable interactable;
 
         public static bool fly = false;
         public static bool godMode = false;
@@ -31,6 +33,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool antiAim_Movement = false;
         public static bool noFall = false;
         public static bool autoDC = false;
+        public static bool interactThroughWalls = false;
         public static float autoDC_Health = 10f;
         public static float speed_walk = 4.5f;
         public static float speed_crouch = 2.5f;
@@ -42,6 +45,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #endregion
 
         #region Mono Functions
+        public void Start()
+        {
+            StartCoroutine(UpdateInteract());
+        }
         public void Update()
         {
             if (!Variables.isInGame)
@@ -67,6 +74,25 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 }
             }
         }
+
+        public void OnGUI()
+        {
+            if (interactThroughWalls && interactable != null)
+            {
+                string text = "Interact";
+                if (interactable is InteractableItem)
+                    text = "Pickup " + interactable.GetComponent<InteractableItem>().asset.itemName;
+                else if (interactable is InteractableBed)
+                    text = (interactable.GetComponent<InteractableBed>().isClaimable ? "Unclaim" : "Claim");
+                else if (interactable is InteractableStorage)
+                    text = "Open storage";
+                else if (interactable is InteractableVehicle)
+                    text = "Enter vehicle";
+                else if (interactable is InteractableGenerator)
+                    text = "Turn " + (interactable.GetComponent<InteractableGenerator>().isPowered ? "Off" : "On");
+                GUI.Label(new Rect(Screen.width / 2, Screen.height / 2 - 20, 300, 80), string.Format("<size=14><color=lime>{0}</color></size>", text));
+            }
+        }
         #endregion
 
         #region Functions
@@ -87,6 +113,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             antiAim = GUILayout.Toggle(antiAim, "AntiAim");
             antiAim_Movement = GUILayout.Toggle(antiAim_Movement, "AntiAim Movement(Client)");
             autoDC = GUILayout.Toggle(autoDC, "Auto Disconnect");
+            interactThroughWalls = GUILayout.Toggle(interactThroughWalls, "Interact Through Walls");
             GUILayout.Label("Health: " + autoDC_Health);
             autoDC_Health = GUILayout.HorizontalSlider(autoDC_Health, 1f, 99f);
 
@@ -105,6 +132,39 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             speed_climb = GUILayout.HorizontalSlider(speed_climb, 0f, 10f);
             GUILayout.Label("Jump Height(Client): " + jump_height);
             jump_height = GUILayout.HorizontalSlider(jump_height, 0f, 10f);
+        }
+        #endregion
+
+        #region Coroutines
+        private IEnumerator UpdateInteract()
+        {
+            while (true)
+            {
+                if (!interactThroughWalls || !Variables.isInGame)
+                {
+                    yield return new WaitForSeconds(.025f);
+                    continue;
+                }
+
+                RaycastHit hit;
+                Physics.Raycast(Player.player.look.aim.position, Player.player.look.aim.forward, out hit, 48, RayMasks.VEHICLE | RayMasks.BARRICADE | RayMasks.ITEM | RayMasks.RESOURCE);
+                if (hit.transform != null)
+                {
+                    Transform transform = hit.transform;
+                    interactable = transform.GetComponent<Interactable>();
+                    if (interactable != null && interactable.checkInteractable())
+                    {
+                        if (Input.GetKeyDown(KeyCode.F))
+                        {
+                            interactable.use();
+                        }
+                    }
+                    else
+                        interactable = null; // ¯\_(ツ)_/¯
+                }
+
+                yield return new WaitForSeconds(.025f);
+            }
         }
         #endregion
     }
