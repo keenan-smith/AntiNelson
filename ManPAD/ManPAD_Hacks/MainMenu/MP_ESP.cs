@@ -216,7 +216,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
                     if (screenPosition.z <= 0)
                         continue;
-                    screenPosition.x -= 64f;
+                    //screenPosition.x -= 64f;
                     screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
 
                     if (distance > ESP_Distance && !ESP_IgnoreDistance)
