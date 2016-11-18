@@ -77,6 +77,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
         public void OnGUI()
         {
+            if (Variables.isSpying)
+                return;
+
             if (interactThroughWalls && interactable != null)
             {
                 string text = "Interact";
@@ -159,9 +162,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                             interactable.use();
                         }
                     }
-                    else
-                        interactable = null; // ¯\_(ツ)_/¯
                 }
+                else if (hit.transform == null)
+                    interactable = null; // ¯\_(ツ)_/¯
 
                 yield return new WaitForSeconds(.025f);
             }
