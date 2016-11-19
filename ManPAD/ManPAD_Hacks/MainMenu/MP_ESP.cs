@@ -211,7 +211,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(p.player.transform.position);
                     Rect box = new Rect(0f, 0f, 0f, 0f);
                     string text = "";
-                    //Collider collider = p.player.gameObject.GetComponent<Collider>();
                     bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
 
                     if (screenPosition.z <= 0)
@@ -232,11 +231,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
                     if (ESP_Players_ShowIsAdmin)
                         text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                    if (ESP_Box)// && collider != null)
+                    if (ESP_Box)
                     {
-                        //ati ur fat let me use player box esp!!!
-                        //also dis wurks just fine pls stawp11!
-                        //box = Tools.BoundsToScreenRect(collider.bounds);
                         Bounds bounds = new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0));
                         box = Tools.BoundsToScreenRect(bounds);
                     }

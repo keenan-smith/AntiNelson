@@ -19,6 +19,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Variables
         private float fly_Y = 0f;
         private Interactable interactable;
+        private WaitForSeconds wfs = new WaitForSeconds(.025f);
 
         public static bool fly = false;
         public static bool godMode = false;
@@ -145,7 +146,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             {
                 if (!interactThroughWalls || !Variables.isInGame)
                 {
-                    yield return new WaitForSeconds(.025f);
+                    yield return wfs;
                     continue;
                 }
 
@@ -156,17 +157,15 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     Transform transform = hit.transform;
                     interactable = transform.GetComponent<Interactable>();
                     if (interactable != null && interactable.checkInteractable())
-                    {
                         if (Input.GetKeyDown(KeyCode.F))
-                        {
                             interactable.use();
-                        }
-                    }
                 }
                 else if (hit.transform == null)
-                    interactable = null; // ¯\_(ツ)_/¯
+                {
+                    interactable = null;
+                }
 
-                yield return new WaitForSeconds(.025f);
+                yield return wfs;
             }
         }
         #endregion

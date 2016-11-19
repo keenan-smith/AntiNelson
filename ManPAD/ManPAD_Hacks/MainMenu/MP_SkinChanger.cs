@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,32 +19,16 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
     {
         #region Variables
         private string searchText = "";
-        //private Vector2 scroll;
 
-        public List<UnturnedEconInfo> Skinz;
+        public List<UnturnedEconInfo> skins = new List<UnturnedEconInfo>();
         #endregion
 
         #region Mono Functions
         public void Start()
         {
-            Skinz = new List<UnturnedEconInfo>();
             foreach(UnturnedEconInfo skin in TempSteamworksEconomy.econInfo)
-            {
                 if (!skin.type.Contains("Hat") & !skin.type.Contains("Glass") & !skin.type.Contains("Backpack") & !skin.type.Contains("Vest") & !skin.type.Contains("Mask") & !skin.type.Contains("Pants") & !skin.type.Contains("Shirt"))
-                    Skinz.Add(skin);
-            }
-        }
-
-        public void Update()
-        {
-            if (!Variables.isInGame)
-                return;
-        }
-
-        public void OnGUI()
-        {
-            if (!Variables.isInGame)
-                return;
+                    skins.Add(skin);
         }
         #endregion
 
@@ -52,31 +36,29 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public override void runGUI()
         {
             searchText = GUILayout.TextField(searchText);
-            for (int i = 0; i < Skinz.Count; i++)
+            foreach (UnturnedEconInfo skin in skins)
             {
-                UnturnedEconInfo skin = Skinz[i];
-                bool isShown = false;
-                if (string.IsNullOrEmpty(searchText))
-                    isShown = true;
-                else if (!string.IsNullOrEmpty(searchText) & skin.name.ToLower().Contains(searchText.ToLower()))
+                if (!string.IsNullOrEmpty(searchText) && !skin.name.ToLower().Contains(searchText.ToLower()))
+                    continue;
+
+                Color saveColor = GUI.color;
+
+                if (Player.player.channel.owner.skins.ContainsValue(skin.itemdefid))
+                    GUI.color = Color.green;
+                else
+                    GUI.color = Color.red;
+                if (GUILayout.Button(skin.name))
                 {
-                    isShown = true;
+                    if (Player.player.channel.owner.skins.ContainsValue(skin.itemdefid))
+                        Player.player.channel.owner.skins.Remove((ushort)skin.item_id);
+                    else
+                        Player.player.channel.owner.skins.Add((ushort)skin.item_id, skin.itemdefid);
+                    if (Player.player.equipment.asset.id == (ushort)skin.item_id)
+                        Player.player.equipment.dequip();
                 }
-                if (isShown)
-                {
-                    if (GUILayout.Button(skin.name))
-                    {
-                        ushort itemId = Provider.provider.economyService.getInventoryItemID(skin.itemdefid);
-                        //if (Provider.provider.economyService.getInventoryType(skin.item_id))
-                            //Player.player.channel.owner.skins.Remove(itemId);
-                        Player.player.channel.owner.skins.Add(itemId, skin.itemdefid);
-                    }
-                }
+                GUI.color = saveColor;
             }
         }
-        #endregion
-
-        #region Coroutines
         #endregion
     }
 }

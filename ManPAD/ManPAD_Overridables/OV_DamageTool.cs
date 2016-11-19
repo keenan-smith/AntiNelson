@@ -54,8 +54,6 @@ namespace ManPAD.ManPAD_Overridables
                     else if (MP_Aimbot.nextTarget.GetType() == typeof(Animal))
                         raycastInfo.animal = (Animal)MP_Aimbot.nextTarget;
                     raycastInfo.limb = MP_Aimbot.aimLocation;
-                    MP_Aimbot.nextTarget = null;
-                    MP_Aimbot.cDistance = -1f;
                 }
             }
             return raycastInfo;
