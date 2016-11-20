@@ -22,6 +22,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private Texture2D _ESPTexture = new Texture2D(1, 1);
         private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
         private WaitForSeconds wfs = new WaitForSeconds(0.015f);
+        private List<ESPObject> _espObjects = new List<ESPObject>();
 
         public static bool ESP_Enabled = false;
         public static bool ESP_Chams = true;
@@ -68,13 +69,14 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Mono Functions
         public void Start()
         {
-            StartCoroutine(updateAnimalESP());
-            StartCoroutine(updateItemESP());
-            StartCoroutine(updatePlayerESP());
-            StartCoroutine(updateSentryESP());
-            StartCoroutine(updateStorageESP());
-            StartCoroutine(updateVehicleESP());
-            StartCoroutine(updateZombieESP());
+            //StartCoroutine(updateAnimalESP());
+            //StartCoroutine(updateItemESP());
+            //StartCoroutine(updatePlayerESP());
+            //StartCoroutine(updateSentryESP());
+            //StartCoroutine(updateStorageESP());
+            //StartCoroutine(updateVehicleESP());
+            //StartCoroutine(updateZombieESP());
+            StartCoroutine(updateESPSystem());
         }
 
         public void OnGUI()
@@ -84,7 +86,33 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
             if (Event.current.type != EventType.Repaint)
                 return;
-            lock (_draw)
+            lock (_espObjects)
+            {
+                foreach (ESPObject espobj in _espObjects)
+                {
+                    if (espobj.espType == EESPItem.ANIMAL && !ESP_Animals_Enabled)
+                        continue;
+                    if (espobj.espType == EESPItem.ITEM && !ESP_Items_Enabled)
+                        continue;
+                    if (espobj.espType == EESPItem.PLAYER && !ESP_Players_Enabled)
+                        continue;
+                    if (espobj.espType == EESPItem.SENTRY && !ESP_Sentrys_Enabled)
+                        continue;
+                    if (espobj.espType == EESPItem.STORAGE && !ESP_Storages_Enabled)
+                        continue;
+                    if (espobj.espType == EESPItem.VEHICLE && !ESP_Vehicles_Enabled)
+                        continue;
+                    if (espobj.espType == EESPItem.ZOMBIE && !ESP_Zombies_Enabled)
+                        continue;
+
+                    GUI.color = espobj.color;
+                    if (ESP_ShowNames && !string.IsNullOrEmpty(espobj.text))
+                        Tools.DrawLabel(espobj.textPosition, espobj.text);
+                    if (ESP_Box)
+                        Tools.Outline(espobj.boxPosition, _ESPTexture);
+                }
+            }
+            /*lock (_draw)
             {
                 foreach (ESPDraw drawing in _draw)
                 {
@@ -94,7 +122,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     if (ESP_Box)
                         Tools.Outline(drawing.box, _ESPTexture);
                 }
-            }
+            }*/
         }
         #endregion
 
@@ -151,39 +179,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             ESP_Sentrys_Color.draw("Sentry ESP Color", "Sentrys");
         }
 
-        private string getZombieName(Zombie z)
-        {
-            string str = "";
-            switch (z.speciality)
-            {
-                case EZombieSpeciality.ACID:
-                    str = "Acid Zombie";
-                    break;
-                case EZombieSpeciality.BURNER:
-                    str = "Burner Zombie";
-                    break;
-                case EZombieSpeciality.CRAWLER:
-                    str = "Crawler Zombie";
-                    break;
-                case EZombieSpeciality.FLANKER_FRIENDLY:
-                    str = "Friendly Flanker Zombie";
-                    break;
-                case EZombieSpeciality.FLANKER_STALK:
-                    str = "Flanker Zombie";
-                    break;
-                case EZombieSpeciality.MEGA:
-                    str = "Mega Zombie";
-                    break;
-                case EZombieSpeciality.SPRINTER:
-                    str = "Sprinter Zombie";
-                    break;
-                default:
-                    str = "Normal Zombie";
-                    break;
-            }
-            return str;
-        }
-
         private void clearDraw(EESPItem espItem)
         {
             _draw.RemoveAll(a => a.type == espItem);
@@ -191,6 +186,197 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #endregion
 
         #region Coroutines
+        private IEnumerator updateESPSystem()
+        {
+            while (true)
+            {
+                if (!ESP_Enabled || !Variables.isInGame)
+                {
+                    yield return wfeof;
+                    continue;
+                }
+
+                #region Players
+                if (ESP_Players_Enabled && (Variables.players != null && Variables.players.Length > 0))
+                {
+                    foreach (SteamPlayer player in Variables.players)
+                    {
+                        if (Array.Exists(_espObjects.ToArray(), a => a.player == player))
+                            continue;
+
+                        float distance = Tools.getDistance(player.player.transform.position);
+                        bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(player.playerID.steamID.m_SteamID) : false);
+
+                        if (distance > ESP_Distance)
+                            continue;
+                        if (ESP_Players_FilterFriends && isFriend)
+                            continue;
+
+                        ESPObject espObj = player.player.gameObject.AddComponent<ESPObject>();
+                        espObj.espType = EESPItem.PLAYER;
+                        espObj.player = player;
+                        _espObjects.Add(espObj);
+
+                        yield return wfeof;
+                    }
+                }
+                #endregion
+
+                #region Zombies
+                if (ESP_Zombies_Enabled && (Variables.zombies != null && Variables.zombies.Length > 0))
+                {
+                    foreach (Zombie zombie in Variables.zombies)
+                    {
+                        if (Array.Exists(_espObjects.ToArray(), a => a.zombie == zombie))
+                            continue;
+
+                        float distance = Tools.getDistance(zombie.transform.position);
+
+                        if (distance > ESP_Distance)
+                            continue;
+
+                        ESPObject espObj = zombie.gameObject.AddComponent<ESPObject>();
+                        espObj.espType = EESPItem.ZOMBIE;
+                        espObj.zombie = zombie;
+                        _espObjects.Add(espObj);
+
+                        yield return wfeof;
+                    }
+                }
+                #endregion
+
+                #region Animals
+                if (ESP_Animals_Enabled && (Variables.animals != null && Variables.animals.Length > 0))
+                {
+                    foreach (Animal animal in Variables.animals)
+                    {
+                        if (Array.Exists(_espObjects.ToArray(), a => a.animal == animal))
+                            continue;
+
+                        float distance = Tools.getDistance(animal.transform.position);
+
+                        if (distance > ESP_Distance)
+                            continue;
+
+                        ESPObject espObj = animal.gameObject.AddComponent<ESPObject>();
+                        espObj.espType = EESPItem.ANIMAL;
+                        espObj.animal = animal;
+                        _espObjects.Add(espObj);
+
+                        yield return wfeof;
+                    }
+                }
+                #endregion
+
+                #region Items
+                if (ESP_Items_Enabled && (Variables.items != null && Variables.items.Length > 0))
+                {
+                    foreach (InteractableItem item in Variables.items)
+                    {
+                        if (Array.Exists(_espObjects.ToArray(), a => a.item == item))
+                            continue;
+
+                        float distance = Tools.getDistance(item.transform.position);
+                        bool on;
+
+                        if (distance > ESP_Distance)
+                            continue;
+                        if (!ESP_Items_Types.filter.TryGetValue(item.asset.type, out on))
+                            on = false;
+                        if (!on)
+                            continue;
+
+                        ESPObject espObj = item.gameObject.AddComponent<ESPObject>();
+                        espObj.espType = EESPItem.ITEM;
+                        espObj.item = item;
+                        _espObjects.Add(espObj);
+
+                        yield return wfeof;
+                    }
+                }
+                #endregion
+
+                #region Vehicles
+                if (ESP_Vehicles_Enabled && (Variables.vehicles != null && Variables.vehicles.Length > 0))
+                {
+                    foreach (InteractableVehicle vehicle in Variables.vehicles)
+                    {
+                        if (Array.Exists(_espObjects.ToArray(), a => a.vehicle == vehicle))
+                            continue;
+
+                        float distance = Tools.getDistance(vehicle.transform.position);
+
+                        if (distance > ESP_Distance)
+                            continue;
+                        if (ESP_Vehicles_IgnoreDestroyed && (vehicle.isDead || vehicle.isDrowned))
+                            continue;
+                        if (ESP_Vehicles_IgnoreEmpty && vehicle.fuel < 1)
+                            continue;
+                        if (ESP_Vehicles_IgnoreLocked && vehicle.isLocked)
+                            continue;
+
+                        ESPObject espObj = vehicle.gameObject.AddComponent<ESPObject>();
+                        espObj.espType = EESPItem.VEHICLE;
+                        espObj.vehicle = vehicle;
+                        _espObjects.Add(espObj);
+
+                        yield return wfeof;
+                    }
+                }
+                #endregion
+
+                #region Storages
+                if (ESP_Storages_Enabled && (Variables.storages != null && Variables.storages.Length > 0))
+                {
+                    foreach (InteractableStorage storage in Variables.storages)
+                    {
+                        if (Array.Exists(_espObjects.ToArray(), a => a.storage == storage))
+                            continue;
+
+                        float distance = Tools.getDistance(storage.transform.position);
+
+                        if (distance > ESP_Distance)
+                            continue;
+                        if (ESP_Storages_IgnoreLocked && !storage.checkUseable())
+                            continue;
+
+                        ESPObject espObj = storage.gameObject.AddComponent<ESPObject>();
+                        espObj.espType = EESPItem.STORAGE;
+                        espObj.storage = storage;
+                        _espObjects.Add(espObj);
+
+                        yield return wfeof;
+                    }
+                }
+                #endregion
+
+                #region Sentrys
+                if (ESP_Sentrys_Enabled && (Variables.sentrys != null && Variables.sentrys.Length > 0))
+                {
+                    foreach (InteractableSentry sentry in Variables.sentrys)
+                    {
+                        if (Array.Exists(_espObjects.ToArray(), a => a.sentry == sentry))
+                            continue;
+
+                        float distance = Tools.getDistance(sentry.transform.position);
+
+                        if (distance > ESP_Distance)
+                            continue;
+
+                        ESPObject espObj = sentry.gameObject.AddComponent<ESPObject>();
+                        espObj.espType = EESPItem.SENTRY;
+                        espObj.sentry = sentry;
+                        _espObjects.Add(espObj);
+
+                        yield return wfeof;
+                    }
+                }
+                #endregion
+
+                yield return wfeof;
+            }
+        }
+
         private IEnumerator updatePlayerESP()
         {
             while (true)
@@ -275,7 +461,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         continue;
 
                     if (ESP_ShowNames)
-                        text += getZombieName(z) + "\n";
+                        text += Tools.getZombieName(z) + "\n";
                     if (ESP_ShowDistances)
                         text += "Distance: " + distance + "\n";
                     if (ESP_Box && collider != null)

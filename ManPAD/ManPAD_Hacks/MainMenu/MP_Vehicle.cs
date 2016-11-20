@@ -26,7 +26,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Mono Functions
         public void Update()
         {
-            if (Player.player.movement.getVehicle() == null)
+            if (Player.player == null || Player.player.movement == null || Player.player.movement.getVehicle() == null)
                 return;
 
             Rigidbody body = Player.player.movement.getVehicle().GetComponent<Rigidbody>();

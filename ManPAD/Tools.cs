@@ -63,5 +63,38 @@ namespace ManPAD
             result.yMax = result.yMax + 1f;
             return result;
         }
+
+        public static string getZombieName(Zombie z)
+        {
+            string str = "";
+            switch (z.speciality)
+            {
+                case EZombieSpeciality.ACID:
+                    str = "Acid Zombie";
+                    break;
+                case EZombieSpeciality.BURNER:
+                    str = "Burner Zombie";
+                    break;
+                case EZombieSpeciality.CRAWLER:
+                    str = "Crawler Zombie";
+                    break;
+                case EZombieSpeciality.FLANKER_FRIENDLY:
+                    str = "Friendly Flanker Zombie";
+                    break;
+                case EZombieSpeciality.FLANKER_STALK:
+                    str = "Flanker Zombie";
+                    break;
+                case EZombieSpeciality.MEGA:
+                    str = "Mega Zombie";
+                    break;
+                case EZombieSpeciality.SPRINTER:
+                    str = "Sprinter Zombie";
+                    break;
+                default:
+                    str = "Normal Zombie";
+                    break;
+            }
+            return str;
+        }
     }
 }
