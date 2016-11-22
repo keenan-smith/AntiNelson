@@ -22,7 +22,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private Texture2D _ESPTexture = new Texture2D(1, 1);
         private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
         private WaitForSeconds wfs = new WaitForSeconds(0.015f);
-        private List<ESPObject> _espObjects = new List<ESPObject>();
+        public static List<ESPObject> espObjects = new List<ESPObject>();
 
         public static bool ESP_Enabled = false;
         public static bool ESP_Chams = true;
@@ -69,14 +69,14 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Mono Functions
         public void Start()
         {
-            //StartCoroutine(updateAnimalESP());
-            //StartCoroutine(updateItemESP());
-            //StartCoroutine(updatePlayerESP());
-            //StartCoroutine(updateSentryESP());
-            //StartCoroutine(updateStorageESP());
-            //StartCoroutine(updateVehicleESP());
-            //StartCoroutine(updateZombieESP());
-            StartCoroutine(updateESPSystem());
+            StartCoroutine(updateAnimalESP());
+            StartCoroutine(updateItemESP());
+            StartCoroutine(updatePlayerESP());
+            StartCoroutine(updateSentryESP());
+            StartCoroutine(updateStorageESP());
+            StartCoroutine(updateVehicleESP());
+            StartCoroutine(updateZombieESP());
+            //StartCoroutine(updateESPSystem());
         }
 
         public void OnGUI()
@@ -86,9 +86,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
             if (Event.current.type != EventType.Repaint)
                 return;
-            lock (_espObjects)
+            /*lock (espObjects)
             {
-                foreach (ESPObject espobj in _espObjects)
+                foreach (ESPObject espobj in espObjects)
                 {
                     if (espobj.espType == EESPItem.ANIMAL && !ESP_Animals_Enabled)
                         continue;
@@ -111,8 +111,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     if (ESP_Box)
                         Tools.Outline(espobj.boxPosition, _ESPTexture);
                 }
-            }
-            /*lock (_draw)
+            }*/
+            lock (_draw)
             {
                 foreach (ESPDraw drawing in _draw)
                 {
@@ -122,7 +122,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     if (ESP_Box)
                         Tools.Outline(drawing.box, _ESPTexture);
                 }
-            }*/
+            }
         }
         #endregion
 
@@ -201,7 +201,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     foreach (SteamPlayer player in Variables.players)
                     {
-                        if (Array.Exists(_espObjects.ToArray(), a => a.player == player))
+                        if (Array.Exists(espObjects.ToArray(), a => a.player == player) || player.player.gameObject.GetComponent<ESPObject>() != null)
                             continue;
 
                         float distance = Tools.getDistance(player.player.transform.position);
@@ -209,13 +209,15 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
                         if (distance > ESP_Distance)
                             continue;
+                        if (player.player == Player.player)
+                            continue;
                         if (ESP_Players_FilterFriends && isFriend)
                             continue;
 
                         ESPObject espObj = player.player.gameObject.AddComponent<ESPObject>();
                         espObj.espType = EESPItem.PLAYER;
                         espObj.player = player;
-                        _espObjects.Add(espObj);
+                        espObjects.Add(espObj);
 
                         yield return wfeof;
                     }
@@ -227,7 +229,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     foreach (Zombie zombie in Variables.zombies)
                     {
-                        if (Array.Exists(_espObjects.ToArray(), a => a.zombie == zombie))
+                        if (Array.Exists(espObjects.ToArray(), a => a.zombie == zombie))
                             continue;
 
                         float distance = Tools.getDistance(zombie.transform.position);
@@ -238,7 +240,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         ESPObject espObj = zombie.gameObject.AddComponent<ESPObject>();
                         espObj.espType = EESPItem.ZOMBIE;
                         espObj.zombie = zombie;
-                        _espObjects.Add(espObj);
+                        espObjects.Add(espObj);
 
                         yield return wfeof;
                     }
@@ -250,7 +252,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     foreach (Animal animal in Variables.animals)
                     {
-                        if (Array.Exists(_espObjects.ToArray(), a => a.animal == animal))
+                        if (Array.Exists(espObjects.ToArray(), a => a.animal == animal) || animal.gameObject.GetComponent<ESPObject>() != null)
                             continue;
 
                         float distance = Tools.getDistance(animal.transform.position);
@@ -261,7 +263,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         ESPObject espObj = animal.gameObject.AddComponent<ESPObject>();
                         espObj.espType = EESPItem.ANIMAL;
                         espObj.animal = animal;
-                        _espObjects.Add(espObj);
+                        espObjects.Add(espObj);
 
                         yield return wfeof;
                     }
@@ -273,7 +275,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     foreach (InteractableItem item in Variables.items)
                     {
-                        if (Array.Exists(_espObjects.ToArray(), a => a.item == item))
+                        if (Array.Exists(espObjects.ToArray(), a => a.item == item) || item.gameObject.GetComponent<ESPObject>() != null)
                             continue;
 
                         float distance = Tools.getDistance(item.transform.position);
@@ -289,7 +291,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         ESPObject espObj = item.gameObject.AddComponent<ESPObject>();
                         espObj.espType = EESPItem.ITEM;
                         espObj.item = item;
-                        _espObjects.Add(espObj);
+                        espObjects.Add(espObj);
 
                         yield return wfeof;
                     }
@@ -301,7 +303,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     foreach (InteractableVehicle vehicle in Variables.vehicles)
                     {
-                        if (Array.Exists(_espObjects.ToArray(), a => a.vehicle == vehicle))
+                        if (Array.Exists(espObjects.ToArray(), a => a.vehicle == vehicle) || vehicle.gameObject.GetComponent<ESPObject>() != null)
                             continue;
 
                         float distance = Tools.getDistance(vehicle.transform.position);
@@ -318,7 +320,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         ESPObject espObj = vehicle.gameObject.AddComponent<ESPObject>();
                         espObj.espType = EESPItem.VEHICLE;
                         espObj.vehicle = vehicle;
-                        _espObjects.Add(espObj);
+                        espObjects.Add(espObj);
 
                         yield return wfeof;
                     }
@@ -330,7 +332,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     foreach (InteractableStorage storage in Variables.storages)
                     {
-                        if (Array.Exists(_espObjects.ToArray(), a => a.storage == storage))
+                        if (Array.Exists(espObjects.ToArray(), a => a.storage == storage) || storage.gameObject.GetComponent<ESPObject>() != null)
                             continue;
 
                         float distance = Tools.getDistance(storage.transform.position);
@@ -343,7 +345,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         ESPObject espObj = storage.gameObject.AddComponent<ESPObject>();
                         espObj.espType = EESPItem.STORAGE;
                         espObj.storage = storage;
-                        _espObjects.Add(espObj);
+                        espObjects.Add(espObj);
 
                         yield return wfeof;
                     }
@@ -355,7 +357,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     foreach (InteractableSentry sentry in Variables.sentrys)
                     {
-                        if (Array.Exists(_espObjects.ToArray(), a => a.sentry == sentry))
+                        if (Array.Exists(espObjects.ToArray(), a => a.sentry == sentry) || sentry.gameObject.GetComponent<ESPObject>() != null)
                             continue;
 
                         float distance = Tools.getDistance(sentry.transform.position);
@@ -366,7 +368,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         ESPObject espObj = sentry.gameObject.AddComponent<ESPObject>();
                         espObj.espType = EESPItem.SENTRY;
                         espObj.sentry = sentry;
-                        _espObjects.Add(espObj);
+                        espObjects.Add(espObj);
 
                         yield return wfeof;
                     }

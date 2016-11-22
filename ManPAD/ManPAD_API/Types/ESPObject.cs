@@ -48,75 +48,86 @@ namespace ManPAD.ManPAD_API.Types
             else if (espType == EESPItem.ZOMBIE)
                 color = MP_ESP.ESP_Zombies_Color.selectedColor;
             else
-                GameObject.Destroy(this);
+            {
+                remove();
+                return;
+            }
             StartCoroutine(updateSystem());
         }
 
         public void FixedUpdate()
         {
             if (Tools.getDistance(transform.position) > MP_ESP.ESP_Distance && !MP_ESP.ESP_IgnoreDistance)
-                GameObject.Destroy(this);
+                remove();
             if (espType == EESPItem.ANIMAL)
             {
                 if (!MP_ESP.ESP_Animals_Enabled || !MP_ESP.ESP_Enabled)
-                    GameObject.Destroy(this);
+                    remove();
                 if (animal.isDead)
-                    GameObject.Destroy(this);
+                    remove();
             }
             else if (espType == EESPItem.ITEM)
             {
                 bool on;
 
                 if (!MP_ESP.ESP_Items_Enabled || !MP_ESP.ESP_Enabled)
-                    GameObject.Destroy(this);
+                    remove();
                 if (!MP_ESP.ESP_Items_Types.filter.TryGetValue(item.asset.type, out on))
                     on = false;
                 if (!on)
-                    GameObject.Destroy(this);
+                    remove();
             }
             else if (espType == EESPItem.PLAYER)
             {
                 bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(player.playerID.steamID.m_SteamID) : false);
 
                 if (!MP_ESP.ESP_Players_Enabled || !MP_ESP.ESP_Enabled)
-                    GameObject.Destroy(this);
+                    remove();
                 if (MP_ESP.ESP_Players_FilterFriends && isFriend)
-                    GameObject.Destroy(this);
+                    remove();
             }
             else if (espType == EESPItem.STORAGE)
             {
                 if (!MP_ESP.ESP_Storages_Enabled || !MP_ESP.ESP_Enabled)
-                    GameObject.Destroy(this);
+                    remove();
                 if (MP_ESP.ESP_Storages_IgnoreLocked && !storage.checkUseable())
-                    GameObject.Destroy(this);
+                    remove();
             }
             else if (espType == EESPItem.VEHICLE)
             {
                 if (!MP_ESP.ESP_Vehicles_Enabled || !MP_ESP.ESP_Enabled)
-                    GameObject.Destroy(this);
+                    remove();
                 if (MP_ESP.ESP_Vehicles_IgnoreDestroyed && (vehicle.isDead || vehicle.isDrowned))
-                    GameObject.Destroy(this);
+                    remove();
                 if (MP_ESP.ESP_Vehicles_IgnoreEmpty && vehicle.fuel < 1)
-                    GameObject.Destroy(this);
+                    remove();
                 if (MP_ESP.ESP_Vehicles_IgnoreLocked && vehicle.isLocked)
-                    GameObject.Destroy(this);
+                    remove();
             }
             else if (espType == EESPItem.ZOMBIE)
             {
                 if (!MP_ESP.ESP_Zombies_Enabled || !MP_ESP.ESP_Enabled)
-                    GameObject.Destroy(this);
+                    remove();
                 if (zombie.isDead)
-                    GameObject.Destroy(this);
+                    remove();
             }
             else if (espType == EESPItem.SENTRY)
             {
                 if (!MP_ESP.ESP_Sentrys_Enabled || !MP_ESP.ESP_Enabled)
-                    GameObject.Destroy(this);
+                    remove();
             }
             else
             {
-                GameObject.Destroy(this);
+                remove();
             }
+        }
+        #endregion
+
+        #region Functions
+        private void remove()
+        {
+            GameObject.Destroy(this);
+            MP_ESP.espObjects.Remove(this);
         }
         #endregion
 
@@ -125,7 +136,7 @@ namespace ManPAD.ManPAD_API.Types
         {
             while (true)
             {
-                float distance = Tools.getDistance(transform.position);
+                float distance = (float)Math.Round(Tools.getDistance(transform.position));
                 textPosition = MainCamera.instance.WorldToScreenPoint(transform.position);
                 text = "";
 
@@ -155,7 +166,7 @@ namespace ManPAD.ManPAD_API.Types
                     else if (espType == EESPItem.ZOMBIE)
                         text += Tools.getZombieName(zombie) + "\n";
                     else
-                        GameObject.Destroy(this);
+                        remove();
                 if (MP_ESP.ESP_ShowDistances)
                     text += "Distance: " + distance + "\n";
                 if (espType == EESPItem.PLAYER)
