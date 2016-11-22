@@ -19,6 +19,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Variables
         private float fly_Y = 0f;
         private Interactable interactable;
+        private bool wasDown = false;
         private WaitForSeconds wfs = new WaitForSeconds(.025f);
 
         public static bool fly = false;
@@ -72,6 +73,18 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         fly_Y = Player.player.transform.position.y;
                     if (Player.player.movement.gravity == 0f)
                         Player.player.movement.gravity = 1f;
+                }
+
+                if (interactThroughWalls && interactable != null && interactable.checkInteractable() && PlayerInteract.interactable == null)
+                {
+                    if (Input.GetKeyDown(ControlsSettings.interact))
+                        wasDown = true;
+                    if (Input.GetKeyUp(ControlsSettings.interact) && wasDown)
+                    {
+                        wasDown = false;
+                        if (interactable.checkUseable())
+                            interactable.use();
+                    }
                 }
             }
         }
@@ -146,6 +159,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             {
                 if (!interactThroughWalls || !Variables.isInGame)
                 {
+                    interactable = null;
                     yield return wfs;
                     continue;
                 }
@@ -156,14 +170,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     Transform transform = hit.transform;
                     interactable = transform.GetComponent<Interactable>();
-                    if (interactable != null && interactable.checkInteractable())
-                        if (Input.GetKeyDown(KeyCode.F))
-                            interactable.use();
                 }
                 else if (hit.transform == null)
-                {
                     interactable = null;
-                }
 
                 yield return wfs;
             }
