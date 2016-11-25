@@ -96,5 +96,28 @@ namespace ManPAD
             }
             return str;
         }
+
+        public static Player getNearestPlayer(float maxDistance = float.MaxValue)
+        {
+            float distance = float.MaxValue;
+            Player toAttack = null;
+            foreach (SteamPlayer p in Provider.clients)
+            {
+                if (p.player == Player.player || p.player.life.isDead)
+                    continue;
+
+                float dist = getDistance(p.player.transform.position);
+
+                if (dist > maxDistance)
+                    continue;
+                if (dist < distance)
+                {
+                    toAttack = p.player;
+                    distance = dist;
+                }
+            }
+
+            return toAttack;
+        }
     }
 }

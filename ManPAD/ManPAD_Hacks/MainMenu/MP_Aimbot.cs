@@ -12,7 +12,7 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(1, "Aimbot", 200f, 320f)]
+    [MenuOption(1, "Aimbot", 200f, 300f)]
     public class MP_Aimbot : MenuOption
     {
         #region Variables
@@ -20,8 +20,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
         private ELimb[] limbs = { ELimb.SKULL, ELimb.SPINE };
         private EAttackPriority[] prioritys = { EAttackPriority.DISTANCE, EAttackPriority.THREAT };
-        public static float cDistance = -1f;
-        public static object nextTarget = null;
 
         public static bool ignoreFOV = false;
         public static float FOV = 90f;
@@ -37,8 +35,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
         public static bool aim_players = true;
         public static bool aim_friends = false;
-        public static bool aim_zombies = false;
-        public static bool aim_animals = false;
         #endregion
 
         #region Mono Functions
@@ -82,8 +78,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             GUILayout.Space(10f);
             aim_players = GUILayout.Toggle(aim_players, "Attack Players");
             aim_friends = GUILayout.Toggle(aim_friends, "Attack Friends");
-            aim_zombies = GUILayout.Toggle(aim_zombies, "Attack Zombies");
-            aim_animals = GUILayout.Toggle(aim_animals, "Attack Animals");
         }
         #endregion
 
@@ -92,8 +86,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             while (true)
             {
-                cDistance = -1f;
-                nextTarget = null;
                 if (!(aimbot || silentAim) || !Variables.isInGame)
                 {
                     yield return wfs;
@@ -103,6 +95,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 #region Player
                 if (aim_players && (Variables.players != null && Variables.players.Length > 0))
                 {
+                    float cDistance = -1f;
+                    Player nextTarget = null;
                     foreach (SteamPlayer p in Variables.players)
                     {
                         if (p == null || p.player == null || p.player.gameObject == null || p.player.life.isDead || p.player == Player.player)
@@ -131,159 +125,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     yield return wfeof;
                 }
                 #endregion
-
-                #region Zombie
-                if (aim_zombies && (Variables.zombies != null && Variables.zombies.Length > 0))
-                {
-                    foreach (Zombie z in Variables.zombies)
-                    {
-                        if (z == null || z.gameObject == null || z.isDead)
-                            continue;
-
-                        float pDistance = Tools.getDistance(z.transform.position);
-
-                        if (pDistance > distance && !ignoreDistance)
-                            continue;
-
-                        if (cDistance == -1f || pDistance < cDistance)
-                        {
-                            cDistance = pDistance;
-                            nextTarget = z;
-                        }
-                    }
-                    yield return wfeof;
-                }
-                #endregion
-
-                #region Animal
-                if (aim_animals && (Variables.animals != null && Variables.animals.Length > 0))
-                {
-                    foreach (Animal a in Variables.animals)
-                    {
-                        if (a == null || a.gameObject == null || a.isDead)
-                            continue;
-
-                        float pDistance = Tools.getDistance(a.transform.position);
-
-                        if (pDistance > distance && !ignoreDistance)
-                            continue;
-
-                        if (cDistance == -1f || pDistance < cDistance)
-                        {
-                            cDistance = pDistance;
-                            nextTarget = a;
-                        }
-                    }
-                }
-                #endregion
-
-                yield return wfs;
-            }
-        }
-
-        private IEnumerator getAttackingPlayer()
-        {
-            while (true)
-            {
-                if (!(aimbot || silentAim) || !aim_players || !Variables.isInGame || (Variables.players == null || Variables.players.Length < 1))
-                {
-                    yield return wfs;
-                    continue;
-                }
-
-                foreach (SteamPlayer p in Variables.players)
-                {
-                    if (p == null || p.player == null || p.player.gameObject == null || p.player.life.isDead)
-                        continue;
-
-                    float pDistance = Tools.getDistance(p.player.transform.position);
-
-                    if (pDistance > distance && !ignoreDistance)
-                        continue;
-                    if (aim_friends || (MP_Config.instance.getFriends() == null || !MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID)))
-                        continue;
-
-                    if (attackPriority == EAttackPriority.DISTANCE)
-                    {
-                        if (cDistance == -1f || pDistance < cDistance)
-                        {
-                            cDistance = pDistance;
-                            nextTarget = p.player;
-                        }
-                    }
-                    else if (attackPriority == EAttackPriority.THREAT)
-                    {
-
-                    }
-
-                    yield return wfeof;
-                }
-
-                yield return wfs;
-            }
-        }
-
-        private IEnumerator getAttackingZombie()
-        {
-            while (true)
-            {
-                if (!(aimbot || silentAim) || !aim_zombies || !Variables.isInGame || (Variables.zombies == null || Variables.zombies.Length < 1))
-                {
-                    yield return wfs;
-                    continue;
-                }
-
-                foreach (Zombie z in Variables.zombies)
-                {
-                    if (z == null || z.gameObject == null || z.isDead)
-                        continue;
-
-                    float pDistance = Tools.getDistance(z.transform.position);
-
-                    if (pDistance > distance && !ignoreDistance)
-                        continue;
-
-                    if (cDistance == -1f || pDistance < cDistance)
-                    {
-                        cDistance = pDistance;
-                        nextTarget = z;
-                    }
-
-                    yield return wfeof;
-                }
-
-                yield return wfs;
-            }
-        }
-
-        private IEnumerator getAttackingAnimal()
-        {
-            while (true)
-            {
-                if (!(aimbot || silentAim) || !aim_animals || !Variables.isInGame || (Variables.animals == null || Variables.animals.Length < 1))
-                {
-                    yield return wfs;
-                    continue;
-                }
-
-                foreach (Animal a in Variables.animals)
-                {
-                    if (a == null || a.gameObject == null || a.isDead)
-                        continue;
-
-                    float pDistance = Tools.getDistance(a.transform.position);
-
-                    if (pDistance > distance && !ignoreDistance)
-                        continue;
-
-                    if (cDistance == -1f || pDistance < cDistance)
-                    {
-                        cDistance = pDistance;
-                        nextTarget = a;
-                    }
-
-                    yield return wfeof;
-                }
 
                 yield return wfs;
             }
