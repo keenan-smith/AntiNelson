@@ -80,11 +80,11 @@ namespace ManPAD.ManPAD_Library
 
             if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected)
                 return;
-
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f) // Forward
+            if (Event.current.type == EventType.ScrollWheel && Event.current.delta.y > 0f) // Forward
             {
                 if (_rect_ListMenu.Contains(MP_MainMenu.mouse_position))
                 {
+                    Debug.Log((MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.x + MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.width).ToString() + " - " + (Screen.width - 1f).ToString());
                     if (MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.x + MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.width > Screen.width - 1f)
                     {
                         float jump = 0f;
@@ -102,7 +102,7 @@ namespace ManPAD.ManPAD_Library
                     }
                 }
             }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // Backward
+            else if (Event.current.type == EventType.ScrollWheel && Event.current.delta.y < 0f) // Backward
             {
                 if (_rect_ListMenu.Contains(MP_MainMenu.mouse_position))
                 {
