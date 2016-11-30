@@ -47,9 +47,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Functions
         public override void runGUI()
         {
-            /*ignoreFOV = GUILayout.Toggle(ignoreFOV, "Ignore FOV");
+            ignoreFOV = GUILayout.Toggle(ignoreFOV, "Ignore FOV");
             GUILayout.Label("Aim FOV: " + FOV);
-            FOV = (float)Math.Round(GUILayout.HorizontalSlider(FOV, 1f, 45f));*/
+            FOV = (float)Math.Round(GUILayout.HorizontalSlider(FOV, 1f, 360f));
+         
             ignoreDistance = GUILayout.Toggle(ignoreDistance, "Ignore Distance");
             GUILayout.Label("Distance: " + distance);
             distance = (float)Math.Round(GUILayout.HorizontalSlider(distance, 0f, 50000f));

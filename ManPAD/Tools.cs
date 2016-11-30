@@ -35,16 +35,16 @@ namespace ManPAD
         {
             Camera main = MainCamera.instance;
             Vector3[] array = new Vector3[]
-			{
-				main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y + b.extents.y, b.center.z + b.extents.z)),
-				main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y + b.extents.y, b.center.z - b.extents.z)),
-				main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y - b.extents.y, b.center.z + b.extents.z)),
-				main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y - b.extents.y, b.center.z - b.extents.z)),
-				main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y, b.center.z + b.extents.z)),
-				main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y, b.center.z - b.extents.z)),
-				main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y - b.extents.y, b.center.z + b.extents.z)),
-				main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y - b.extents.y, b.center.z - b.extents.z))
-			};
+            {
+                main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y + b.extents.y, b.center.z + b.extents.z)),
+                main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y + b.extents.y, b.center.z - b.extents.z)),
+                main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y - b.extents.y, b.center.z + b.extents.z)),
+                main.WorldToScreenPoint(new Vector3(b.center.x + b.extents.x, b.center.y - b.extents.y, b.center.z - b.extents.z)),
+                main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y, b.center.z + b.extents.z)),
+                main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y + b.extents.y, b.center.z - b.extents.z)),
+                main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y - b.extents.y, b.center.z + b.extents.z)),
+                main.WorldToScreenPoint(new Vector3(b.center.x - b.extents.x, b.center.y - b.extents.y, b.center.z - b.extents.z))
+            };
             for (int i = 0; i < array.Length; i++)
             {
                 array[i].y = (float)Screen.height - array[i].y;
@@ -97,27 +97,38 @@ namespace ManPAD
             return str;
         }
 
-        public static Player getNearestPlayer(float maxDistance = float.MaxValue)
+        public static Player getNearestPlayer(float maxDistance = float.MaxValue )
         {
             float distance = float.MaxValue;
             Player toAttack = null;
+
             foreach (SteamPlayer p in Provider.clients)
             {
                 if (p.player == Player.player || p.player.life.isDead)
                     continue;
-
+                float fov = ManPAD_Hacks.MainMenu.MP_Aimbot.FOV;
+                bool IgnoreSomeFovLikeThing = ManPAD_Hacks.MainMenu.MP_Aimbot.ignoreFOV;
                 float dist = getDistance(p.player.transform.position);
+                Vector3 v2dist = Camera.main.WorldToScreenPoint(p.player.transform.position);
 
-                if (dist > maxDistance)
+                Vector2 pos = new Vector2(v2dist.x, v2dist.y);
+                float vdist = Vector2.Distance(new Vector2(Screen.width / 2, Screen.height / 2), pos);
+
+                if (dist > maxDistance || vdist >= fov && !IgnoreSomeFovLikeThing)
                     continue;
+
+
+
                 if (dist < distance)
                 {
                     toAttack = p.player;
                     distance = dist;
                 }
-            }
 
-            return toAttack;
+            }
+                return toAttack;
+
+             
         }
     }
 }
