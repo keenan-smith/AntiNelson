@@ -32,21 +32,52 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool autoTrigger = true;
 
         public static bool silentAim = false;
-
+        public static bool FovCrosshair = false;
+        public static float LineWidth = 1;
         public static bool aim_players = true;
         public static bool aim_friends = false;
+        public Material mat;
         #endregion
 
         #region Mono Functions
         public void Start()
         {
             StartCoroutine(getAttacking());
+            mat = new Material(Shader.Find("Hidden/Internal-Colored"));
+            mat.hideFlags = HideFlags.HideAndDontSave;
+            mat.SetInt("_SrcBlend", 5);
+            mat.SetInt("_DstBlend", 10);
+            mat.SetInt("_Cull", 0);
+            mat.SetInt("_ZWrite", 0);
         }
         #endregion
+
+        void OnGUI()
+        {
+            if(FovCrosshair && Variables.isInGame && !Variables.isSpying)
+            {
+                GL.PushMatrix();
+                mat.SetPass(0);
+                GL.Begin(GL.LINES);
+                GL.Color(Color.red);
+
+                for (float theta = 0.0f; theta < (2 * Mathf.PI); theta += 0.01f)
+                {
+                    Vector3 ci = (new Vector3(Mathf.Cos(theta) * MP_Aimbot.FOV + Screen.width / 2, Mathf.Sin(theta) * MP_Aimbot.FOV + Screen.height / 2, 0));
+                    GL.Vertex3(ci.x , ci.y, 0);
+             
+
+
+                }
+                GL.End();
+            }
+        }
+
 
         #region Functions
         public override void runGUI()
         {
+            FovCrosshair = GUILayout.Toggle(FovCrosshair, "Fov Crosshair");       
             ignoreFOV = GUILayout.Toggle(ignoreFOV, "Ignore FOV");
             GUILayout.Label("Aim FOV: " + FOV);
             FOV = (float)Math.Round(GUILayout.HorizontalSlider(FOV, 1f, 360f));
