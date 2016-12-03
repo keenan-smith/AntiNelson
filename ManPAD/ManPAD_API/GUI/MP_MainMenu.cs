@@ -12,35 +12,18 @@ namespace ManPAD.ManPAD_API.GUI
     {
         #region Variables
         private static Dictionary<MenuOptionAttribute, MenuOption> _menuOptions = new Dictionary<MenuOptionAttribute, MenuOption>();
-        private static float _allocX = 0f;
         #endregion
 
         #region Properties
-        public static float button_Height
+        public static Rect mainMenu
         {
             get
             {
-                return 30f;
+                return new Rect(1f, 1f, (float)Math.Floor((double)((Screen.width / 2) / 4)), Screen.height - 2f);
             }
         }
 
-        public static float menu_Start_X
-        {
-            get
-            {
-                return 0f;
-            }
-        }
-
-        public static float menu_Start_Y
-        {
-            get
-            {
-                return 0f;
-            }
-        }
-
-        public static float option_Max_Height
+        public static float option_Max_Width
         {
             get
             {
@@ -60,7 +43,7 @@ namespace ManPAD.ManPAD_API.GUI
         {
             get
             {
-                return _menuOptions.Keys.ToArray().OrderByDescending(a => a.ID).ToArray();
+                return _menuOptions.Keys.ToArray().OrderBy(a => a.ID).ToArray();
             }
         }
 
@@ -68,7 +51,7 @@ namespace ManPAD.ManPAD_API.GUI
         {
             get
             {
-                return _menuOptions.Values.ToArray().OrderByDescending(a => a.attrib.ID).ToArray();
+                return _menuOptions.Values.ToArray().OrderBy(a => a.attrib.ID).ToArray();
             }
         }
         #endregion
@@ -82,8 +65,6 @@ namespace ManPAD.ManPAD_API.GUI
             MenuOption option = MP_GOLoader.hack_addMenuOption(t);
             option.attrib = attrib;
             attrib.option = option;
-            attrib.UI_X = menu_Start_X + _allocX;
-            _allocX += attrib.button.width + 1f;
 
             _menuOptions.Add(attrib, option);
             return option;

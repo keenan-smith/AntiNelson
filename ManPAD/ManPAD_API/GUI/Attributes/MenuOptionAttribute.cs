@@ -13,10 +13,7 @@ namespace ManPAD.ManPAD_API.GUI.Attributes
     {
         #region Variables
         private float _UI_Width;
-        private float _UI_Height;
         private MenuOption _option;
-
-        public float UI_X;
         #endregion
 
         #region Properties
@@ -37,11 +34,15 @@ namespace ManPAD.ManPAD_API.GUI.Attributes
             }
         }
 
-        public Rect button
+        public bool isActive
         {
             get
             {
-                return new Rect(UI_X, MP_MainMenu.menu_Start_Y, _UI_Width, MP_MainMenu.button_Height);
+                return option.open;
+            }
+            set
+            {
+                option.open = value;
             }
         }
 
@@ -49,33 +50,16 @@ namespace ManPAD.ManPAD_API.GUI.Attributes
         {
             get
             {
-                return new Rect(UI_X, MP_MainMenu.menu_Start_Y + MP_MainMenu.button_Height + 2f, _UI_Width, (_UI_Height > MP_MainMenu.option_Max_Height ? MP_MainMenu.option_Max_Height : _UI_Height));
-            }
-        }
-
-        public Rect trigger
-        {
-            get
-            {
-                return new Rect(UI_X, MP_MainMenu.menu_Start_Y, _UI_Width, (_option.open ? MP_MainMenu.button_Height + window.height + 2f : MP_MainMenu.button_Height));
-            }
-        }
-
-        public bool isActive
-        {
-            get
-            {
-                return trigger.Contains(MP_MainMenu.mouse_position);
+                return new Rect(MP_MainMenu.mainMenu.x + MP_MainMenu.mainMenu.width + 3f, 1f, (_UI_Width > MP_MainMenu.option_Max_Width ? MP_MainMenu.option_Max_Width : _UI_Width), Screen.height - 2f);
             }
         }
         #endregion
 
-        public MenuOptionAttribute(int ID, string text, float UI_Width, float UI_Height)
+        public MenuOptionAttribute(int ID, string text, float UI_Width)
         {
             this.ID = ID;
             this.text = text;
             this._UI_Width = UI_Width;
-            this._UI_Height = UI_Height;
         }
     }
 }

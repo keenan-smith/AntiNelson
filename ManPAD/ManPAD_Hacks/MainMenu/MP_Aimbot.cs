@@ -12,7 +12,7 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(1, "Aimbot", 200f, 300f)]
+    [MenuOption(1, "Aimbot", 200f)]
     public class MP_Aimbot : MenuOption
     {
         #region Variables

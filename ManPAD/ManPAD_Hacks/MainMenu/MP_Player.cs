@@ -13,7 +13,7 @@ using System.Collections;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(0, "Player", 200f, 600f)]
+    [MenuOption(0, "Player", 200f)]
     public class MP_Player : MenuOption
     {
         #region Variables

@@ -22,13 +22,15 @@ namespace ManPAD.ManPAD_Library
         private Texture _cursor;
         private Rect _cursorRect = new Rect(0f, 0f, 20f, 20f);
         private EThemes _theme;
+        private Vector2 _scroll;
+        private GUIStyle _gsLabelTitle;
         #endregion
 
         #region Mono Functions
         public void Start()
         {
             MP_Logging.Log("Loading Main Menu...");
-            _rect_ListMenu = new Rect(MP_MainMenu.menu_Start_X, MP_MainMenu.menu_Start_Y, Screen.width, MP_MainMenu.button_Height + 1f);
+            _rect_ListMenu = MP_MainMenu.mainMenu;
 
             findMenuOptions();
             MP_Logging.Log("Main Menu Loaded!");
@@ -36,7 +38,7 @@ namespace ManPAD.ManPAD_Library
 
         public void Update()
         {
-            if (_cursor == null || _logo == null || (_theme == null || _theme != MP_Config.instance.getTheme()))
+            if (_cursor == null || _logo == null || _theme != MP_Config.instance.getTheme())
             {
                 _cursor = Resources.Load("UI/Cursor") as Texture;
                 if (Variables.bundle != null)
@@ -80,49 +82,6 @@ namespace ManPAD.ManPAD_Library
 
             if (!_isOpen || LoadingUI.isBlocked || !Provider.isConnected)
                 return;
-            if (Event.current.type == EventType.ScrollWheel && Event.current.delta.y > 0f) // Forward
-            {
-                if (_rect_ListMenu.Contains(MP_MainMenu.mouse_position))
-                {
-                    Debug.Log((MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.x + MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.width).ToString() + " - " + (Screen.width - 1f).ToString());
-                    if (MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.x + MP_MainMenu.attributes[MP_MainMenu.attributes.Length - 1].button.width > Screen.width - 1f)
-                    {
-                        float jump = 0f;
-                        for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
-                        {
-                            if (MP_MainMenu.attributes[i].button.x + MP_MainMenu.attributes[i].button.width > Screen.width - 1f)
-                            {
-                                jump = ((MP_MainMenu.attributes[i].button.x + MP_MainMenu.attributes[i].button.width) - Screen.width) + 1f;
-                                break;
-                            }
-                        }
-
-                        for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
-                            MP_MainMenu.attributes[i].UI_X -= jump;
-                    }
-                }
-            }
-            else if (Event.current.type == EventType.ScrollWheel && Event.current.delta.y < 0f) // Backward
-            {
-                if (_rect_ListMenu.Contains(MP_MainMenu.mouse_position))
-                {
-                    if (MP_MainMenu.attributes[0].button.x < 1f)
-                    {
-                        float jump = 0f;
-                        for (int i = MP_MainMenu.attributes.Length - 1; i > -1; i--)
-                        {
-                            if (MP_MainMenu.attributes[i].button.x < 1f)
-                            {
-                                jump = -MP_MainMenu.attributes[i].button.x + 1f;
-                                break;
-                            }
-                        }
-
-                        for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
-                            MP_MainMenu.attributes[i].UI_X += jump;
-                    }
-                }
-            }
         }
 
         public void OnGUI()
@@ -136,23 +95,45 @@ namespace ManPAD.ManPAD_Library
             GUI.DrawTexture(new Rect((float)Math.Round((double)Screen.width / 2 - 150), (float)Math.Round((double)Screen.height / 2 - 150), 300f, 300f), _logo, ScaleMode.ScaleToFit);
             GUI.color = sv;
             GUI.Box(_rect_ListMenu, "");
+            GUILayout.BeginArea(_rect_ListMenu);
+            if (_gsLabelTitle == null)
+            {
+                _gsLabelTitle = new GUIStyle(GUI.skin.label);
+                _gsLabelTitle.alignment = TextAnchor.MiddleCenter;
+                _gsLabelTitle.fontSize = 30;
+
+                GUI.skin.toggle.stretchHeight = false;
+            }
+            GUILayout.Label("ManPAD", _gsLabelTitle);
+            _scroll = GUILayout.BeginScrollView(_scroll);
             for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
             {
-                GUI.Button(MP_MainMenu.attributes[i].button, MP_MainMenu.attributes[i].text);
-
+                if (MP_MainMenu.attributes[i].isActive)
+                    GUI.skin.button.normal = GUI.skin.toggle.onNormal;
+                else
+                    GUI.skin.button.normal = GUI.skin.toggle.normal;
+                if (GUILayout.Button(MP_MainMenu.attributes[i].text))
+                {
+                    MP_MainMenu.options[i].open = !MP_MainMenu.options[i].open;
+                    for (int a = 0; a < MP_MainMenu.attributes.Length; a++)
+                    {
+                        if (a != i)
+                            MP_MainMenu.options[a].open = false;
+                    }
+                }
+            }
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
+            for (int i = 0; i < MP_MainMenu.attributes.Length; i++)
+            {
                 if (MP_MainMenu.attributes[i].isActive)
                 {
-                    MP_MainMenu.options[i].open = true;
                     GUI.Box(MP_MainMenu.attributes[i].window, "");
                     GUILayout.BeginArea(MP_MainMenu.attributes[i].window);
                     MP_MainMenu.options[i].scrollPos = GUILayout.BeginScrollView(MP_MainMenu.options[i].scrollPos);
                     MP_MainMenu.options[i].runGUI();
                     GUILayout.EndScrollView();
                     GUILayout.EndArea();
-                }
-                else
-                {
-                    MP_MainMenu.options[i].open = false;
                 }
             }
             if (_cursor != null)
