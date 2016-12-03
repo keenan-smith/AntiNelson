@@ -65,9 +65,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     Vector3 ci = (new Vector3(Mathf.Cos(theta) * MP_Aimbot.FOV + Screen.width / 2, Mathf.Sin(theta) * MP_Aimbot.FOV + Screen.height / 2, 0));
                     GL.Vertex3(ci.x , ci.y, 0);
-             
-
-
                 }
                 GL.End();
             }

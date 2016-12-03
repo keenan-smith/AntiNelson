@@ -64,9 +64,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 if (Player.player.equipment.useable is UseableGun)
                 {
                     if (nosway)
-                        setSway((UseableGun)Player.player.equipment.useable, 4u);
+                        Player.player.animator.viewSway = Vector3.zero;
+                        //setSway((UseableGun)Player.player.equipment.useable, 4u);
 
-                    typeof(UseableGun).GetMethod("updateCrosshair", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(Player.player.equipment.useable, new object[0]);
+                    PlayerUI.updateCrosshair(_backup[hash].spreadHip);
                 }
 
                 if (Player.player.equipment.asset is ItemMeleeAsset)
