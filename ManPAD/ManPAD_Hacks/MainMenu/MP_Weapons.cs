@@ -94,26 +94,26 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
         private void setRecoil(ItemGunAsset asset, float maxX, float maxY, float minX, float minY)
         {
-            typeof(ItemGunAsset).GetField("_recoilMax_x", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, maxX);
-            typeof(ItemGunAsset).GetField("_recoilMax_y", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, maxY);
-            typeof(ItemGunAsset).GetField("_recoilMin_x", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, minX);
-            typeof(ItemGunAsset).GetField("_recoilMin_y", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, minY);
+            asset.recoilMax_x = maxX;
+            asset.recoilMax_y = maxY;
+            asset.recoilMin_x = minX;
+            asset.recoilMin_y = minY;
         }
 
         private void setSpread(ItemGunAsset asset, float aim, float hip)
         {
-            typeof(ItemGunAsset).GetField("_spreadAim", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, aim);
-            typeof(ItemGunAsset).GetField("_spreadHip", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, hip);
+            asset.spreadAim = aim;
+            asset.spreadHip = hip;
         }
 
         private void setShake(ItemGunAsset asset, float maxX, float maxY, float maxZ, float minX, float minY, float minZ)
         {
-            typeof(ItemGunAsset).GetField("_shakeMax_x", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, maxX);
-            typeof(ItemGunAsset).GetField("_shakeMax_y", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, maxY);
-            typeof(ItemGunAsset).GetField("_shakeMax_z", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, maxZ);
-            typeof(ItemGunAsset).GetField("_shakeMin_x", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, minX);
-            typeof(ItemGunAsset).GetField("_shakeMin_y", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, minY);
-            typeof(ItemGunAsset).GetField("_shakeMin_z", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, minZ);
+            asset.shakeMax_x = maxX;
+            asset.shakeMax_y = maxY;
+            asset.shakeMax_z = maxZ;
+            asset.shakeMin_x = minX;
+            asset.shakeMin_y = minY;
+            asset.shakeMin_z = minZ;
         }
 
         private void setSway(UseableGun asset, uint steady)
@@ -123,7 +123,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
         private void setRange(ItemWeaponAsset asset, float range)
         {
-            typeof(ItemWeaponAsset).GetField("_range", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, range);
+            asset.range = range;
         }
         #endregion
     }
