@@ -22,7 +22,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool noshake = true;
         public static bool nosway = true;
         public static bool attackThroughWalls = false;
-        public static bool autoreload = false;
         public static bool farReach = false;
         #endregion
 
@@ -32,6 +31,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             if (!Variables.isInGame)
                 return;
 
+            #region No Recoil, No Spread, No Shake, No Sway, Far Reach
             if (Player.player.equipment.isSelected && Player.player.equipment.asset != null && Player.player.equipment.useable != null && Player.player.equipment.asset is ItemWeaponAsset)
             {
                 byte[] hash = Player.player.equipment.asset.hash;
@@ -65,9 +65,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     if (nosway)
                         Player.player.animator.viewSway = Vector3.zero;
-                        //setSway((UseableGun)Player.player.equipment.useable, 4u);
 
-                    PlayerUI.updateCrosshair(_backup[hash].spreadHip);
+                    PlayerUI.updateCrosshair(((ItemGunAsset)Player.player.equipment.asset).spreadHip);
                 }
 
                 if (Player.player.equipment.asset is ItemMeleeAsset)
@@ -78,6 +77,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         setRange((ItemWeaponAsset)Player.player.equipment.asset, _backup[hash].range);
                 }
             }
+            #endregion
         }
         #endregion
 
@@ -89,7 +89,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             nospread = GUILayout.Toggle(nospread, "No Spread");
             nosway = GUILayout.Toggle(nosway, "No Sway");
             farReach = GUILayout.Toggle(farReach, "Far Reach");
-            autoreload = GUILayout.Toggle(autoreload, "Auto Reload");
             attackThroughWalls = GUILayout.Toggle(attackThroughWalls, "Attack Through Walls");
         }
 
@@ -115,11 +114,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             asset.shakeMin_x = minX;
             asset.shakeMin_y = minY;
             asset.shakeMin_z = minZ;
-        }
-
-        private void setSway(UseableGun asset, uint steady)
-        {
-            typeof(UseableGun).GetField("steadyAccuracy", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(asset, steady);
         }
 
         private void setRange(ItemWeaponAsset asset, float range)

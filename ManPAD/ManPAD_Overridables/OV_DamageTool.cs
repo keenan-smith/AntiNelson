@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using SDG.Unturned;
@@ -13,7 +14,12 @@ namespace ManPAD.ManPAD_Overridables
         [CodeReplace("raycast", typeof(DamageTool), BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)]
         public static RaycastInfo raycast(Ray ray, float range, int mask)
         {
-            int num = mask;
+            int num;
+            if (MP_Weapons.attackThroughWalls)
+                num = RayMasks.VEHICLE | RayMasks.ENEMY | RayMasks.ENTITY;
+            else
+                num = mask;
+
             RaycastHit hit;
             Physics.Raycast(ray, out hit, range, num);
             RaycastInfo raycastInfo = new RaycastInfo(hit);
@@ -45,6 +51,8 @@ namespace ManPAD.ManPAD_Overridables
                 {
                     raycastInfo.material = DamageTool.getMaterial(hit.point, hit.transform, hit.collider);
                 }
+
+                #region SilentAim
                 if (MP_Aimbot.silentAim)
                 {
                     Player p = Tools.getNearestPlayer();
@@ -55,6 +63,7 @@ namespace ManPAD.ManPAD_Overridables
                     raycastInfo.player = p;
                     raycastInfo.limb = MP_Aimbot.aimLocation;
                 }
+                #endregion
             }
             return raycastInfo;
         }
