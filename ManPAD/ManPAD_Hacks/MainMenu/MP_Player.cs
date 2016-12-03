@@ -58,6 +58,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
             if (Player.player != null && Player.player.transform != null)
             {
+                #region Fly
                 if (fly)
                 {
                     if (Input.GetKey(ControlsSettings.jump))
@@ -74,7 +75,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     if (Player.player.movement.gravity == 0f)
                         Player.player.movement.gravity = 1f;
                 }
+                #endregion
 
+                #region Interact Through Walls
                 if (interactThroughWalls && interactable != null && interactable.checkInteractable() && PlayerInteract.interactable == null)
                 {
                     if (Input.GetKeyDown(ControlsSettings.interact))
@@ -86,6 +89,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                             interactable.use();
                     }
                 }
+                #endregion
             }
         }
 
@@ -94,6 +98,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             if (Variables.isSpying)
                 return;
 
+            #region Interact Through Walls
             if (interactThroughWalls && interactable != null)
             {
                 string text = "Interact";
@@ -109,6 +114,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     text = "Turn " + (interactable.GetComponent<InteractableGenerator>().isPowered ? "Off" : "On");
                 GUI.Label(new Rect(Screen.width / 2, Screen.height / 2 - 20, 300, 80), string.Format("<size=14><color=lime>{0}</color></size>", text));
             }
+            #endregion
         }
         #endregion
 
