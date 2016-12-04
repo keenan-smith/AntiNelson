@@ -117,18 +117,14 @@ namespace ManPAD
                 if (dist > maxDistance || vdist >= fov && !IgnoreSomeFovLikeThing)
                     continue;
 
-
-
                 if (dist < distance)
                 {
                     toAttack = p.player;
                     distance = dist;
                 }
-
             }
-                return toAttack;
 
-             
+            return toAttack;
         }
     }
 }
