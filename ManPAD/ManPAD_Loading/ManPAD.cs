@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_Library;
+using ManPAD.ManPAD_Overridables;
 
 namespace ManPAD.ManPAD_Loading
 {
@@ -12,7 +13,6 @@ namespace ManPAD.ManPAD_Loading
     {
         public ManPAD()
         {
-            //MP_Logging.enableConsole();
         }
 
         #region Mono Functions
@@ -23,6 +23,10 @@ namespace ManPAD.ManPAD_Loading
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
             MP_GOLoader.library_addLibrary(typeof(lib_InfoUpdater));
+
+            Variables.LoadingUI_gameobject = new GameObject();
+            //Variables.LoadingUI_Script = Variables.LoadingUI_gameobject.AddComponent<OV_LoadingUI>();
+            DontDestroyOnLoad(Variables.LoadingUI_gameobject);
         }
 
         public void Update()

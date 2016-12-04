@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using SDG.Unturned;
+using ManPAD.ManPAD_Overridables;
 
 namespace ManPAD
 {
@@ -13,6 +14,8 @@ namespace ManPAD
 
         public static bool isInGame = false;
         public static bool isSpying = false;
+        public static GameObject LoadingUI_gameobject;
+        public static OV_LoadingUI LoadingUI_Script;
         public static Zombie[] zombies;
         public static SteamPlayer[] players;
         public static InteractableItem[] items;

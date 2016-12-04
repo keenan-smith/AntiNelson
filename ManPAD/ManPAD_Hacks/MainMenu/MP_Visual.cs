@@ -9,7 +9,7 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(7, "Visuals", 300f)]
+    [MenuOption(8, "Visuals", 300f)]
     public class MP_Visual : MenuOption
     {
         #region Variables
