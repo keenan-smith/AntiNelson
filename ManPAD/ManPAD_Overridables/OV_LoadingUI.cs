@@ -23,6 +23,7 @@ namespace ManPAD.ManPAD_Overridables
 		private static ELoadingTip tip;
 		private static readonly byte TIP_COUNT = 31;
 		private static bool _isInitialized;
+        public string tip_text;
 
         private GUISkin _skin;
         private Color _windowColor;
@@ -96,164 +97,8 @@ namespace ManPAD.ManPAD_Overridables
 
         public void OnGUI()
 		{
-            if (_backgroundImage == null || _logoImage == null || _skin == null)
+            if (_backgroundImage == null || _logoImage == null || _skin == null || string.IsNullOrEmpty(tip_text))
                 return;
-
-            string tip_text = "";
-
-            #region Tip Text
-            switch (tip)
-            {
-                case ELoadingTip.HOTKEY:
-                    tip_text = _local_Tips.format("Hotkey");
-                    break;
-                case ELoadingTip.EQUIP:
-                    tip_text = _local_Tips.format("Equip", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
-				    });
-                    break;
-                case ELoadingTip.DROP:
-                    tip_text = _local_Tips.format("Drop", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
-				    });
-                    break;
-                case ELoadingTip.SIRENS:
-                    tip_text = _local_Tips.format("Sirens", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
-				    });
-                    break;
-                case ELoadingTip.TRANSFORM:
-                    tip_text = _local_Tips.format("Transform");
-                    break;
-                case ELoadingTip.QUALITY:
-                    tip_text = _local_Tips.format("Quality");
-                    break;
-                case ELoadingTip.UMBRELLA:
-                    tip_text = _local_Tips.format("Umbrella");
-                    break;
-                case ELoadingTip.HEAL:
-                    tip_text = _local_Tips.format("Heal");
-                    break;
-                case ELoadingTip.ROTATE:
-                    tip_text = _local_Tips.format("Rotate");
-                    break;
-                case ELoadingTip.BASE:
-                    tip_text = _local_Tips.format("Base");
-                    break;
-                case ELoadingTip.DEQUIP:
-                    tip_text = _local_Tips.format("Dequip", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.dequip)
-				    });
-                    break;
-                case ELoadingTip.NIGHTVISION:
-                    tip_text = _local_Tips.format("Nightvision", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.vision)
-				    });
-                    break;
-                case ELoadingTip.TRANSFER:
-                    tip_text = _local_Tips.format("Transfer", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
-				    });
-                    break;
-                case ELoadingTip.SURFACE:
-                    tip_text = _local_Tips.format("Surface", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.jump)
-				    });
-                    break;
-                case ELoadingTip.ARREST:
-                    tip_text = _local_Tips.format("Arrest", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.leanLeft),
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.leanRight)
-				    });
-                    break;
-                case ELoadingTip.SAFEZONE:
-                    tip_text = _local_Tips.format("Safezone");
-                    break;
-                case ELoadingTip.CLAIM:
-                    tip_text = _local_Tips.format("Claim");
-                    break;
-                case ELoadingTip.GROUP:
-                    tip_text = _local_Tips.format("Group");
-                    break;
-                case ELoadingTip.MAP:
-                    tip_text = _local_Tips.format("Map", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.map)
-				    });
-                    break;
-                case ELoadingTip.BEACON:
-                    tip_text = _local_Tips.format("Beacon");
-                    break;
-                case ELoadingTip.HORN:
-                    tip_text = _local_Tips.format("Horn", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.primary)
-				    });
-                    break;
-                case ELoadingTip.LIGHTS:
-                    tip_text = _local_Tips.format("Lights", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.secondary)
-				    });
-                    break;
-                case ELoadingTip.SNAP:
-                    tip_text = _local_Tips.format("Snap", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.snap)
-				    });
-                    break;
-                case ELoadingTip.UPGRADE:
-                    tip_text = _local_Tips.format("Upgrade", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
-				    });
-                    break;
-                case ELoadingTip.GRAB:
-                    tip_text = _local_Tips.format("Grab", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
-				    });
-                    break;
-                case ELoadingTip.SKYCRANE:
-                    tip_text = _local_Tips.format("Skycrane", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
-				    });
-                    break;
-                case ELoadingTip.SEAT:
-                    tip_text = _local_Tips.format("Seat");
-                    break;
-                case ELoadingTip.RARITY:
-                    tip_text = _local_Tips.format("Rarity");
-                    break;
-                case ELoadingTip.ORIENTATION:
-                    tip_text = _local_Tips.format("Orientation", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.rotate)
-				    });
-                    break;
-                case ELoadingTip.RED:
-                    tip_text = _local_Tips.format("Red");
-                    break;
-                case ELoadingTip.STEADY:
-                    tip_text = _local_Tips.format("Steady", new object[]
-				    {
-					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.sprint)
-				    });
-                    break;
-                default:
-                    tip_text = "#" + tip.ToString();
-                    break;
-            }
-            #endregion
 
             if (GUI.skin != _skin)
                 GUI.skin = _skin;
@@ -333,9 +178,9 @@ namespace ManPAD.ManPAD_Overridables
 		{
 		}
 
-        //[CodeReplace("updateScene", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
-		public static void updateScene()
-		{
+        public void updateScene1()
+        {
+            Debug.Log("Hi");
             byte tip_byte;
 
             updateProgress(0f);
@@ -346,6 +191,164 @@ namespace ManPAD.ManPAD_Overridables
             } while (tip_byte == (byte)tip);
 
             OV_LoadingUI.tip = (ELoadingTip)tip_byte;
+
+            switch (tip)
+            {
+                case ELoadingTip.HOTKEY:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Hotkey");
+                    break;
+                case ELoadingTip.EQUIP:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Equip", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
+				    });
+                    break;
+                case ELoadingTip.DROP:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Drop", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
+				    });
+                    break;
+                case ELoadingTip.SIRENS:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Sirens", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
+				    });
+                    break;
+                case ELoadingTip.TRANSFORM:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Transform");
+                    break;
+                case ELoadingTip.QUALITY:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Quality");
+                    break;
+                case ELoadingTip.UMBRELLA:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Umbrella");
+                    break;
+                case ELoadingTip.HEAL:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Heal");
+                    break;
+                case ELoadingTip.ROTATE:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Rotate");
+                    break;
+                case ELoadingTip.BASE:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Base");
+                    break;
+                case ELoadingTip.DEQUIP:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Dequip", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.dequip)
+				    });
+                    break;
+                case ELoadingTip.NIGHTVISION:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Nightvision", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.vision)
+				    });
+                    break;
+                case ELoadingTip.TRANSFER:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Transfer", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
+				    });
+                    break;
+                case ELoadingTip.SURFACE:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Surface", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.jump)
+				    });
+                    break;
+                case ELoadingTip.ARREST:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Arrest", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.leanLeft),
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.leanRight)
+				    });
+                    break;
+                case ELoadingTip.SAFEZONE:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Safezone");
+                    break;
+                case ELoadingTip.CLAIM:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Claim");
+                    break;
+                case ELoadingTip.GROUP:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Group");
+                    break;
+                case ELoadingTip.MAP:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Map", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.map)
+				    });
+                    break;
+                case ELoadingTip.BEACON:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Beacon");
+                    break;
+                case ELoadingTip.HORN:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Horn", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.primary)
+				    });
+                    break;
+                case ELoadingTip.LIGHTS:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Lights", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.secondary)
+				    });
+                    break;
+                case ELoadingTip.SNAP:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Snap", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.snap)
+				    });
+                    break;
+                case ELoadingTip.UPGRADE:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Upgrade", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
+				    });
+                    break;
+                case ELoadingTip.GRAB:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Grab", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
+				    });
+                    break;
+                case ELoadingTip.SKYCRANE:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Skycrane", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.other)
+				    });
+                    break;
+                case ELoadingTip.SEAT:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Seat");
+                    break;
+                case ELoadingTip.RARITY:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Rarity");
+                    break;
+                case ELoadingTip.ORIENTATION:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Orientation", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.rotate)
+				    });
+                    break;
+                case ELoadingTip.RED:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Red");
+                    break;
+                case ELoadingTip.STEADY:
+                    Variables.LoadingUI_Script.tip_text = _local_Tips.format("Steady", new object[]
+				    {
+					    MenuConfigurationControlsUI.getKeyCodeText(ControlsSettings.sprint)
+				    });
+                    break;
+                default:
+                    Variables.LoadingUI_Script.tip_text = "#" + tip.ToString();
+                    break;
+            }
+        }
+
+        //[CodeReplace("updateScene", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+		public static void updateScene()
+		{
+            typeof(OV_LoadingUI).GetMethod("updateScene1", BindingFlags.Public | BindingFlags.Instance).Invoke(Variables.LoadingUI_Script, new object[0]);
 		}
         #endregion
     }
