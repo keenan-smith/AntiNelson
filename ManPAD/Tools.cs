@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
+using System.Resources;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -125,6 +128,26 @@ namespace ManPAD
             }
 
             return toAttack;
+        }
+
+        public static byte[] getResource(string name)
+        {
+            try
+            {
+                foreach (string rName in Assembly.GetExecutingAssembly().GetManifestResourceNames())
+                {
+                    Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream(rName);
+                    using (ResourceSet set = new ResourceSet(st))
+                    {
+                        return (byte[])set.GetObject(name, true);
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

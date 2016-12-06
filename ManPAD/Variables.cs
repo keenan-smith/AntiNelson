@@ -23,5 +23,10 @@ namespace ManPAD
         public static InteractableStorage[] storages;
         public static InteractableSentry[] sentrys;
         public static Animal[] animals;
+
+        public static Dictionary<string, string> songs = new Dictionary<string, string>()
+        {
+            {"Pegboard Nerds - Hero", "PBN_Hero"},
+        };
     }
 }
