@@ -26,8 +26,9 @@ namespace ManPAD.ManPAD_Overridables
         public IEnumerator spyStuff()
         {
             Variables.isSpying = true;
+            yield return new WaitForSeconds(0.0625f);
             Player.player.StartCoroutine("takeScreenshot");
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.0625f);
             Variables.isSpying = false;
         }
     }
