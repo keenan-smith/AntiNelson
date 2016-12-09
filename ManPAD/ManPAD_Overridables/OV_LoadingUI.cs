@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,10 @@ namespace ManPAD.ManPAD_Overridables
         private static List<string> loading_texts = new List<string>();
         private static int assetsLoadCount;
         private static int assetsScanCount;
+        private static GameObject _loader;
+        private static bool _loaded = false;
+        private static string nowPlaying = "PLEASE INSTALL MANPADSONGS";
+        private static AudioSource sourceSong;
 
         private GUISkin _skin;
         private Color _windowColor;
@@ -44,7 +49,7 @@ namespace ManPAD.ManPAD_Overridables
         #region Properties
         public static bool isBlocked
 		{
-            //[CodeReplace("get_isBlocked", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+            [CodeReplace("get_isBlocked", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
 			get
 			{
 				return Time.realtimeSinceStartup - lastLoading < 0.1f;
@@ -53,64 +58,72 @@ namespace ManPAD.ManPAD_Overridables
 
 		public static bool isInitialized
 		{
-            //[CodeReplace("get_isInitialized", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+            [CodeReplace("get_isInitialized", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
 			get
 			{
 				return _isInitialized;
 			}
 		}
 
-		public static GameObject loader
+	    public static GameObject loader
 		{
-            //[CodeReplace("get_loader", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
-			get;
-            //[CodeReplace("set_loader", typeof(LoadingUI), BindingFlags.NonPublic | BindingFlags.Static)]
-			private set;
+            [CodeReplace("get_loader", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+            get
+            {
+                return _loader;
+            }
+            [CodeReplace("set_loader", typeof(LoadingUI), BindingFlags.NonPublic | BindingFlags.Static)]
+            private set
+            {
+                _loader = value;
+            }
 		}
         #endregion
 
         #region Functions
-        //[CodeReplace("assetsLoad", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+        private static void addText(string text)
+        {
+            loading_texts.Add(text);
+
+            if (loading_texts.Count > 10)
+                loading_texts.Remove(loading_texts[0]);
+        }
+
+        [CodeReplace("assetsLoad", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
         public static void assetsLoad(string key, int count, float progress, float step)
 		{
             assetsLoadCount = assetsScanCount - count;
-            loading_texts.Add(localization.format("Assets_Load", new object[]{
+            addText(localization.format("Assets_Load", new object[]{
                 localization.format(key),
                 assetsLoadCount,
                 assetsScanCount
             }));
-
-            if (loading_texts.Count > 10)
-                loading_texts.Remove(loading_texts[0]);
 		}
 
-        //[CodeReplace("assetsScan", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+        [CodeReplace("assetsScan", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
 		public static void assetsScan(string key, int count)
 		{
             assetsScanCount = count;
-            loading_texts.Add(localization.format("Assets_Scan", new object[]{
+            addText(localization.format("Assets_Scan", new object[]{
                 localization.format(key),
                 assetsScanCount
             }));
-
-            if (loading_texts.Count > 10)
-                loading_texts.Remove(loading_texts[0]);
 		}
 
         public void Awake()
 		{
             if (isInitialized)
             {
-                GameObject.Destroy(loader);
+                GameObject.Destroy(gameObject);
                 return;
             }
             _isInitialized = true;
-            DontDestroyOnLoad(loader);
+            DontDestroyOnLoad(gameObject);
 		}
 
         public void OnGUI()
 		{
-            if (_backgroundImage == null || _logoImage == null || _skin == null || string.IsNullOrEmpty(tip_text) || !isBlocked)
+            if (_backgroundImage == null || _logoImage == null || _skin == null || string.IsNullOrEmpty(tip_text) || !(Level.info != null ? (!_loaded || isBlocked) : isBlocked))
                 return;
 
             _logoImage_angle += 0.2f;
@@ -137,11 +150,12 @@ namespace ManPAD.ManPAD_Overridables
                     "\nBattleye: " + (Provider.currentServerInfo.IsBattlEyeSecure ? localization.format("BattlEye_Secure") : localization.format("BattlEye_Insecure")) + 
                     "\nPro: " + (Provider.currentServerInfo.isPro ? "Yes" : "No") + 
                     "\nPVP: " + (Provider.currentServerInfo.isPvP ? "Yes" : "No") +
-                    "\nWorkshop: " + (Provider.currentServerInfo.isWorkshop ? "Yes" : "No"));
+                    "\nWorkshop: " + (Provider.currentServerInfo.isWorkshop ? "Yes" : "No") +
+                    "\nQueue: " + (Provider.queuePosition + 1), label_Style);
 
-            label_Style.alignment = TextAnchor.MiddleLeft;
+            /*label_Style.alignment = TextAnchor.MiddleLeft;
 
-            GUI.Label(_currentMusic_Text, "Playing: ");
+            GUI.Label(_currentMusic_Text, "Playing: " + nowPlaying, label_Style);*/
 
             label_Style.alignment = TextAnchor.MiddleCenter;
 
@@ -169,7 +183,7 @@ namespace ManPAD.ManPAD_Overridables
                 lastLoading = Time.realtimeSinceStartup;
             }
 
-            if (Variables.bundle == null || !isBlocked)
+            if (Variables.bundle == null || !(Level.info != null ? (!_loaded || isBlocked) : isBlocked))
                 return;
 
             EThemes _theme = MP_Config.instance.getTheme();
@@ -195,7 +209,7 @@ namespace ManPAD.ManPAD_Overridables
             }));
 		}
 
-        //[CodeReplace("rebuild", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+        [CodeReplace("rebuild", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
 		public static void rebuild()
 		{
             // DO FUCKING NOTHING THIS SHIT IS FOR NELSON'S SHIT GUI! IF YOU WANT PUT WHATEVER THE FUCK YOU WANT HERE
@@ -205,7 +219,7 @@ namespace ManPAD.ManPAD_Overridables
 		{
             _local_Tips = Localization.read("/Menu/MenuTips.dat");
             localization = Localization.read("/Menu/MenuLoading.dat");
-            loader = gameObject;
+            _loader = Variables.LoadingUI_gameobject;
 
             _windowColor = Color.white;
             _windowColor.a = 0.7f;
@@ -220,31 +234,37 @@ namespace ManPAD.ManPAD_Overridables
 
             Provider.onQueuePositionUpdated += new Provider.QueuePositionUpdated(onQueuePositionUpdated);
 
-            GameObject.Destroy((UnityEngine.Object.FindObjectOfType(typeof(LoadingUI)) as LoadingUI).gameObject);
+            GameObject.Destroy((UnityEngine.Object.FindObjectOfType(typeof(LoadingUI)) as LoadingUI));
             updateScene();
+            /*if (ReadWrite.folderExists(Directory.GetCurrentDirectory() + "/ManPADSongs", false))
+                StartCoroutine(songCoroutine());*/
 		}
 
-        //[CodeReplace("updateKey", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+        [CodeReplace("updateKey", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
 		public static void updateKey(string key)
 		{
-            loading_texts.Add(localization.format(key));
-            if (loading_texts.Count > 10)
-                loading_texts.Remove(loading_texts[0]);
+            addText(localization.format(key));
 		}
 
-        //[CodeReplace("updateProgress", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+        [CodeReplace("updateProgress", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
 		public static void updateProgress(float progress)
 		{
-            // THIS IS JUST FOR THE PROGRESS BAR IF YOU WANT TO MAKE IT GO FOR IT I WON'T
+            if (progress == 1f)
+            {
+                _loaded = true;
+                Variables.LoadingUI_Script._logoImage_angle = 0f;
+            }
 		}
 
-        //[CodeReplace("updateScene", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
+        [CodeReplace("updateScene", typeof(LoadingUI), BindingFlags.Public | BindingFlags.Static)]
 		public static void updateScene()
 		{
             byte tip_byte;
 
             updateProgress(0f);
+            loading_texts.Clear();
 
+            #region Tips
             do
             {
                 tip_byte = (byte)UnityEngine.Random.Range(1, (int)(TIP_COUNT + 1));
@@ -403,7 +423,42 @@ namespace ManPAD.ManPAD_Overridables
                     tip_text = "#" + tip.ToString();
                     break;
             }
-		}
+            #endregion
+
+            _loaded = false;
+        }
+        #endregion
+
+        #region Coroutines
+        private IEnumerator songCoroutine()
+        {
+            while (true)
+            {
+                if (sourceSong != null && !(Level.info != null ? (!_loaded || isBlocked) : isBlocked))
+                {
+                    sourceSong.Stop();
+                    GameObject.Destroy(sourceSong);
+                    sourceSong = null;
+                }
+                if (sourceSong != null || !(Level.info != null ? (!_loaded || isBlocked) : isBlocked))
+                {
+                    yield return null;
+                    continue;
+                }
+
+                int song = UnityEngine.Random.Range(0, Variables.songs.Count - 1);
+                nowPlaying = Variables.songs.Keys.ToArray()[song];
+                WWW req = new WWW("file://" + Directory.GetCurrentDirectory() + @"\ManPADSongs\" + Variables.songs.Values.ToArray()[song]);
+
+                yield return req;
+
+                AudioClip clip = req.GetAudioClip(false, false);
+                sourceSong = gameObject.AddComponent<AudioSource>();
+
+                sourceSong.volume = 0.10f;
+                sourceSong.PlayOneShot(clip);
+            }
+        }
         #endregion
     }
 }

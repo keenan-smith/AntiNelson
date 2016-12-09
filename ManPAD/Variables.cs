@@ -26,7 +26,9 @@ namespace ManPAD
 
         public static Dictionary<string, string> songs = new Dictionary<string, string>()
         {
-            {"Pegboard Nerds - Hero", "PBN_Hero"},
+            {"Pegboard Nerds - Hero", "PBN_Hero.wav"},
+            {"EnV - Pneumatic Tokyo", "EnV_Pneumatic_Tokyo.wav"},
+            {"NIVIRO - Nandaka", "NIVIRO_Nandaka.wav"},
         };
     }
 }

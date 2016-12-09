@@ -6,6 +6,7 @@ using UnityEngine;
 using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_Library;
 using ManPAD.ManPAD_Overridables;
+using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Loading
 {
@@ -25,7 +26,7 @@ namespace ManPAD.ManPAD_Loading
             MP_GOLoader.library_addLibrary(typeof(lib_InfoUpdater));
 
             Variables.LoadingUI_gameobject = new GameObject();
-            //Variables.LoadingUI_Script = Variables.LoadingUI_gameobject.AddComponent<OV_LoadingUI>();
+            Variables.LoadingUI_Script = Variables.LoadingUI_gameobject.AddComponent<OV_LoadingUI>();
             DontDestroyOnLoad(Variables.LoadingUI_gameobject);
         }
 
