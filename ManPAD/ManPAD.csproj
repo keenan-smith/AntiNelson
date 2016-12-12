@@ -83,6 +83,7 @@
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Themes.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Visual.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Weapons.cs" />
+    <Compile Include="ManPAD_Library\lib_GoldExploits.cs" />
     <Compile Include="ManPAD_Overridables\OV_LoadingUI.cs" />
     <Compile Include="ManPAD_Overridables\OV_PlayerInteract.cs" />
     <Compile Include="ManPAD_Overridables\OV_DamageTool.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="ManPAD_Loading\Hook.cs" />
     <Compile Include="ManPAD_Loading\Hook_OLD.cs" />
     <Compile Include="ManPAD_Loading\ManPAD.cs" />
+    <Compile Include="ManPAD_Overridables\OV_Provider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Variables.cs" />
