@@ -93,7 +93,7 @@ namespace ManPAD.ManPAD_Overridables
                         byte[] bytes = SteamPacker.getBytes(0, out size, new object[]
 				        {
 					        (byte)2,
-					        (pro ? Characters.selected : (byte)0),
+					        (pro ? (Characters.selected > 5 ? 0 : Characters.selected) : 0),
 					        Provider.clientName,
 					        Provider.clientName,
 					        (byte[])typeof(Provider).GetField("_serverPasswordHash", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null),
