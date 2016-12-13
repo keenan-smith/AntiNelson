@@ -25,6 +25,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool noRain = false;
         public static bool noSnow = false;
         public static bool noWater = false;
+        public static bool antiVanish = false;
         #endregion
 
         #region Mono Functions
@@ -129,6 +130,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             noRain = GUILayout.Toggle(noRain, "No Rain");
             noSnow = GUILayout.Toggle(noSnow, "No Snow");
             noWater = GUILayout.Toggle(noWater, "No Water");
+            antiVanish = GUILayout.Toggle(antiVanish, "No Invisible Admins");
             GUILayout.Label("Time: " + LightingManager.time);
             LightingManager.time = (uint)Math.Round(GUILayout.HorizontalSlider((float)LightingManager.time, (float)0u, (float)3600u));
         }
