@@ -20,6 +20,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
         private ELimb[] limbs = { ELimb.SKULL, ELimb.SPINE };
         private EAttackPriority[] prioritys = { EAttackPriority.DISTANCE, EAttackPriority.THREAT };
+        public static object attackNext = null;
 
         public static bool ignoreFOV = false;
         public static float FOV = 90f;
@@ -35,12 +36,14 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool FovCrosshair = false;
         public static bool aim_players = true;
         public static bool aim_friends = false;
+        public static bool aim_zombies = false;
+        public static bool aim_animals = false;
         #endregion
 
         #region Mono Functions
         public void Start()
         {
-            StartCoroutine(getAttacking());
+            //StartCoroutine(getAttacking());
         }
         #endregion
 
