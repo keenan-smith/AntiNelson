@@ -23,7 +23,7 @@ namespace ManPAD.ManPAD_Overridables
             }
         }
 
-        [CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.NonPublic | BindingFlags.Static)]
+        //[CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.NonPublic | BindingFlags.Static)]
         public static void onLevelLoaded(int level)
         {
             if (level == 2)
