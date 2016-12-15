@@ -18,7 +18,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private Dictionary<byte[], WAssetSave> _backup = new Dictionary<byte[], WAssetSave>();
 
         public static bool norecoil = true;
-        public static bool nospread = true;
+        public static bool nospread = false;
         public static bool noshake = true;
         public static bool nosway = true;
         public static bool attackThroughWalls = false;
