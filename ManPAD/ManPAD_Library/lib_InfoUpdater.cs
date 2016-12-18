@@ -31,8 +31,9 @@ namespace ManPAD.ManPAD_Library
             lock (collections)
             {
                 Debug.Log(collections.Count);
-                foreach (GOUpdate updateObject in collections)
+                for(int i = 0; i < collections.Count; i++)
                 {
+                    GOUpdate updateObject = collections[i];
                     if (updateObject == null || updateObject.gameObject == null || updateObject.instance == null)
                         continue;
 
