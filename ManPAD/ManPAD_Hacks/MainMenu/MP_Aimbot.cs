@@ -102,8 +102,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 {
                     float cDistance = -1f;
                     Player nextTarget = null;
-                    foreach (SteamPlayer p in Variables.players)
+                    for(int i = 0; i < Variables.players.Length; i++)
                     {
+                        SteamPlayer p = Variables.players[i];
+
                         if (p == null || p.player == null || p.player.gameObject == null || p.player.life.isDead || p.player == Player.player)
                             continue;
 

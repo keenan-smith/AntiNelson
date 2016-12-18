@@ -17,6 +17,13 @@ namespace ManPAD.ManPAD_API.GUI.GUIUtilitys
 
         public MP_ItemPicker(EItemType[] filter)
         {
+            /* Untested - probably doesn't work
+            for(int i = 0; i < filter.Length; i++)
+            {
+                EItemType itemType = filter.ElementAt(i);
+                this.filter.Add(itemType, (filter.Contains(itemType)));
+            }
+            */
             foreach (EItemType itemType in Enum.GetValues(typeof(EItemType)))
                 this.filter.Add(itemType, (filter.Contains(itemType)));
         }

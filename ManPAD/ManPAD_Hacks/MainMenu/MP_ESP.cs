@@ -86,8 +86,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 return;
             lock (draw)
             {
-                foreach (ESPDraw drawing in draw)
+                for(int i = 0; i < draw.Count; i++)
                 {
+                    ESPDraw drawing = draw[i];
+
                     GUI.color = drawing.color;
                     if (ESP_ShowNames && !string.IsNullOrEmpty(drawing.text))
                         Tools.DrawLabel(drawing.screenPoint, drawing.text);
@@ -169,8 +171,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     continue;
                 }
 
-                foreach (SteamPlayer p in Provider.clients)
+                for(int i = 0; i < Provider.clients.Count; i++)
                 {
+                    SteamPlayer p = Provider.clients[i];
                     if (p == null || p.player == null || p.player.gameObject == null || p.player == Player.player || p.player.life.isDead)
                         continue;
 
@@ -222,8 +225,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     continue;
                 }
 
-                foreach (Zombie z in Variables.zombies)
+                for (int i = 0; i < Variables.zombies.Length; i++)
                 {
+                    Zombie z = Variables.zombies[i];
                     if (z == null || z.gameObject == null || z.isDead)
                         continue;
 
@@ -266,8 +270,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     continue;
                 }
 
-                foreach (Animal a in Variables.animals)
+                for(int i = 0; i < Variables.animals.Length; i++)
                 {
+                    Animal a = Variables.animals[i];
                     if (a == null || a.gameObject == null || a.isDead)
                         continue;
 
@@ -310,8 +315,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     continue;
                 }
 
-                foreach (InteractableItem i in Variables.items)
+                for(int ii = 0; ii < Variables.items.Length; ii++)
                 {
+                    InteractableItem i = Variables.items[ii];
                     if (i == null || i.gameObject == null)
                         continue;
 
@@ -359,8 +365,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     continue;
                 }
 
-                foreach (InteractableVehicle v in Variables.vehicles)
+                for(int i = 0; i < Variables.vehicles.Length; i++)
                 {
+                    InteractableVehicle v = Variables.vehicles[i];
                     if (v == null || v.gameObject == null)
                         continue;
 
@@ -413,8 +420,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     continue;
                 }
 
-                foreach (InteractableStorage s in Variables.storages)
+                for(int i = 0; i < Variables.storages.Length; i++)
                 {
+                    InteractableStorage s = Variables.storages[i];
                     if (s == null || s.gameObject == null)
                         continue;
 
@@ -461,8 +469,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     continue;
                 }
 
-                foreach (InteractableSentry s in Variables.sentrys)
+                for(int i = 0; i < Variables.sentrys.Length; i++)
                 {
+                    InteractableSentry s = Variables.sentrys[i];
                     if (s == null || s.gameObject == null)
                         continue;
 

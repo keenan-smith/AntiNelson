@@ -182,9 +182,13 @@ namespace ManPAD.ManPAD_API
         {
             List<string> texts = new List<string>();
 
-            foreach (XmlNode node in getChildNodes(nodePath))
+            for (int i = 0; i < getChildNodes(nodePath).Count; i++)
+            {
+                XmlNode node = getChildNodes(nodePath)[i];
+
                 texts.Add(node.InnerText);
-            return texts.ToArray();
+            }
+                return texts.ToArray();
         }
 
         public void save()
@@ -222,8 +226,11 @@ namespace ManPAD.ManPAD_API
                 return new EItemType[0];
             List<EItemType> itemTypes = new List<EItemType>();
 
-            foreach (string s in _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText.Split(','))
+            for (int i = 0; i < _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText.Split(',').Length; i++)
+            {
+                string s = _root.SelectSingleNode("ItemTypes/" + itemTypeName).InnerText.Split(',')[i];
                 itemTypes.Add((EItemType)Enum.Parse(typeof(EItemType), s));
+            }
 
             return itemTypes.ToArray();
         }
@@ -235,8 +242,11 @@ namespace ManPAD.ManPAD_API
 
             List<ulong> friends = new List<ulong>();
 
-            foreach (string s in _root.SelectSingleNode("Friends").InnerText.Split(','))
+            for(int i = 0; i < _root.SelectSingleNode("Friends").InnerText.Split(',').Length; i++)
+            {
+                string s = _root.SelectSingleNode("Friends").InnerText.Split(',')[i];
                 friends.Add(ulong.Parse(s));
+            }
 
             return friends.ToArray();
         }

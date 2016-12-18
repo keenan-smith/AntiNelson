@@ -105,8 +105,9 @@ namespace ManPAD
             float distance = float.MaxValue;
             Player toAttack = null;
 
-            foreach (SteamPlayer p in Provider.clients)
+            for(int i = 0; i < Provider.clients.Count; i++)
             {
+                SteamPlayer p = Provider.clients[i];
                 if (p.player == Player.player || p.player.life.isDead)
                     continue;
                 float fov = ManPAD_Hacks.MainMenu.MP_Aimbot.FOV;

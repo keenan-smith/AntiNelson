@@ -26,9 +26,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Mono Functions
         public void Start()
         {
-            foreach(UnturnedEconInfo skin in TempSteamworksEconomy.econInfo)
+            for(int i = 0; i < TempSteamworksEconomy.econInfo.Count; i++)
+            {
+                UnturnedEconInfo skin = TempSteamworksEconomy.econInfo[i];
                 if (!skin.type.Contains("Hat") & !skin.type.Contains("Glass") & !skin.type.Contains("Backpack") & !skin.type.Contains("Vest") & !skin.type.Contains("Mask") & !skin.type.Contains("Pants") & !skin.type.Contains("Shirt"))
                     skins.Add(skin);
+            }
         }
         #endregion
 
@@ -36,8 +39,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public override void runGUI()
         {
             searchText = GUILayout.TextField(searchText);
-            foreach (UnturnedEconInfo skin in skins)
+            for(int i = 0; i < skins.Count; i++)
             {
+                UnturnedEconInfo skin = skins[i];
+
                 if (!string.IsNullOrEmpty(searchText) && !skin.name.ToLower().Contains(searchText.ToLower()))
                     continue;
 

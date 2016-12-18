@@ -159,9 +159,12 @@ namespace ManPAD.ManPAD_Library
 
         public void findMenuOptions()
         {
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+            for(int i = 0; i < Assembly.GetExecutingAssembly().GetTypes().Length; i++)
+            {
+                Type t = Assembly.GetExecutingAssembly().GetTypes()[i];
                 if (t.IsClass)
                     addMenuOption(t);
+            }
         }
         #endregion
     }

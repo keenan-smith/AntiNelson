@@ -24,8 +24,9 @@ namespace ManPAD.ManPAD_Library
         #region Functions
         private void doMethods(Type t)
         {
-            foreach (MethodInfo mi in t.GetMethods())
+            for(int i = 0; i < t.GetMethods().Length; i++)
             {
+                MethodInfo mi = t.GetMethods()[i];
                 CodeReplaceAttribute cra = (CodeReplaceAttribute)Attribute.GetCustomAttribute(mi, typeof(CodeReplaceAttribute));
 
                 if (cra == null)
@@ -37,8 +38,9 @@ namespace ManPAD.ManPAD_Library
 
         public void doTypes()
         {
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+            for(int i = 0; i < Assembly.GetExecutingAssembly().GetTypes().Length; i++)
             {
+                Type t = Assembly.GetExecutingAssembly().GetTypes()[i];
                 if (t.IsClass)
                     doMethods(t);
             }
