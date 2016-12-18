@@ -30,10 +30,14 @@ namespace ManPAD.ManPAD_Library
 
             lock (collections)
             {
+                Debug.Log(collections.Count);
                 foreach (GOUpdate updateObject in collections)
                 {
-                    float distance = Tools.getDistance(updateObject.gameObject.transform.position);
+                    if (updateObject == null || updateObject.gameObject == null || updateObject.instance == null)
+                        continue;
 
+                    float distance = (float)Math.Round(Tools.getDistance(updateObject.gameObject.transform.position));
+                    
                     #region Zombies
                     if (updateObject.type == EGOUpdate.ZOMBIE)
                     {

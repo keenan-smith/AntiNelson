@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ByteRetriver")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("MLoader")]
+[assembly: AssemblyDescription("ManPAD Loader")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("ByteRetriver")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
+[assembly: AssemblyCompany("AtiLion")]
+[assembly: AssemblyProduct("MLoader")]
+[assembly: AssemblyCopyright("Copyright © AtiLion 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("499bfb48-4d9f-479e-aa9a-d2a05cdc17b4")]
+[assembly: Guid("d1211de9-a065-4b65-a449-d7c8a15afb7b")]
 
 // Version information for an assembly consists of the following four values:
 //
