@@ -30,11 +30,14 @@ namespace ManPAD.ManPAD_Library
 
             lock (collections)
             {
-                for(int i = 0; i < collections.Count; i++)
+                Debug.Log(collections.Count);
+                foreach (GOUpdate updateObject in collections)
                 {
-                    GOUpdate updateObject = collections[i];
-                    float distance = Tools.getDistance(updateObject.gameObject.transform.position);
+                    if (updateObject == null || updateObject.gameObject == null || updateObject.instance == null)
+                        continue;
 
+                    float distance = (float)Math.Round(Tools.getDistance(updateObject.gameObject.transform.position));
+                    
                     #region Zombies
                     if (updateObject.type == EGOUpdate.ZOMBIE)
                     {
@@ -110,13 +113,8 @@ namespace ManPAD.ManPAD_Library
                 //temp.AddRange(ZombieManager.regions[i].zombies);
                 //Variables.zombies = temp.ToArray();
 
-                foreach (InteractableStorage storage in UnityEngine.Object.FindObjectsOfType(typeof(InteractableStorage)) as InteractableStorage[])
-                    collections.Add(new GOUpdate(storage));
-
-                //InteractableItem[] t = UnityEngine.Object.FindObjectsOfType(typeof(InteractableItem)) as InteractableItem[]; Untested
-                //for (int i = 0; i < t.Length; i++)
-                    //collections.Add(new GOUpdate(t[i]));
-
+                foreach (InteractableItem item in UnityEngine.Object.FindObjectsOfType(typeof(InteractableItem)) as InteractableItem[])
+                    collections.Add(new GOUpdate(item));
                 //Variables.items = UnityEngine.Object.FindObjectsOfType(typeof(InteractableItem)) as InteractableItem[];
 
                 for (int i = 0; i < VehicleManager.vehicles.Count; i++)
@@ -125,20 +123,10 @@ namespace ManPAD.ManPAD_Library
 
                 foreach (InteractableStorage storage in UnityEngine.Object.FindObjectsOfType(typeof(InteractableStorage)) as InteractableStorage[])
                     collections.Add(new GOUpdate(storage));
-
-                //InteractableStorage[] s = UnityEngine.Object.FindObjectsOfType(typeof(InteractableStorage)) as InteractableStorage[];
-                //for (int i = 0; i < s.Length; i++)
-                    //collections.Add(new GOUpdate(s[i]));
-
                 //Variables.storages = UnityEngine.Object.FindObjectsOfType(typeof(InteractableStorage)) as InteractableStorage[];
 
                 foreach (InteractableSentry sentry in UnityEngine.Object.FindObjectsOfType(typeof(InteractableSentry)) as InteractableSentry[])
                     collections.Add(new GOUpdate(sentry));
-
-                //InteractableSentry[] k = UnityEngine.Object.FindObjectsOfType(typeof(InteractableSentry)) as InteractableSentry[];
-                //for (int i = 0; i < k.Length; i++)
-                    //collections.Add(new GOUpdate(k[i]));
-
                 //Variables.sentrys = UnityEngine.Object.FindObjectsOfType(typeof(InteractableSentry)) as InteractableSentry[];
 
                 for (int i = 0; i < AnimalManager.animals.Count; i++)
