@@ -30,7 +30,7 @@ namespace ManPAD.ManPAD_Library
 
             lock (collections)
             {
-                Debug.Log(collections.Count);
+                Debug.Log(collections.FindAll(a => a.type == EGOUpdate.ZOMBIE).Count);
                 for(int i = 0; i < collections.Count; i++)
                 {
                     GOUpdate updateObject = collections[i];
