@@ -130,5 +130,15 @@ namespace ManPAD
 
             return toAttack;
         }
+
+        public static void IncStat(EPlayerStat stat, float amount)
+        {
+            amount = Mathf.Round(amount);
+            for (int i = 0; i < amount; i++)
+            {
+                Player.player.sendStat(stat);
+            }
+            Debug.Log("Successfully increased stat: " + stat.ToString() + " " + amount + " times.");
+        }
     }
 }
