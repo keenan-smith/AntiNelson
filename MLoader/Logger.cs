@@ -8,7 +8,7 @@ namespace MLoader
 {
     public class Logger
     {
-        private static string path = Directory.GetCurrentDirectory() + "\\MLoaderLogs.txt";
+        private static string path = Directory.GetCurrentDirectory() + "\\MLoaderLogs.txt"; // vs 2015 errors
         private static bool inited = false;
 
         private static void initLogger()
