@@ -77,6 +77,7 @@
     <Compile Include="ManPAD_API\Types\WAssetSave.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Aimbot.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_ESP.cs" />
+    <Compile Include="ManPAD_Hacks\MainMenu\MP_AutoItemPickup.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Server.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Vehicle.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Player.cs" />
