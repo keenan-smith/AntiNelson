@@ -189,17 +189,19 @@ namespace ManPAD.ManPAD_Overridables
             EThemes _theme = MP_Config.instance.getTheme();
 
             if(_backgroundImage == null)
-                _backgroundImage = Variables.bundle.LoadAsset("manpad.png") as Texture;
+                _backgroundImage = Variables.bundle.LoadAsset("Loading.png") as Texture;
             if(_logoImage == null)
-                _logoImage = Variables.bundle.LoadAsset("ManpadLogo.png") as Texture;
+                _logoImage = Variables.bundle.LoadAsset("MANPADLOGO.png") as Texture;
             if (_theme == EThemes.WHITE)
-                _skin = Variables.bundle.LoadAsset("White.guiskin") as GUISkin;
+                _skin = Variables.bundle.LoadAsset("s_default.guiskin") as GUISkin;
             else if (_theme == EThemes.INVERTED)
-                _skin = Variables.bundle.LoadAsset("Inverted.guiskin") as GUISkin;
+                _skin = Variables.bundle.LoadAsset("s_dark.guiskin") as GUISkin;
             else if (_theme == EThemes.AQUA)
-                _skin = Variables.bundle.LoadAsset("Aqua.guiskin") as GUISkin;
+                _skin = Variables.bundle.LoadAsset("s_aqua.guiskin") as GUISkin;
             else if (_theme == EThemes.MAGIC)
-                _skin = Variables.bundle.LoadAsset("Magic.guiskin") as GUISkin;
+                _skin = Variables.bundle.LoadAsset("s_magic.guiskin") as GUISkin;
+            else if (_theme == EThemes.PATAMON)
+                _skin = Variables.bundle.LoadAsset("s_patamon.guiskin") as GUISkin;
         }
 
         public static void onQueuePositionUpdated()

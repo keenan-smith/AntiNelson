@@ -250,3 +250,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+ManPAD/Misc/GUI/Unity/Assets/Scripts/DiscordExample.cs
+ManPAD/Misc/GUI/Unity/Assets/DiscordBot.cs
+ManPAD/Misc/GUI/Unity/Assets/Plugins/DiscordUnity.dll
+ManPAD/Misc/GUI/Unity/Assets/Scripts/DiscordVoiceExample.cs
+ManPAD/Misc/GUI/Unity/Assets/Plugins/websocket-sharp.dll

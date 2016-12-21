@@ -24,6 +24,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 MP_Config.instance.setTheme(EThemes.AQUA);
             if (GUILayout.Button("Magic"))
                 MP_Config.instance.setTheme(EThemes.MAGIC);
+            if (GUILayout.Button("Patamon"))
+                MP_Config.instance.setTheme(EThemes.PATAMON);
         }
         #endregion
     }
