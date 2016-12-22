@@ -80,6 +80,7 @@
     <Compile Include="ManPAD_Hacks\MainMenu\MP_ESP.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_AutoItemPickup.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Server.cs" />
+    <Compile Include="ManPAD_Hacks\MainMenu\MP_Stats.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Vehicle.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Player.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_SkinChanger.cs" />

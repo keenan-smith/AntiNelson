@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(2, "ESP", 200f)]
+    [MenuOption(2, "ESP", 250f)]
     public class MP_ESP : MenuOption
     {
         #region Variables
@@ -66,17 +66,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #endregion
 
         #region Mono Functions
-        public void Start()
-        {
-            //StartCoroutine(updateAnimalESP());
-            //StartCoroutine(updateItemESP());
-            //StartCoroutine(updatePlayerESP());
-            //StartCoroutine(updateSentryESP());
-            //StartCoroutine(updateStorageESP());
-            //StartCoroutine(updateVehicleESP());
-            //StartCoroutine(updateZombieESP());
-        }
-
         public void OnGUI()
         {
             if (!Variables.isInGame || !ESP_Enabled || Variables.isSpying)
@@ -160,105 +149,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #endregion
 
         #region Coroutines
-        private IEnumerator updatePlayerESP()
-        {
-            while (true)
-            {
-                clearDraw(EESPItem.PLAYER);
-                if ((!ESP_Enabled || !ESP_Players_Enabled) || (Variables.players == null || Variables.players.Length < 1) || !Variables.isInGame)
-                {
-                    yield return wfs;
-                    continue;
-                }
-
-                for(int i = 0; i < Provider.clients.Count; i++)
-                {
-                    SteamPlayer p = Provider.clients[i];
-                    if (p == null || p.player == null || p.player.gameObject == null || p.player == Player.player || p.player.life.isDead)
-                        continue;
-
-                    float distance = (float)Math.Round(Tools.getDistance(p.player.transform.position));
-                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(p.player.transform.position);
-                    Rect box = new Rect(0f, 0f, 0f, 0f);
-                    string text = "";
-                    bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID) : false);
-
-                    if (screenPosition.z <= 0)
-                        continue;
-                    //screenPosition.x -= 64f;
-                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
-
-                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
-                        continue;
-                    if (ESP_Players_FilterFriends && isFriend)
-                        continue;
-
-                    if (ESP_ShowNames)
-                        text += p.playerID.characterName + "\n";
-                    if (ESP_ShowDistances)
-                        text += "Distance: " + distance + "\n";
-                    if (ESP_Players_ShowWeapons)
-                        text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
-                    if (ESP_Players_ShowIsAdmin)
-                        text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                    if (ESP_Box)
-                    {
-                        Bounds bounds = new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0));
-                        box = Tools.BoundsToScreenRect(bounds);
-                    }
-
-                    draw.Add(new ESPDraw(text, p.player.gameObject, EESPItem.PLAYER, screenPosition, box, (isFriend ? ESP_Friends_Color.selectedColor : ESP_Players_Color.selectedColor)));
-                }
-
-                yield return wfs;
-            }
-        }
-
-        private IEnumerator updateZombieESP()
-        {
-            while (true)
-            {
-                clearDraw(EESPItem.ZOMBIE);
-                if ((!ESP_Enabled || !ESP_Zombies_Enabled) || (Variables.zombies == null || Variables.zombies.Length < 1) || !Variables.isInGame)
-                {
-                    yield return wfs;
-                    continue;
-                }
-
-                for (int i = 0; i < Variables.zombies.Length; i++)
-                {
-                    Zombie z = Variables.zombies[i];
-                    if (z == null || z.gameObject == null || z.isDead)
-                        continue;
-
-                    float distance = (float)Math.Round(Tools.getDistance(z.transform.position));
-                    Vector3 screenPosition = MainCamera.instance.WorldToScreenPoint(z.transform.position);
-                    Rect box = new Rect(0f, 0f, 0f, 0f);
-                    string text = "";
-                    Collider collider = z.gameObject.GetComponent<Collider>();
-
-                    if (screenPosition.z <= 0)
-                        continue;
-                    screenPosition.x -= 64f;
-                    screenPosition.y = (Screen.height - (screenPosition.y + 1f)) - 12f;
-
-                    if (distance > ESP_Distance && !ESP_IgnoreDistance)
-                        continue;
-
-                    if (ESP_ShowNames)
-                        text += Tools.getZombieName(z) + "\n";
-                    if (ESP_ShowDistances)
-                        text += "Distance: " + distance + "\n";
-                    if (ESP_Box && collider != null)
-                        box = Tools.BoundsToScreenRect(collider.bounds);
-
-                    draw.Add(new ESPDraw(text, z.gameObject, EESPItem.ZOMBIE, screenPosition, box, ESP_Zombies_Color.selectedColor));
-                }
-
-                yield return wfs;
-            }
-        }
-
         private IEnumerator updateAnimalESP()
         {
             while (true)

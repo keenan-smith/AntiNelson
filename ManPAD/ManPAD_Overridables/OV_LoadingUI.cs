@@ -131,7 +131,7 @@ namespace ManPAD.ManPAD_Overridables
             if (GUI.skin != _skin)
                 GUI.skin = _skin;
 
-            GUI.DrawTexture(_backgroundImage_Rect, _backgroundImage, ScaleMode.ScaleToFit);
+            GUI.DrawTexture(_backgroundImage_Rect, _backgroundImage, ScaleMode.StretchToFill);
             Matrix4x4 matrixBackup = GUI.matrix;
             GUIUtility.RotateAroundPivot(_logoImage_angle, new Vector2(Screen.width / 2f, Screen.height / 2f));
             GUI.DrawTexture(_logoImage_Rect, _logoImage, ScaleMode.ScaleToFit);
