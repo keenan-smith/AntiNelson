@@ -11,7 +11,7 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(10, "Stats", 300f)]
+    [MenuOption(11, "Stats", 300f)]
     public class MP_Stats : MenuOption
     {
         #region Variables

@@ -15,7 +15,7 @@ using System.Diagnostics;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(9, "Auto Item Filter", 200f)]
+    [MenuOption(9, "Auto Item Pickup", 200f)]
     public class MP_AutoItemPickup : MenuOption
     {
         #region Variables

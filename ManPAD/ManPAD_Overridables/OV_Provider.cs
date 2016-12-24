@@ -12,7 +12,7 @@ using SDG.Framework.Modules;
 
 namespace ManPAD.ManPAD_Overridables
 {
-    public class OV_Provider
+    public class OV_Provider : MonoBehaviour
     {
         public static bool isPro
         {
