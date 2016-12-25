@@ -26,9 +26,10 @@ namespace ManPAD.ManPAD_Overridables
         public IEnumerator spyStuff()
         {
             Variables.isSpying = true;
-            yield return new WaitForSeconds(0.0625f);
+            ManPAD_Library.iESP.removeHighlighters();
+            yield return new WaitForSeconds(0.01f);
             Player.player.StartCoroutine("takeScreenshot");
-            yield return new WaitForSeconds(0.0625f);
+            yield return new WaitForSeconds(0.01f); // nib if they spam they can see da menu df lol
             Variables.isSpying = false;
         }
     }

@@ -21,6 +21,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private Vector2 _verticalDraw_Start;
         private Vector2 _verticalDraw_End;
 
+        public static bool showPlayersOnMap = false;
+        public static bool GPS = false;
         public static bool customCrosshair = false;
         public static bool noRain = false;
         public static bool noSnow = false;
@@ -126,6 +128,8 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Functions
         public override void runGUI()
         {
+            showPlayersOnMap = GUILayout.Toggle(showPlayersOnMap, "Show Players On Map");
+            GPS = GUILayout.Toggle(GPS, "GPS");
             customCrosshair = GUILayout.Toggle(customCrosshair, "Custom Crosshair");
             noRain = GUILayout.Toggle(noRain, "No Rain");
             noSnow = GUILayout.Toggle(noSnow, "No Snow");

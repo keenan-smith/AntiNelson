@@ -9,6 +9,10 @@ using SDG.Unturned;
 using UnityEngine;
 using SDG.Framework.Translations;
 using SDG.Framework.Modules;
+using System.IO;
+using SDG.Framework.IO.FormattedFiles;
+using SDG.Framework.IO.FormattedFiles.KeyValueTables;
+using ManPAD.ManPAD_Hacks.MainMenu;
 
 namespace ManPAD.ManPAD_Overridables
 {
@@ -21,6 +25,43 @@ namespace ManPAD.ManPAD_Overridables
             {
                 return true;
             }
+        }
+
+        [CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.Instance | BindingFlags.NonPublic)]
+        public void OnApplicationQuit()
+        {
+            if (!Dedicator.isDedicated && Translator.language != "english")
+            {
+                string path = ReadWrite.PATH + "/Cloud/Translations.config";
+                string directoryName = Path.GetDirectoryName(path);
+                if (!Directory.Exists(directoryName))
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+                using (StreamWriter streamWriter = new StreamWriter(path))
+                {
+                    IFormattedFileWriter formattedFileWriter = new KeyValueTableWriter(streamWriter);
+                    formattedFileWriter.writeKey("Language");
+                    formattedFileWriter.writeValue<string>(Translator.language);
+                }
+            }
+            if (!Provider.isInitialized)
+            {
+                return;
+            }
+            if (MP_Player.autoDC)
+            {
+                Provider.disconnect();
+                Provider.provider.shutdown();
+                Application.Quit();
+            }
+            if (!Provider.isServer && Provider.isPvP && Provider.clients.Count > 1 && Player.player != null && !Player.player.movement.isSafe && !Player.player.life.isDead)
+            {
+                Application.CancelQuit();
+                return;
+            }
+            Provider.disconnect();
+            Provider.provider.shutdown();
         }
 
         //[CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.NonPublic | BindingFlags.Static)]

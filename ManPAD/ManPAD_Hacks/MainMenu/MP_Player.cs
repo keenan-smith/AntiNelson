@@ -34,8 +34,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool antiAim = false;
         public static bool antiAim_Movement = false;
         public static bool noFall = false;
-        public static bool autoDC = false;
-        public static bool interactThroughWalls = false;
         public static float autoDC_Health = 10f;
         public static float speed_walk = 4.5f;
         public static float speed_crouch = 2.5f;
@@ -44,6 +42,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static float speed_climb = 4.5f;
         public static float speed_swim = 3f;
         public static float jump_height = 7f;
+        public static bool autoDC = false;
+        public static bool interactThroughWalls = false;
+        public static bool farPunch = false;
         #endregion
 
         #region Mono Functions
@@ -137,6 +138,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             antiAim_Movement = GUILayout.Toggle(antiAim_Movement, "AntiAim Movement(Client)");
             autoDC = GUILayout.Toggle(autoDC, "Auto Disconnect");
             interactThroughWalls = GUILayout.Toggle(interactThroughWalls, "Interact Through Walls");
+            farPunch = GUILayout.Toggle(farPunch, "Increase Punch Range");
             GUILayout.Label("Health: " + autoDC_Health);
             autoDC_Health = GUILayout.HorizontalSlider(autoDC_Health, 1f, 99f);
 
