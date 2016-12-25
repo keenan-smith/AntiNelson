@@ -12,8 +12,8 @@ using ManPAD.ManPAD_API;
 
 namespace ManPAD.ManPAD_Library
 {
-    // Zoomy's amazing debug console
-    /*public class lib_Console : MonoBehaviour
+    // Zoomy's amazing debug console (dont touch u queers)
+    public class lib_Console : MonoBehaviour
     {
         public Rect menu = new Rect(10, 220, 450, 200);
         Vector2 Scrollposition;
@@ -33,7 +33,7 @@ namespace ManPAD.ManPAD_Library
 
         void OnGUI()
         {
-            if (true)
+            if (false)
             {
                 menu = GUILayout.Window(999, menu, DoMenu, "Console");
                 var mousePos = Input.mousePosition;
@@ -101,7 +101,7 @@ namespace ManPAD.ManPAD_Library
         {
             logtext.Add(DateTime.Now.ToString("h:mm:ss tt") + ": " + text);
         }
-    }*/
+    }
 
     public class lib_InfoUpdater : MonoBehaviour
     {
@@ -110,6 +110,8 @@ namespace ManPAD.ManPAD_Library
 
         private WaitForEndOfFrame wfeof = new WaitForEndOfFrame();
         private WaitForSeconds wfs = new WaitForSeconds(0.015f);
+        private bool ChamsEnabled = false;
+        private Shader normal;
         #endregion
 
         #region Mono Functions
@@ -117,6 +119,7 @@ namespace ManPAD.ManPAD_Library
         {
             InvokeRepeating("reloadInfoInvoke", 5f, 5f);
             StartCoroutine(updateStuff());
+            normal = Shader.Find("Standard");
         }
 
         public void Updatex1()
@@ -277,7 +280,6 @@ namespace ManPAD.ManPAD_Library
         {
             while (true)
             {
-                
                 float aim_distanceAway = float.MaxValue;
                 object aim_nextTarget = null;
                 Type aim_nextType = null;
@@ -311,34 +313,74 @@ namespace ManPAD.ManPAD_Library
                                 #endregion
 
                                 #region ESP
-                                if (MP_ESP.ESP_Enabled && MP_ESP.ESP_Players_Enabled && (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance) && (((SteamPlayer)updateObject.instance).player != Player.player))
+                                if (MP_ESP.ESP_Enabled && MP_ESP.ESP_Players_Enabled && (((SteamPlayer)updateObject.instance).player != Player.player))
                                 {
-                                    bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(((SteamPlayer)updateObject.instance).playerID.steamID.m_SteamID) : false);
-
-                                    updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
-                                    updateObject.text = "";
-                                    updateObject.color = (isFriend ? MP_ESP.ESP_Friends_Color.selectedColor : MP_ESP.ESP_Players_Color.selectedColor);
-
-                                    if (updateObject.screenPosition.z > 0)
+                                    if (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance)
                                     {
-                                        updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
-                                        SteamPlayer p = (SteamPlayer)updateObject.instance;
+                                        bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(((SteamPlayer)updateObject.instance).playerID.steamID.m_SteamID) : false);
 
-                                        if (MP_ESP.ESP_ShowNames)
-                                            updateObject.text += p.playerID.characterName + "\n";
-                                        if (MP_ESP.ESP_ShowDistances)
-                                            updateObject.text += "Distance: " + distance + "\n";
-                                        if (MP_ESP.ESP_Players_ShowWeapons)
-                                            updateObject.text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
-                                        if (MP_ESP.ESP_Players_ShowIsAdmin)
-                                            updateObject.text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                                        if (MP_ESP.ESP_Box)
-                                            updateObject.box = Tools.BoundsToScreenRect(new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0)));
+                                        updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
+                                        updateObject.text = "";
+                                        updateObject.color = (isFriend ? MP_ESP.ESP_Friends_Color.selectedColor : MP_ESP.ESP_Players_Color.selectedColor);
 
-                                        MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.PLAYER, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                        if (updateObject.screenPosition.z > 0)
+                                        {
+                                            updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
+                                            SteamPlayer p = (SteamPlayer)updateObject.instance;
+
+                                            if (MP_ESP.ESP_ShowNames)
+                                                updateObject.text += p.playerID.characterName + "\n";
+                                            if (MP_ESP.ESP_ShowDistances)
+                                                updateObject.text += "Distance: " + distance + "\n";
+                                            if (MP_ESP.ESP_Players_ShowWeapons)
+                                                updateObject.text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
+                                            if (MP_ESP.ESP_Players_ShowIsAdmin)
+                                                updateObject.text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
+                                            if (MP_ESP.ESP_Box)
+                                                updateObject.box = Tools.BoundsToScreenRect(new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0)));
+
+                                            MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.PLAYER, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                        }
                                     }
+                                    if (MP_ESP.ESP_Chams)
+                                    {
+                                        SteamPlayer p = (SteamPlayer)updateObject.instance;
+                                        GameObject g = p.player.gameObject;
+                                        Renderer[] renderers = g.GetComponentsInChildren<Renderer>();
+
+                                        for (int j = 0; j < renderers.Length; j++)
+                                        {
+                                            Material[] materials = renderers[j].materials;
+
+                                            for (int k = 0; k < materials.Length; k++)
+                                            {
+                                                if (materials[k].shader != Variables.chamsshaders[0])
+                                                    materials[k].shader = Variables.chamsshaders[0];
+                                            }
+                                        }
+                                        ChamsEnabled = true;
+                                    } 
+                                    
                                 }
                                 #endregion
+                            }
+                            if (!MP_ESP.ESP_Chams || Variables.isSpying || !MP_ESP.ESP_Enabled || !MP_ESP.ESP_Players_Enabled)
+                            {
+                                SteamPlayer p = (SteamPlayer)updateObject.instance;
+                                GameObject g = p.player.gameObject;
+                                Renderer[] renderers = g.GetComponentsInChildren<Renderer>();
+
+                                for (int j = 0; j < renderers.Length; j++)
+                                {
+                                    Material[] materials = renderers[j].materials;
+
+                                    for (int k = 0; k < materials.Length; k++)
+                                    {
+                                        if (materials[k].shader == Variables.chamsshaders[0])
+                                            materials[k].shader = normal;
+                                    }
+                                }
+                                ChamsEnabled = false;
                             }
                         }
                         #endregion
