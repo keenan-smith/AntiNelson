@@ -104,14 +104,15 @@ namespace ManPAD
         {
             float distance = float.MaxValue;
             Player toAttack = null;
+            float fov = ManPAD_Hacks.MainMenu.MP_Aimbot.FOV;
+            bool IgnoreSomeFovLikeThing = ManPAD_Hacks.MainMenu.MP_Aimbot.ignoreFOV;
 
-            for(int i = 0; i < Provider.clients.Count; i++)
+            for (int i = 0; i < Provider.clients.Count; i++)
             {
                 SteamPlayer p = Provider.clients[i];
                 if (p.player == Player.player || p.player.life.isDead)
                     continue;
-                float fov = ManPAD_Hacks.MainMenu.MP_Aimbot.FOV;
-                bool IgnoreSomeFovLikeThing = ManPAD_Hacks.MainMenu.MP_Aimbot.ignoreFOV;
+       
                 float dist = getDistance(p.player.transform.position);
                 Vector3 v2dist = Camera.main.WorldToScreenPoint(p.player.transform.position);
 
