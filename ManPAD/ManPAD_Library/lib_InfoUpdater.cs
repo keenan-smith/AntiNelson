@@ -12,6 +12,100 @@ using ManPAD.ManPAD_API;
 
 namespace ManPAD.ManPAD_Library
 {
+    // Zoomy's amazing debug console
+    /*public class lib_Console : MonoBehaviour
+    {
+        public Rect menu = new Rect(10, 220, 450, 200);
+        Vector2 Scrollposition;
+        bool handleClicked = false;
+        Vector3 clickedPosition = new Vector3(0, 0, 0);
+        int minWindowWidth = 200;
+        int maxWindowWidth = 1920;
+        int minWindowHeight = 200;
+        int maxWindowHeight = 1080;
+        Rect originalWindow;
+        public static List<string> logtext = new List<string>();
+
+        void Start()
+        {
+            originalWindow = menu;
+        }
+
+        void OnGUI()
+        {
+            if (true)
+            {
+                menu = GUILayout.Window(999, menu, DoMenu, "Console");
+                var mousePos = Input.mousePosition;
+                mousePos.y = Screen.height - mousePos.y;
+                Rect windowHandle = new Rect(menu.x + menu.width - 10, menu.y + menu.height - 10, 10, 10);
+                GUI.Box(windowHandle, "");
+                if (Input.GetMouseButtonDown(0) && windowHandle.Contains(mousePos))
+                {
+                    handleClicked = true;
+                    clickedPosition = mousePos;
+                    originalWindow = menu;
+                }
+
+                if (handleClicked)
+                {
+                    if (Input.GetMouseButton(0))
+                    {
+                        menu.width = Mathf.Clamp(originalWindow.width + (mousePos.x - clickedPosition.x), minWindowWidth, maxWindowWidth);
+                        menu.height = Mathf.Clamp(originalWindow.height + (mousePos.y - clickedPosition.y), minWindowHeight, maxWindowHeight);
+                    }
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        handleClicked = false;
+                    }
+                }
+            }
+
+        }
+
+        void DoMenu(int windowID)
+        {
+
+            Scrollposition = GUILayout.BeginScrollView(Scrollposition);
+
+            foreach (string text in logtext)
+            {
+                GUILayout.Label(text);
+            }
+
+            GUILayout.EndScrollView();
+            if (GUILayout.Button("Clear"))
+            {
+                logtext.Clear();
+            }
+
+            if (GUILayout.Button("Close"))
+            {
+            }
+            if (!handleClicked)
+            {
+                GUI.DragWindow();
+            }
+        }
+        void Update()
+        {
+            {
+                while (logtext.Count > 200)
+                {
+                    logtext.RemoveAt(0);
+                    logtext.RemoveAt(1);
+                    logtext.RemoveAt(2);
+                    logtext.RemoveAt(3);
+                }
+            }
+        }
+
+        public static void log(string text)
+        {
+            logtext.Add(DateTime.Now.ToString("h:mm:ss tt") + ": " + text);
+        }
+    }*/
+
     public class lib_InfoUpdater : MonoBehaviour
     {
         #region Variables
@@ -186,10 +280,10 @@ namespace ManPAD.ManPAD_Library
         {
             while (true)
             {
+                
                 float aim_distanceAway = float.MaxValue;
                 object aim_nextTarget = null;
                 MP_ESP.draw.Clear();
-                Vector3 pos = Camera.main.transform.position;
 
                 lock (collections)
                 {
@@ -200,12 +294,12 @@ namespace ManPAD.ManPAD_Library
 
                         GOUpdate updateObject = collections[i];
 
-                        #region Players
+                        #region Players 
                         if (updateObject.type == EGOUpdate.PLAYER)
                         {
-                            if (!(((Player)updateObject.instance).life.isDead))
+                            if (!((SteamPlayer)updateObject.instance).player.life.isDead)
                             {
-                                float distance = Vector3.Distance(pos, updateObject.gameObject.transform.position);
+                                float distance = Tools.getDistance(updateObject.gameObject.transform.position);
                                 #region Aimbot & SilentAim
                                 if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players)
                                 {
@@ -253,7 +347,7 @@ namespace ManPAD.ManPAD_Library
                         #region Zombies
                         if (updateObject.type == EGOUpdate.ZOMBIE && !((Zombie)updateObject.instance).isDead)
                         {
-                            float distance = Vector3.Distance(pos, updateObject.gameObject.transform.position);
+                            float distance = Tools.getDistance(updateObject.gameObject.transform.position);
                             #region Aimbot & SilentAim
                             if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_zombies)
                             {
@@ -299,7 +393,7 @@ namespace ManPAD.ManPAD_Library
 
                 if (MP_Aimbot.aimbot || MP_Aimbot.silentAim)
                     MP_Aimbot.attackNext = aim_nextTarget;
-
+                    
                 yield return wfs;
             }
         }
