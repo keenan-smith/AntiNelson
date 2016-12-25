@@ -293,11 +293,11 @@ namespace ManPAD.ManPAD_Library
                             continue;
 
                         GOUpdate updateObject = collections[i];
-
+                        
                         #region Players 
                         if (updateObject.type == EGOUpdate.PLAYER)
                         {
-                            if (!((SteamPlayer)updateObject.instance).player.life.isDead)
+                            if (!((SteamPlayer)updateObject.instance).player.life.isDead) // here
                             {
                                 float distance = Tools.getDistance(updateObject.gameObject.transform.position);
                                 #region Aimbot & SilentAim
