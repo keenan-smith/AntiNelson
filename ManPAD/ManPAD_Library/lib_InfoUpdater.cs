@@ -93,9 +93,6 @@ namespace ManPAD.ManPAD_Library
                 while (logtext.Count > 200)
                 {
                     logtext.RemoveAt(0);
-                    logtext.RemoveAt(1);
-                    logtext.RemoveAt(2);
-                    logtext.RemoveAt(3);
                 }
             }
         }
@@ -283,6 +280,7 @@ namespace ManPAD.ManPAD_Library
                 
                 float aim_distanceAway = float.MaxValue;
                 object aim_nextTarget = null;
+                Type aim_nextType = null;
                 MP_ESP.draw.Clear();
 
                 lock (collections)
@@ -299,7 +297,7 @@ namespace ManPAD.ManPAD_Library
                         {
                             if (!((SteamPlayer)updateObject.instance).player.life.isDead && ((SteamPlayer)updateObject.instance).player != Player.player) // here
                             {
-                                float distance = Tools.getDistance(updateObject.gameObject.transform.position);
+                                int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
                                 #region Aimbot & SilentAim
                                 if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players)
                                 {
@@ -307,6 +305,7 @@ namespace ManPAD.ManPAD_Library
                                     {
                                         aim_distanceAway = distance;
                                         aim_nextTarget = updateObject.instance;
+                                        aim_nextType = typeof(Player);
                                     }
                                 }
                                 #endregion
@@ -347,7 +346,7 @@ namespace ManPAD.ManPAD_Library
                         #region Zombies
                         if (updateObject.type == EGOUpdate.ZOMBIE && !((Zombie)updateObject.instance).isDead)
                         {
-                            float distance = Tools.getDistance(updateObject.gameObject.transform.position);
+                            int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
                             #region Aimbot & SilentAim
                             if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_zombies)
                             {
@@ -355,6 +354,7 @@ namespace ManPAD.ManPAD_Library
                                 {
                                     aim_distanceAway = distance;
                                     aim_nextTarget = updateObject.instance;
+                                    aim_nextType = typeof(Zombie);
                                 }
                             }
                             #endregion
@@ -392,8 +392,10 @@ namespace ManPAD.ManPAD_Library
                 }
 
                 if (MP_Aimbot.aimbot || MP_Aimbot.silentAim)
+                {
                     MP_Aimbot.attackNext = aim_nextTarget;
-                    
+                    MP_Aimbot.attackNextType = aim_nextType;
+                }
                 yield return wfs;
             }
         }

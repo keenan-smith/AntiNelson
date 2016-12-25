@@ -7,8 +7,10 @@ using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_API.Enumerables;
 using ManPAD.ManPAD_API.GUI.Attributes;
 using ManPAD.ManPAD_API.GUI.Extensions;
+using ManPAD.ManPAD_Library;
 using UnityEngine;
 using SDG.Unturned;
+using System.Reflection;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
@@ -21,6 +23,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         private ELimb[] limbs = { ELimb.SKULL, ELimb.SPINE };
         private EAttackPriority[] prioritys = { EAttackPriority.DISTANCE, EAttackPriority.THREAT };
         public static object attackNext = null;
+        public static Type attackNextType = null;
 
         public static bool ignoreFOV = false;
         public static float FOV = 90f;
@@ -38,12 +41,15 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool aim_friends = false;
         public static bool aim_zombies = false;
         public static bool aim_animals = false;
+        public static bool aimOnKey = true;
+        public static KeyCode aim_key = KeyCode.F;
         #endregion
 
         #region Mono Functions
-        public void Start()
+        public void Update()
         {
             //StartCoroutine(getAttacking());
+            aim();
         }
         #endregion
 
@@ -65,6 +71,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 else
                     aimLocation = limbs[Array.IndexOf(limbs, aimLocation) + 1];
             }
+            
             /*if (GUILayout.Button("Priority: " + attackPriority.ToString()))
             {
                 if (Array.IndexOf(prioritys, attackPriority) == prioritys.Length - 1)
@@ -75,6 +82,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
             GUILayout.Space(10f);
             aimbot = GUILayout.Toggle(aimbot, "Aimbot");
+            aimOnKey = GUILayout.Toggle(aimOnKey, "Aimbot on Key | Key: F");
             autoTrigger = GUILayout.Toggle(autoTrigger, "Auto Trigger");
 
             GUILayout.Space(10f);
@@ -83,6 +91,62 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             GUILayout.Space(10f);
             aim_players = GUILayout.Toggle(aim_players, "Attack Players");
             aim_friends = GUILayout.Toggle(aim_friends, "Attack Friends");
+        }
+
+        public void aim()
+        {
+            if ((aimbot || silentAim) && Variables.isInGame)
+            {
+                if (attackNext != null)
+                {
+                    bool aimKey_check = true;
+                    if (aimOnKey)
+                    {
+                        aimKey_check = Input.GetKey(aim_key);
+                    }
+
+                    if (aimKey_check)
+                    {
+                        if (attackNextType == typeof(Player))
+                        {
+                            Player localplayer = Player.player;
+                            Vector3 skullPosition = getAimPosition(((SteamPlayer)attackNext).player.gameObject.transform);
+                            localplayer.transform.LookAt(skullPosition);
+                            localplayer.transform.eulerAngles = new Vector3(0f, localplayer.transform.rotation.eulerAngles.y, 0f);
+                            Camera.main.transform.LookAt(skullPosition);
+                            float num4 = Camera.main.transform.localRotation.eulerAngles.x;
+                            if (num4 <= 90f && num4 <= 270f)
+                            {
+                                num4 = Camera.main.transform.localRotation.eulerAngles.x + 90f;
+                            }
+                            else if (num4 >= 270f && num4 <= 360f)
+                            {
+                                num4 = Camera.main.transform.localRotation.eulerAngles.x - 270f;
+                            }
+                            localplayer.look.GetType().GetField("_pitch", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, num4);
+                            localplayer.look.GetType().GetField("_yaw", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, localplayer.transform.rotation.eulerAngles.y);
+                        }
+                    }
+                }
+            }
+        }
+
+        public Vector3 getAimPosition(Transform parent)
+        {
+            Transform[] componentsInChildren = parent.GetComponentsInChildren<Transform>();
+            if (componentsInChildren != null)
+            {
+                Transform[] array = componentsInChildren;
+                for (int i = 0; i < array.Length; i++)
+                {
+                    Transform tr = array[i];
+                    if (tr.name.Trim() == EBones.GetBone(aimLocation))
+                    {
+                        return tr.position + new Vector3(0f, 0.4f, 0f);
+                    }
+                }
+            }
+            return Vector3.zero;
         }
         #endregion
 
@@ -98,39 +162,15 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 }
 
                 #region Player
-                if (aim_players && (Variables.players != null && Variables.players.Length > 0))
+                if (attackNext != null)
                 {
-                    float cDistance = -1f;
-                    Player nextTarget = null;
-                    for(int i = 0; i < Variables.players.Length; i++)
+                    bool aimKey_check;
+                    if (aimOnKey)
                     {
-                        SteamPlayer p = Variables.players[i];
 
-                        if (p == null || p.player == null || p.player.gameObject == null || p.player.life.isDead || p.player == Player.player)
-                            continue;
-
-                        float pDistance = Tools.getDistance(p.player.transform.position);
-
-                        if (pDistance > distance && !ignoreDistance)
-                            continue;
-                        if (aim_friends || (MP_Config.instance.getFriends() == null || !MP_Config.instance.getFriends().Contains(p.playerID.steamID.m_SteamID)))
-                            continue;
-
-                        if (attackPriority == EAttackPriority.DISTANCE)
-                        {
-                            if (cDistance == -1f || pDistance < cDistance)
-                            {
-                                cDistance = pDistance;
-                                nextTarget = p.player;
-                            }
-                        }
-                        else if (attackPriority == EAttackPriority.THREAT)
-                        {
-
-                        }
                     }
-                    yield return wfeof;
                 }
+                
                 #endregion
 
                 yield return wfs;

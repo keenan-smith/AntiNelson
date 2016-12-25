@@ -56,6 +56,7 @@
     <Compile Include="Drawing.cs" />
     <Compile Include="ManPAD_API\Attributes\CodeReplaceAttribute.cs" />
     <Compile Include="ManPAD_API\Enumerables\EAttackPriority.cs" />
+    <Compile Include="ManPAD_Library\lib_EBones.cs" />
     <Compile Include="ManPAD_API\Enumerables\EESPItem.cs" />
     <Compile Include="ManPAD_API\Enumerables\EGOUpdate.cs" />
     <Compile Include="ManPAD_API\GUI\Attributes\MenuOptionAttribute.cs" />

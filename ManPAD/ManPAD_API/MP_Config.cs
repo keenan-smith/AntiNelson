@@ -108,6 +108,10 @@ namespace ManPAD.ManPAD_API
             keybind_menu.InnerText = KeyCode.F1.ToString();
             keybinds.AppendChild(keybind_menu);
 
+            XmlElement Aim_Key = _doc.CreateElement("AimKey");
+            keybind_menu.InnerText = KeyCode.F.ToString();
+            keybinds.AppendChild(keybind_menu);
+
             XmlElement friends = _doc.CreateElement("Friends");
             _root.AppendChild(friends);
 
