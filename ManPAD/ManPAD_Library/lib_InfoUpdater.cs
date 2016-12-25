@@ -297,7 +297,7 @@ namespace ManPAD.ManPAD_Library
                         #region Players 
                         if (updateObject.type == EGOUpdate.PLAYER)
                         {
-                            if (!((SteamPlayer)updateObject.instance).player.life.isDead) // here
+                            if (!((SteamPlayer)updateObject.instance).player.life.isDead && ((SteamPlayer)updateObject.instance).player != Player.player) // here
                             {
                                 float distance = Tools.getDistance(updateObject.gameObject.transform.position);
                                 #region Aimbot & SilentAim
@@ -312,7 +312,7 @@ namespace ManPAD.ManPAD_Library
                                 #endregion
 
                                 #region ESP
-                                if (MP_ESP.ESP_Enabled && MP_ESP.ESP_Players_Enabled && (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance) && ((SteamPlayer)updateObject.instance).player == Player.player)
+                                if (MP_ESP.ESP_Enabled && MP_ESP.ESP_Players_Enabled && (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance) && (((SteamPlayer)updateObject.instance).player != Player.player))
                                 {
                                     bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(((SteamPlayer)updateObject.instance).playerID.steamID.m_SteamID) : false);
 
@@ -320,7 +320,7 @@ namespace ManPAD.ManPAD_Library
                                     updateObject.text = "";
                                     updateObject.color = (isFriend ? MP_ESP.ESP_Friends_Color.selectedColor : MP_ESP.ESP_Players_Color.selectedColor);
 
-                                    if (updateObject.screenPosition.z > 0 && (MP_ESP.ESP_Players_FilterFriends && !isFriend))
+                                    if (updateObject.screenPosition.z > 0)
                                     {
                                         updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
                                         SteamPlayer p = (SteamPlayer)updateObject.instance;
