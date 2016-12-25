@@ -25,7 +25,7 @@ namespace ManPAD.ManPAD_Loading
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
             MP_GOLoader.library_addLibrary(typeof(lib_InfoUpdater));
             MP_GOLoader.library_addLibrary(typeof(lib_GoldExploits));
-            MP_GOLoader.library_addLibrary(typeof(EBones));
+            MP_GOLoader.library_addLibrary(typeof(iESP));
             //MP_GOLoader.library_addLibrary(typeof(lib_Console));
 
             Variables.LoadingUI_gameobject = new GameObject();
