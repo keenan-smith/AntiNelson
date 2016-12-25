@@ -20,7 +20,6 @@ namespace ManPAD.ManPAD_Loading
         public void Start()
         {
             StartCoroutine(loadAsset());
-            loadChamsAsset();
             new MP_Config(Application.persistentDataPath + "\\ManPADConfig.dat");
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
@@ -28,7 +27,7 @@ namespace ManPAD.ManPAD_Loading
             MP_GOLoader.library_addLibrary(typeof(lib_GoldExploits));
             MP_GOLoader.library_addLibrary(typeof(iESP));
             MP_GOLoader.library_addLibrary(typeof(EBones));
-            MP_GOLoader.library_addLibrary(typeof(lib_Console));
+            //MP_GOLoader.library_addLibrary(typeof(lib_Console));
 
             Variables.LoadingUI_gameobject = new GameObject();
             Variables.LoadingUI_Script = Variables.LoadingUI_gameobject.AddComponent<OV_LoadingUI>();
@@ -48,15 +47,6 @@ namespace ManPAD.ManPAD_Loading
             MP_Config.instance.save();
             Hook.thread_hook.Abort();
             Hook.running = false;
-        }
-        #endregion
-
-        #region Functions
-        private void loadChamsAsset()
-        {
-            Variables.chamsbundle = AssetBundle.LoadFromFile(Application.dataPath + "/mat_chams.unity3d", 0U);
-            Variables.chamsshaders = Variables.chamsbundle.LoadAllAssets<Shader>();
-            Variables.chamsmaterials = Variables.chamsbundle.LoadAllAssets<Material>();
         }
         #endregion
 
