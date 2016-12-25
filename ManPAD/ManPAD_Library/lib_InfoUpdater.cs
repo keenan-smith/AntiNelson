@@ -189,6 +189,7 @@ namespace ManPAD.ManPAD_Library
                 float aim_distanceAway = float.MaxValue;
                 object aim_nextTarget = null;
                 MP_ESP.draw.Clear();
+                Vector3 pos = Camera.main.transform.position;
 
                 lock (collections)
                 {
@@ -198,57 +199,61 @@ namespace ManPAD.ManPAD_Library
                             continue;
 
                         GOUpdate updateObject = collections[i];
-                        float distance = (float)Math.Round(Tools.getDistance(updateObject.gameObject.transform.position));
 
-                        /*#region Players
-                        if (updateObject.type == EGOUpdate.PLAYER && !((Player)updateObject.instance).life.isDead)
+                        #region Players
+                        if (updateObject.type == EGOUpdate.PLAYER)
                         {
-                            #region Aimbot & SilentAim
-                            if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players)
+                            if (!(((Player)updateObject.instance).life.isDead))
                             {
-                                if (aim_distanceAway > distance && (distance <= MP_Aimbot.distance || MP_Aimbot.ignoreDistance))
+                                float distance = Vector3.Distance(pos, updateObject.gameObject.transform.position);
+                                #region Aimbot & SilentAim
+                                if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players)
                                 {
-                                    aim_distanceAway = distance;
-                                    aim_nextTarget = updateObject.instance;
+                                    if (aim_distanceAway > distance && (distance <= MP_Aimbot.distance || MP_Aimbot.ignoreDistance))
+                                    {
+                                        aim_distanceAway = distance;
+                                        aim_nextTarget = updateObject.instance;
+                                    }
                                 }
-                            }
-                            #endregion
+                                #endregion
 
-                            #region ESP
-                            if (MP_ESP.ESP_Enabled && MP_ESP.ESP_Players_Enabled && (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance) && ((SteamPlayer)updateObject.instance).player == Player.player)
-                            {
-                                bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(((SteamPlayer)updateObject.instance).playerID.steamID.m_SteamID) : false);
-
-                                updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
-                                updateObject.text = "";
-                                updateObject.color = (isFriend ? MP_ESP.ESP_Friends_Color.selectedColor : MP_ESP.ESP_Players_Color.selectedColor);
-
-                                if (updateObject.screenPosition.z > 0 && (MP_ESP.ESP_Players_FilterFriends && !isFriend))
+                                #region ESP
+                                if (MP_ESP.ESP_Enabled && MP_ESP.ESP_Players_Enabled && (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance) && ((SteamPlayer)updateObject.instance).player == Player.player)
                                 {
-                                    updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
-                                    SteamPlayer p = (SteamPlayer)updateObject.instance;
+                                    bool isFriend = (MP_Config.instance.getFriends() != null ? MP_Config.instance.getFriends().Contains(((SteamPlayer)updateObject.instance).playerID.steamID.m_SteamID) : false);
 
-                                    if (MP_ESP.ESP_ShowNames)
-                                        updateObject.text += p.playerID.characterName + "\n";
-                                    if (MP_ESP.ESP_ShowDistances)
-                                        updateObject.text += "Distance: " + distance + "\n";
-                                    if (MP_ESP.ESP_Players_ShowWeapons)
-                                        updateObject.text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
-                                    if (MP_ESP.ESP_Players_ShowIsAdmin)
-                                        updateObject.text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
-                                    if (MP_ESP.ESP_Box)
-                                        updateObject.box = Tools.BoundsToScreenRect(new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0)));
+                                    updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
+                                    updateObject.text = "";
+                                    updateObject.color = (isFriend ? MP_ESP.ESP_Friends_Color.selectedColor : MP_ESP.ESP_Players_Color.selectedColor);
 
-                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.PLAYER, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                    if (updateObject.screenPosition.z > 0 && (MP_ESP.ESP_Players_FilterFriends && !isFriend))
+                                    {
+                                        updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
+                                        SteamPlayer p = (SteamPlayer)updateObject.instance;
+
+                                        if (MP_ESP.ESP_ShowNames)
+                                            updateObject.text += p.playerID.characterName + "\n";
+                                        if (MP_ESP.ESP_ShowDistances)
+                                            updateObject.text += "Distance: " + distance + "\n";
+                                        if (MP_ESP.ESP_Players_ShowWeapons)
+                                            updateObject.text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
+                                        if (MP_ESP.ESP_Players_ShowIsAdmin)
+                                            updateObject.text += "Is Admin: " + (p.isAdmin ? "Yes" : "No") + "\n";
+                                        if (MP_ESP.ESP_Box)
+                                            updateObject.box = Tools.BoundsToScreenRect(new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0)));
+
+                                        MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.PLAYER, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                    }
                                 }
+                                #endregion
                             }
-                            #endregion
                         }
-                        #endregion*/
+                        #endregion
 
                         #region Zombies
                         if (updateObject.type == EGOUpdate.ZOMBIE && !((Zombie)updateObject.instance).isDead)
                         {
+                            float distance = Vector3.Distance(pos, updateObject.gameObject.transform.position);
                             #region Aimbot & SilentAim
                             if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_zombies)
                             {
