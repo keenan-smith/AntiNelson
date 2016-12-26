@@ -190,12 +190,7 @@ namespace ManPAD.ManPAD_Overridables
 
 
             EThemes _theme = MP_Config.instance.getTheme();
-
-           if (Variables.chamsshaders == null)
-            Variables.chamsshaders = Variables.bundle.LoadAsset("shader_chams") as Shader;
-            if(Variables.chamsmaterials == null)
-            Variables.chamsmaterials = Variables.bundle.LoadAsset("mat_chams") as Material;
-            MP_Logging.Log(Variables.chamsmaterials.name);
+            
             if (_backgroundImage == null)
                 _backgroundImage = Variables.bundle.LoadAsset("Loading.png") as Texture;
             if(_logoImage == null)
