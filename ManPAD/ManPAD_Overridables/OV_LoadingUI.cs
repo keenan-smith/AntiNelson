@@ -188,8 +188,7 @@ namespace ManPAD.ManPAD_Overridables
 
             EThemes _theme = MP_Config.instance.getTheme();
 
-            
-            if (_backgroundImage == null)
+            if(_backgroundImage == null)
                 _backgroundImage = Variables.bundle.LoadAsset("Loading.png") as Texture;
             if(_logoImage == null)
                 _logoImage = Variables.bundle.LoadAsset("MANPADLOGO.png") as Texture;
@@ -203,7 +202,6 @@ namespace ManPAD.ManPAD_Overridables
                 _skin = Variables.bundle.LoadAsset("s_magic.guiskin") as GUISkin;
             else if (_theme == EThemes.PATAMON)
                 _skin = Variables.bundle.LoadAsset("s_patamon.guiskin") as GUISkin;
-            //MP_Logging.Log(Variables.chamsmaterials[0].name);
         }
 
         public static void onQueuePositionUpdated()
