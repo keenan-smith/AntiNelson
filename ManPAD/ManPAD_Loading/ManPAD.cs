@@ -28,7 +28,7 @@ namespace ManPAD.ManPAD_Loading
             MP_GOLoader.library_addLibrary(typeof(lib_GoldExploits));
             MP_GOLoader.library_addLibrary(typeof(iESP));
             MP_GOLoader.library_addLibrary(typeof(EBones));
-            MP_GOLoader.library_addLibrary(typeof(lib_Console));
+            MP_GOLoader.library_addLibrary(typeof(lib_Console)); //kek
 
             Variables.LoadingUI_gameobject = new GameObject();
             Variables.LoadingUI_Script = Variables.LoadingUI_gameobject.AddComponent<OV_LoadingUI>();
