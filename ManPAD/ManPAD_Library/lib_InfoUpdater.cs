@@ -354,8 +354,8 @@ namespace ManPAD.ManPAD_Library
 
                                             for (int k = 0; k < materials.Length; k++)
                                             {
-                                                if (materials[k].shader != Variables.chamsshaders[0])
-                                                    materials[k].shader = Variables.chamsshaders[0];
+                                                if (materials[k].shader != Variables.chamsshaders)
+                                                    materials[k].shader = Variables.chamsshaders;
                                             }
                                         }
                                         ChamsEnabled = true;
@@ -376,7 +376,7 @@ namespace ManPAD.ManPAD_Library
 
                                     for (int k = 0; k < materials.Length; k++)
                                     {
-                                        if (materials[k].shader == Variables.chamsshaders[0])
+                                        if (materials[k].shader == Variables.chamsshaders)
                                             materials[k].shader = normal;
                                     }
                                 }

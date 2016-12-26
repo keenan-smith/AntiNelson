@@ -20,7 +20,7 @@ namespace ManPAD.ManPAD_Loading
         public void Start()
         {
             StartCoroutine(loadAsset());
-            loadChamsAsset();
+        
             new MP_Config(Application.persistentDataPath + "\\ManPADConfig.dat");
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
@@ -51,14 +51,7 @@ namespace ManPAD.ManPAD_Loading
         }
         #endregion
 
-        #region Functions
-        private void loadChamsAsset()
-        {
-            Variables.chamsbundle = AssetBundle.LoadFromFile(Application.dataPath + "/mat_chams.unity3d", 0U);
-            Variables.chamsshaders = Variables.chamsbundle.LoadAllAssets<Shader>();
-            Variables.chamsmaterials = Variables.chamsbundle.LoadAllAssets<Material>();
-        }
-        #endregion
+    
 
         #region Coroutines
         private IEnumerator loadAsset()

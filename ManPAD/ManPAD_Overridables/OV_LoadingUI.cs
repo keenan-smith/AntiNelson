@@ -186,9 +186,12 @@ namespace ManPAD.ManPAD_Overridables
             if (Variables.bundle == null || !(Level.info != null ? (!_loaded || isBlocked) : isBlocked))
                 return;
 
-            EThemes _theme = MP_Config.instance.getTheme();
 
-            if(_backgroundImage == null)
+
+
+            EThemes _theme = MP_Config.instance.getTheme();
+            
+            if (_backgroundImage == null)
                 _backgroundImage = Variables.bundle.LoadAsset("Loading.png") as Texture;
             if(_logoImage == null)
                 _logoImage = Variables.bundle.LoadAsset("MANPADLOGO.png") as Texture;

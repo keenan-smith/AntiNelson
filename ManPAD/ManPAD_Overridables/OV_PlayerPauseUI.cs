@@ -13,9 +13,9 @@ namespace ManPAD.ManPAD_Overridables
         [CodeReplace("onClickedExitButton", typeof(PlayerPauseUI), BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic)]
         public static void onClickedExitButton(SleekButton button)
         {
-            //if(!MP_Server.instantDisconnect)
-                //if (!Provider.isServer && Provider.isPvP && Provider.clients.Count > 1 && !Player.player.movement.isSafe && !Player.player.life.isDead && Time.realtimeSinceStartup - PlayerPauseUI.lastLeave < Provider.modeConfigData.Gameplay.Timer_Exit)
-                    //return;
+            if(!MP_Server.instantDisconnect)
+                if (!Provider.isServer && Provider.isPvP && Provider.clients.Count > 1 && !Player.player.movement.isSafe && !Player.player.life.isDead && Time.realtimeSinceStartup - PlayerPauseUI.lastLeave < Provider.modeConfigData.Gameplay.Timer_Exit)
+                    return;
             Provider.disconnect();
         }
     }
