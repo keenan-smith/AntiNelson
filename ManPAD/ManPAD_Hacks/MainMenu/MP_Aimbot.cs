@@ -43,13 +43,30 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool aim_animals = false;
         public static bool aimOnKey = true;
         public static KeyCode aim_key = KeyCode.F;
+        private bool cAk = false;
+        private int e;
         #endregion
 
         #region Mono Functions
         public void Update()
         {
-            //StartCoroutine(getAttacking());
-            aim();
+            if (cAk)
+            {
+
+                e = System.Enum.GetNames(typeof(KeyCode)).Length;
+                for (int i = 0; i < e; i++)
+                {
+                    if (Input.GetKey((KeyCode)i))
+                    {
+                        aim_key = (KeyCode)i;
+                        cAk = false;
+                    }
+
+                }
+            }
+                //StartCoroutine(getAttacking());
+                aim();
+            
         }
         #endregion
 
@@ -82,7 +99,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
             GUILayout.Space(10f);
             aimbot = GUILayout.Toggle(aimbot, "Aimbot");
-            aimOnKey = GUILayout.Toggle(aimOnKey, "Aimbot on Key | Key: F");
+            aimOnKey = GUILayout.Toggle(aimOnKey, "Aimbot on Key | Key " + aim_key);
+            cAk = GUILayout.Toggle(cAk, "Change AimKey");
+           
+
             autoTrigger = GUILayout.Toggle(autoTrigger, "Auto Trigger");
 
             GUILayout.Space(10f);
