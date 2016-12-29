@@ -25,10 +25,14 @@ namespace ManPAD.ManPAD_Loading
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
             MP_GOLoader.library_addLibrary(typeof(lib_InfoUpdater));
+#if DEBUG
             MP_GOLoader.library_addLibrary(typeof(lib_GoldExploits));
             MP_GOLoader.library_addLibrary(typeof(iESP));
+#endif
             MP_GOLoader.library_addLibrary(typeof(EBones));
+#if DEBUG
             MP_GOLoader.library_addLibrary(typeof(lib_Console));
+#endif
 
             Variables.LoadingUI_gameobject = new GameObject();
             Variables.LoadingUI_Script = Variables.LoadingUI_gameobject.AddComponent<OV_LoadingUI>();

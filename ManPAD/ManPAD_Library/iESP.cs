@@ -13,6 +13,7 @@ using HighlightingSystem;
 
 namespace ManPAD.ManPAD_Library
 {
+#if DEBUG
     public class iESP : MonoBehaviour
     {
         public static SteamPlayer[] players;
@@ -513,4 +514,5 @@ namespace ManPAD.ManPAD_Library
             GL.PopMatrix();
         }
     }
+#endif
 }

@@ -41,32 +41,13 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool aim_friends = false;
         public static bool aim_zombies = false;
         public static bool aim_animals = false;
-        public static bool aimOnKey = true;
-        public static KeyCode aim_key = KeyCode.F;
-        private bool cAk = false;
-        private int e;
         #endregion
 
         #region Mono Functions
         public void Update()
         {
-            if (cAk)
-            {
-
-                e = System.Enum.GetNames(typeof(KeyCode)).Length;
-                for (int i = 0; i < e; i++)
-                {
-                    if (Input.GetKey((KeyCode)i))
-                    {
-                        aim_key = (KeyCode)i;
-                        cAk = false;
-                    }
-
-                }
-            }
-                //StartCoroutine(getAttacking());
-                aim();
-            
+            //StartCoroutine(getAttacking());
+            aim();
         }
         #endregion
 
@@ -89,24 +70,25 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                     aimLocation = limbs[Array.IndexOf(limbs, aimLocation) + 1];
             }
             
-            /*if (GUILayout.Button("Priority: " + attackPriority.ToString()))
+#if DEBUG
+            if (GUILayout.Button("Priority: " + attackPriority.ToString()))
             {
                 if (Array.IndexOf(prioritys, attackPriority) == prioritys.Length - 1)
                     attackPriority = prioritys[0];
                 else
                     attackPriority = prioritys[Array.IndexOf(prioritys, attackPriority) + 1];
-            }*/
+            }
+#endif
 
             GUILayout.Space(10f);
             aimbot = GUILayout.Toggle(aimbot, "Aimbot");
-            aimOnKey = GUILayout.Toggle(aimOnKey, "Aimbot on Key | Key " + aim_key);
-            cAk = GUILayout.Toggle(cAk, "Change AimKey");
-           
 
             autoTrigger = GUILayout.Toggle(autoTrigger, "Auto Trigger");
 
+#if !FREE
             GUILayout.Space(10f);
             silentAim = GUILayout.Toggle(silentAim, "Silent Aim");
+#endif
 
             GUILayout.Space(10f);
             aim_players = GUILayout.Toggle(aim_players, "Attack Players");
@@ -119,33 +101,24 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             {
                 if (attackNext != null)
                 {
-                    bool aimKey_check = true;
-                    if (aimOnKey)
+                    if (attackNextType == typeof(Player))
                     {
-                        aimKey_check = Input.GetKey(aim_key);
-                    }
-
-                    if (aimKey_check)
-                    {
-                        if (attackNextType == typeof(Player))
+                        Player localplayer = Player.player;
+                        Vector3 skullPosition = getAimPosition(((SteamPlayer)attackNext).player.gameObject.transform);
+                        localplayer.transform.LookAt(skullPosition);
+                        localplayer.transform.eulerAngles = new Vector3(0f, localplayer.transform.rotation.eulerAngles.y, 0f);
+                        Camera.main.transform.LookAt(skullPosition);
+                        float num4 = Camera.main.transform.localRotation.eulerAngles.x;
+                        if (num4 <= 90f && num4 <= 270f)
                         {
-                            Player localplayer = Player.player;
-                            Vector3 skullPosition = getAimPosition(((SteamPlayer)attackNext).player.gameObject.transform);
-                            localplayer.transform.LookAt(skullPosition);
-                            localplayer.transform.eulerAngles = new Vector3(0f, localplayer.transform.rotation.eulerAngles.y, 0f);
-                            Camera.main.transform.LookAt(skullPosition);
-                            float num4 = Camera.main.transform.localRotation.eulerAngles.x;
-                            if (num4 <= 90f && num4 <= 270f)
-                            {
-                                num4 = Camera.main.transform.localRotation.eulerAngles.x + 90f;
-                            }
-                            else if (num4 >= 270f && num4 <= 360f)
-                            {
-                                num4 = Camera.main.transform.localRotation.eulerAngles.x - 270f;
-                            }
-                            localplayer.look.GetType().GetField("_pitch", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, num4);
-                            localplayer.look.GetType().GetField("_yaw", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, localplayer.transform.rotation.eulerAngles.y);
+                            num4 = Camera.main.transform.localRotation.eulerAngles.x + 90f;
                         }
+                        else if (num4 >= 270f && num4 <= 360f)
+                        {
+                            num4 = Camera.main.transform.localRotation.eulerAngles.x - 270f;
+                        }
+                        localplayer.look.GetType().GetField("_pitch", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, num4);
+                        localplayer.look.GetType().GetField("_yaw", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, localplayer.transform.rotation.eulerAngles.y);
                     }
                 }
             }

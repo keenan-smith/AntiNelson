@@ -9,6 +9,7 @@ using ManPAD.ManPAD_Hacks.MainMenu;
 
 namespace ManPAD.ManPAD_Overridables
 {
+#if !FREE
     public class OV_DamageTool : MonoBehaviour
     {
         [CodeReplace("raycast", typeof(DamageTool), BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)]
@@ -68,4 +69,5 @@ namespace ManPAD.ManPAD_Overridables
             return raycastInfo;
         }
     }
+#endif
 }

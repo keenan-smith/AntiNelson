@@ -8,6 +8,7 @@ using ManPAD.ManPAD_Hacks.MainMenu;
 
 namespace ManPAD.ManPAD_Overridables
 {
+#if !FREE
     public class OV_PlayerInteract : MonoBehaviour
     {
         public float salvageTime
@@ -19,4 +20,5 @@ namespace ManPAD.ManPAD_Overridables
             }
         }
     }
+#endif
 }

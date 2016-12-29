@@ -89,7 +89,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             nospread = GUILayout.Toggle(nospread, "No Spread");
             nosway = GUILayout.Toggle(nosway, "No Sway");
             farReach = GUILayout.Toggle(farReach, "Far Reach");
+#if !FREE
             attackThroughWalls = GUILayout.Toggle(attackThroughWalls, "Attack Through Walls");
+#endif
         }
 
         private void setRecoil(ItemGunAsset asset, float maxX, float maxY, float minX, float minY)

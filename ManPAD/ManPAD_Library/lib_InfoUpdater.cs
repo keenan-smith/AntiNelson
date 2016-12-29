@@ -12,6 +12,7 @@ using ManPAD.ManPAD_API;
 
 namespace ManPAD.ManPAD_Library
 {
+#if DEBUG
     // Zoomy's amazing debug console (dont touch u queers)
     public class lib_Console : MonoBehaviour
     {
@@ -102,6 +103,7 @@ namespace ManPAD.ManPAD_Library
             logtext.Add(DateTime.Now.ToString("h:mm:ss tt") + ": " + text);
         }
     }
+#endif
 
     public class lib_InfoUpdater : MonoBehaviour
     {

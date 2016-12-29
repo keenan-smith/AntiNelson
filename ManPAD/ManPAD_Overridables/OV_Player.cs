@@ -12,6 +12,7 @@ using System.Collections;
 
 namespace ManPAD.ManPAD_Overridables
 {
+#if !FREE
     public class OV_Player : MonoBehaviour
     {
         [CodeReplace("askScreenshot", typeof(Player), BindingFlags.Instance | BindingFlags.Public)]
@@ -33,4 +34,5 @@ namespace ManPAD.ManPAD_Overridables
             Variables.isSpying = false;
         }
     }
+#endif
 }

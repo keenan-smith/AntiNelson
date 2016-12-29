@@ -14,6 +14,7 @@ using SDG.Provider;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
+#if !FREE
     [MenuOption(3, "Skin Changer", 300f)]
     public class MP_SkinChanger : MenuOption
     {
@@ -66,4 +67,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         }
         #endregion
     }
+#endif
 }

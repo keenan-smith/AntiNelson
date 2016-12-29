@@ -13,6 +13,7 @@ using ManPAD.ManPAD_Hacks.MainMenu;
 
 namespace ManPAD.ManPAD_Overridables
 {
+#if DEBUG
     public class OV_PlayerEquipment : MonoBehaviour
     {
         private static readonly AnimalDamageMultiplier DAMAGE_ANIMAL_MULTIPLIER = new AnimalDamageMultiplier(15f, 0.3f, 0.6f, 1.1f);
@@ -288,4 +289,5 @@ namespace ManPAD.ManPAD_Overridables
             }
         }
     }
-    }
+#endif
+}

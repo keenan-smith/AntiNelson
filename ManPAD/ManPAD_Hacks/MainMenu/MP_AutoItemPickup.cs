@@ -15,6 +15,7 @@ using System.Diagnostics;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
+#if DEBUG
     [MenuOption(9, "Auto Item Pickup", 200f)]
     public class MP_AutoItemPickup : MenuOption
     {
@@ -80,4 +81,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         }
         #endregion
     }
+#endif
 }

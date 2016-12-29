@@ -122,13 +122,18 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         #region Functions
         public override void runGUI()
         {
+#if !FREE
             fly = GUILayout.Toggle(fly, "Fly(Client)");
+#if DEBUG
             noclip = GUILayout.Toggle(noclip, "Noclip(Client)");
             jumper = GUILayout.Toggle(jumper, "Jumper(Client)");
             walkOnWater = GUILayout.Toggle(walkOnWater, "Walk on water(Client)");
             infiniteStamina = GUILayout.Toggle(infiniteStamina, "Infinite stamina(Client)");
             freecam = GUILayout.Toggle(freecam, "Freecam");
+#endif
+#endif
 
+#if DEBUG
             GUILayout.Space(10f);
             godMode = GUILayout.Toggle(godMode, "GodMode(Client)");
             invisibility = GUILayout.Toggle(invisibility, "Invisibility(Client)");
@@ -136,12 +141,18 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             noFall = GUILayout.Toggle(noFall, "No fall damage(Client)");
             antiAim = GUILayout.Toggle(antiAim, "AntiAim");
             antiAim_Movement = GUILayout.Toggle(antiAim_Movement, "AntiAim Movement(Client)");
-            autoDC = GUILayout.Toggle(autoDC, "Auto Disconnect");
+#endif
+#if !FREE
             interactThroughWalls = GUILayout.Toggle(interactThroughWalls, "Interact Through Walls");
+#endif
+#if DEBUG
             farPunch = GUILayout.Toggle(farPunch, "Increase Punch Range");
+            autoDC = GUILayout.Toggle(autoDC, "Auto Disconnect");
             GUILayout.Label("Health: " + autoDC_Health);
             autoDC_Health = GUILayout.HorizontalSlider(autoDC_Health, 1f, 99f);
+#endif
 
+#if DEBUG
             GUILayout.Space(10f);
             GUILayout.Label("Walk Speed(Client): " + speed_walk);
             speed_walk = GUILayout.HorizontalSlider(speed_walk, 0f, 10f);
@@ -157,6 +168,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             speed_climb = GUILayout.HorizontalSlider(speed_climb, 0f, 10f);
             GUILayout.Label("Jump Height(Client): " + jump_height);
             jump_height = GUILayout.HorizontalSlider(jump_height, 0f, 10f);
+#endif
         }
         #endregion
 

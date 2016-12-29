@@ -12,6 +12,7 @@ using Steamworks;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
+#if DEBUG
     [MenuOption(4, "Vehicle", 200f)]
     public class MP_Vehicle : MenuOption
     {
@@ -63,4 +64,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         }
         #endregion
     }
+#endif
 }

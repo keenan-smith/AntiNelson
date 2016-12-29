@@ -15,6 +15,7 @@ using Steamworks;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
+#if DEBUG
     [MenuOption(13, "Item Filters(ic3)", 250f)]
     public class MP_iItemFilters : MenuOption
     {
@@ -60,4 +61,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             ItemFilter_FoodAndWater = GUILayout.Toggle(ItemFilter_FoodAndWater, "Food and Water");
         }
     }
+#endif
 }

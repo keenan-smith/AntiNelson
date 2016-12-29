@@ -15,6 +15,7 @@ using Steamworks;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
+#if DEBUG
     [MenuOption(12, "ESP(ic3)", 250f)]
     public class MP_ic3ESP : MenuOption
     {
@@ -73,4 +74,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             Distance = GUILayout.HorizontalSlider(Mathf.Round(Distance), 50f, 1000f);
         }
     }
+#endif
 }

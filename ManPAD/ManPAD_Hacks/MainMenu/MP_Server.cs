@@ -21,8 +21,10 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public override void runGUI()
         {
             instantDisconnect = GUILayout.Toggle(instantDisconnect, "Instant Disconnect");
+#if !FREE
             GUILayout.Label("Salvage Speed: " + salvageSpeed);
             salvageSpeed = (float)Math.Round(GUILayout.HorizontalSlider(salvageSpeed, 0f, 1f), 1);
+#endif
         }
         #endregion
     }

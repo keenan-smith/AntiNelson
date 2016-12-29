@@ -18,15 +18,18 @@ namespace ManPAD.ManPAD_Overridables
 {
     public class OV_Provider : MonoBehaviour
     {
+#if DEBUG
         public static bool isPro
         {
-            [CodeReplace("get_isPro", typeof(Provider), BindingFlags.Public | BindingFlags.Static)]
+            //[CodeReplace("get_isPro", typeof(Provider), BindingFlags.Public | BindingFlags.Static)]
             get
             {
                 return true;
             }
         }
+#endif
 
+#if DEBUG
         [CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.Instance | BindingFlags.NonPublic)]
         public void OnApplicationQuit()
         {
@@ -63,7 +66,9 @@ namespace ManPAD.ManPAD_Overridables
             Provider.disconnect();
             Provider.provider.shutdown();
         }
+#endif
 
+#if DEBUG
         //[CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.NonPublic | BindingFlags.Static)]
         public static void onLevelLoaded(int level)
         {
@@ -169,5 +174,6 @@ namespace ManPAD.ManPAD_Overridables
                 }
             }
         }
+#endif
     }
 }

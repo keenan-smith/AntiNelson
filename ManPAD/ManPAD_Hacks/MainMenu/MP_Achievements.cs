@@ -11,6 +11,7 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
+#if DEBUG
     [MenuOption(10, "Achievements", 300f)]
     public class MP_Achievements : MenuOption
     {
@@ -21,4 +22,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         }
         #endregion
     }
+#endif
 }

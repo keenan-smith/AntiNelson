@@ -93,7 +93,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public override void runGUI()
         {
             ESP_Enabled = GUILayout.Toggle(ESP_Enabled, "Enabled");
+#if !FREE
             ESP_Chams = GUILayout.Toggle(ESP_Chams, "Chams");
+#endif
             ESP_Box = GUILayout.Toggle(ESP_Box, "Box");
             ESP_ShowNames = GUILayout.Toggle(ESP_ShowNames, "Show Names");
             ESP_ShowDistances = GUILayout.Toggle(ESP_ShowDistances, "Show Distances");
