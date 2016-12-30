@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace MLoader
 {
@@ -24,9 +25,16 @@ namespace MLoader
             while (!injected)
             {
                 Thread.Sleep(200);
-                Assembly asm = Assembly.Load(Directory.GetCurrentDirectory() + @"\Unturned_Data\Managed\ManPAD.dll");
-                asm.GetTypes().Where(a => a.IsClass && a.Name == "Hook").First().GetMethod("callMeToHook", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[0]);
-                injected = true;
+                try
+                {
+                    Assembly asm = Assembly.LoadFrom(Directory.GetCurrentDirectory() + "/ManPAD.dll");
+                    asm.GetTypes().Where(a => a.IsClass && a.Name == "Hook").First().GetMethod("callMeToHook", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[0]);
+                    injected = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
             }
         }
     }
