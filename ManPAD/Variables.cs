@@ -11,6 +11,7 @@ namespace ManPAD
     public class Variables
     {
         public static AssetBundle bundle;
+        public static AssetBundle bundle_chams;
 
         public static bool isInGame = false;
         public static bool isSpying = false;
@@ -23,9 +24,6 @@ namespace ManPAD
         public static InteractableStorage[] storages;
         public static InteractableSentry[] sentrys;
         public static Animal[] animals;
-        public static AssetBundle chamsbundle;
-        public static Shader[] chamsshaders;
-        public static Material[] chamsmaterials;
 
         public static Dictionary<string, string> songs = new Dictionary<string, string>()
         {

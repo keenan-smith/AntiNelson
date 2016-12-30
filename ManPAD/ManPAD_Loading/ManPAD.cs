@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,6 @@ namespace ManPAD.ManPAD_Loading
         public void Start()
         {
             StartCoroutine(loadAsset());
-            loadChamsAsset();
             new MP_Config(Application.persistentDataPath + "\\ManPADConfig.dat");
             MP_GOLoader.library_addLibrary(typeof(lib_MethodReplacer));
             MP_GOLoader.library_addLibrary(typeof(lib_MainMenu));
@@ -37,6 +37,8 @@ namespace ManPAD.ManPAD_Loading
             Variables.LoadingUI_gameobject = new GameObject();
             Variables.LoadingUI_Script = Variables.LoadingUI_gameobject.AddComponent<OV_LoadingUI>();
             DontDestroyOnLoad(Variables.LoadingUI_gameobject);
+
+            typeof(Provider).GetField("APP_NAME", BindingFlags.Public | BindingFlags.Static).SetValue(null, "ManPAD Alpha");
         }
 
         public void Update()
@@ -55,15 +57,6 @@ namespace ManPAD.ManPAD_Loading
         }
         #endregion
 
-        #region Functions
-        private void loadChamsAsset()
-        {
-            Variables.chamsbundle = AssetBundle.LoadFromFile(Application.dataPath + "/mat_chams.unity3d", 0U);
-            Variables.chamsshaders = Variables.chamsbundle.LoadAllAssets<Shader>();
-            Variables.chamsmaterials = Variables.chamsbundle.LoadAllAssets<Material>();
-        }
-        #endregion
-
         #region Coroutines
         private IEnumerator loadAsset()
         {
@@ -72,6 +65,7 @@ namespace ManPAD.ManPAD_Loading
             yield return www;
 
             Variables.bundle = www.assetBundle;
+            Variables.bundle_chams = AssetBundle.LoadFromFile(Application.dataPath + "\\Manpad_1.assetbundle", 0U);
             MP_Logging.Log("Asset bundle loaded!");
         }
         #endregion

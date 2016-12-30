@@ -203,8 +203,6 @@ namespace ManPAD.ManPAD_Overridables
                 _skin = Variables.bundle.LoadAsset("s_aqua.guiskin") as GUISkin;
             else if (_theme == EThemes.MAGIC)
                 _skin = Variables.bundle.LoadAsset("s_magic.guiskin") as GUISkin;
-            else if (_theme == EThemes.PATAMON)
-                _skin = Variables.bundle.LoadAsset("s_patamon.guiskin") as GUISkin;
         }
 
         public static void onQueuePositionUpdated()

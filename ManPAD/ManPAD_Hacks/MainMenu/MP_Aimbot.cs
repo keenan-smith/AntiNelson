@@ -142,33 +142,5 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             return Vector3.zero;
         }
         #endregion
-
-        #region Coroutines
-        private IEnumerator getAttacking()
-        {
-            while (true)
-            {
-                if (!(aimbot || silentAim) || !Variables.isInGame)
-                {
-                    yield return wfs;
-                    continue;
-                }
-
-                #region Player
-                if (attackNext != null)
-                {
-                    bool aimKey_check;
-                    if (aimOnKey)
-                    {
-
-                    }
-                }
-                
-                #endregion
-
-                yield return wfs;
-            }
-        }
-        #endregion
     }
 }

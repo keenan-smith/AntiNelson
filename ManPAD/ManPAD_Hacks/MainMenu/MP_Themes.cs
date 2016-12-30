@@ -10,7 +10,7 @@ using ManPAD.ManPAD_API.GUI.Enumerables;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(5, "Themes", 130f)]
+    [MenuOption(10, "Themes", 130f)]
     public class MP_Themes : MenuOption
     {
         #region Functions
@@ -24,8 +24,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                 MP_Config.instance.setTheme(EThemes.AQUA);
             if (GUILayout.Button("Magic"))
                 MP_Config.instance.setTheme(EThemes.MAGIC);
-            if (GUILayout.Button("Patamon"))
-                MP_Config.instance.setTheme(EThemes.PATAMON);
         }
         #endregion
     }

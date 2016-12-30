@@ -16,7 +16,7 @@ using Steamworks;
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
 #if DEBUG
-    [MenuOption(12, "ESP(ic3)", 250f)]
+    [MenuOption(100, "ESP(ic3)", 250f)]
     public class MP_ic3ESP : MenuOption
     {
         public static bool ESP_Enabled = false;

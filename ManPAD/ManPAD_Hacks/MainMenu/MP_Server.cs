@@ -9,12 +9,12 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(6, "Server", 200f)]
+    [MenuOption(3, "Server", 200f)]
     public class MP_Server : MenuOption
     {
         #region Variables
         public static float salvageSpeed = 0.5f;
-        public static bool instantDisconnect = false;
+        public static bool instantDisconnect = true;
         #endregion
 
         #region Functions

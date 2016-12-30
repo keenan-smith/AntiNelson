@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-    [MenuOption(7, "Weapons", 300f)]
+    [MenuOption(5, "Weapons", 300f)]
     public class MP_Weapons : MenuOption
     {
         #region Variables

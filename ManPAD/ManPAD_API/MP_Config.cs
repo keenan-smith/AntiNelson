@@ -245,12 +245,10 @@ namespace ManPAD.ManPAD_API
                 return new ulong[0];
 
             List<ulong> friends = new List<ulong>();
+            string[] splitFriends = _root.SelectSingleNode("Friends").InnerText.Split(',');
 
-            for(int i = 0; i < _root.SelectSingleNode("Friends").InnerText.Split(',').Length; i++)
-            {
-                string s = _root.SelectSingleNode("Friends").InnerText.Split(',')[i];
-                friends.Add(ulong.Parse(s));
-            }
+            for (int i = 0; i < splitFriends.Length; i++)
+                friends.Add(ulong.Parse(splitFriends[i]));
 
             return friends.ToArray();
         }

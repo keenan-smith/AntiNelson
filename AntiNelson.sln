@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManPAD", "ManPAD\ManPAD.csproj", "{2BF2E5BA-A9EC-4494-9BF4-6377A8A53FD3}"
 EndProject
@@ -32,7 +32,6 @@ Global
 		{2BF2E5BA-A9EC-4494-9BF4-6377A8A53FD3}.Premium|x86.ActiveCfg = Premium|Any CPU
 		{2BF2E5BA-A9EC-4494-9BF4-6377A8A53FD3}.Premium|x86.Build.0 = Premium|Any CPU
 		{DD0554B2-730A-495D-BB25-09C1FB8DB06C}.Debug|x64.ActiveCfg = Debug|x64
-		{DD0554B2-730A-495D-BB25-09C1FB8DB06C}.Debug|x64.Build.0 = Debug|x64
 		{DD0554B2-730A-495D-BB25-09C1FB8DB06C}.Debug|x86.ActiveCfg = Debug|Win32
 		{DD0554B2-730A-495D-BB25-09C1FB8DB06C}.Debug|x86.Build.0 = Debug|Win32
 		{DD0554B2-730A-495D-BB25-09C1FB8DB06C}.Free|x64.ActiveCfg = Free|x64

@@ -10,7 +10,6 @@ namespace ManPAD.ManPAD_API.GUI.Enumerables
         WHITE,
         INVERTED,
         AQUA,
-        MAGIC,
-        PATAMON
+        MAGIC
     }
 }

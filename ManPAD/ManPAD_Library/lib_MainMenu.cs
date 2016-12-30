@@ -53,8 +53,6 @@ namespace ManPAD.ManPAD_Library
                         _skin = Variables.bundle.LoadAsset("s_aqua.guiskin") as GUISkin;
                     else if (_theme == EThemes.MAGIC)
                         _skin = Variables.bundle.LoadAsset("s_magic.guiskin") as GUISkin;
-                    else if (_theme == EThemes.PATAMON)
-                        _skin = Variables.bundle.LoadAsset("s_patamon.guiskins") as GUISkin;
                 }
             }
             if (Input.GetKeyDown(MP_Config.instance.getKeybind("MainMenu")) || Input.GetKeyDown(KeyCode.Escape))

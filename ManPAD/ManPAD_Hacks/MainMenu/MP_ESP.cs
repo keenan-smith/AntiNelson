@@ -25,6 +25,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
         public static bool ESP_Enabled = false;
         public static bool ESP_Chams = true;
+        public static bool ESP_Glow = false;
         public static bool ESP_Box = false;
         public static bool ESP_ShowNames = true;
         public static bool ESP_ShowDistances = true;
@@ -95,8 +96,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             ESP_Enabled = GUILayout.Toggle(ESP_Enabled, "Enabled");
 #if !FREE
             ESP_Chams = GUILayout.Toggle(ESP_Chams, "Chams");
-#endif
             ESP_Box = GUILayout.Toggle(ESP_Box, "Box");
+#endif
+            ESP_Glow = GUILayout.Toggle(ESP_Glow, "Glow");
             ESP_ShowNames = GUILayout.Toggle(ESP_ShowNames, "Show Names");
             ESP_ShowDistances = GUILayout.Toggle(ESP_ShowDistances, "Show Distances");
             ESP_IgnoreDistance = GUILayout.Toggle(ESP_IgnoreDistance, "Ignore Distance");
