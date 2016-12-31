@@ -248,7 +248,7 @@ namespace ManPAD.ManPAD_Library
                                             if (MP_ESP.ESP_Box)
                                                 updateObject.box = Tools.BoundsToScreenRect(new Bounds(p.player.transform.position + new Vector3(0, 1.1f, 0), p.player.transform.localScale + new Vector3(0, .95f, 0)));
 
-                                            MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.PLAYER, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                            MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.PLAYER, updateObject.screenPosition, updateObject.box, updateObject.color, distance));
                                         }
                                     }
                                 }
@@ -320,7 +320,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
-                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ZOMBIE, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ZOMBIE, updateObject.screenPosition, updateObject.box, updateObject.color, distance));
                                 }
                             }
                             #endregion
@@ -356,7 +356,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
-                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ANIMAL, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ANIMAL, updateObject.screenPosition, updateObject.box, updateObject.color, distance));
                                 }
                             }
                             #endregion
@@ -397,7 +397,7 @@ namespace ManPAD.ManPAD_Library
                                             if (MP_ESP.ESP_Box && collider != null)
                                                 updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
-                                            MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ITEM, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                            MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ITEM, updateObject.screenPosition, updateObject.box, updateObject.color, distance));
                                         }
                                     }
                                     #endregion
@@ -439,7 +439,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
-                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.VEHICLE, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.VEHICLE, updateObject.screenPosition, updateObject.box, updateObject.color, distance));
                                 }
                             }
                             #endregion
@@ -477,7 +477,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
-                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.STORAGE, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.STORAGE, updateObject.screenPosition, updateObject.box, updateObject.color, distance));
                                 }
                             }
                             #endregion
@@ -513,7 +513,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
-                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.SENTRY, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.SENTRY, updateObject.screenPosition, updateObject.box, updateObject.color, distance));
                                 }
                             }
                             #endregion

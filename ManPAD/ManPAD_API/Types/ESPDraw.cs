@@ -16,9 +16,10 @@ namespace ManPAD.ManPAD_API.Types
         public Vector3 screenPoint;
         public Rect box;
         public Color color;
+        public int distance;
         #endregion
 
-        public ESPDraw(string text, GameObject game_object, EESPItem type, Vector3 screenPoint, Rect box, Color color)
+        public ESPDraw(string text, GameObject game_object, EESPItem type, Vector3 screenPoint, Rect box, Color color, int distance)
         {
             this.text = text;
             this.game_object = game_object;
@@ -26,6 +27,7 @@ namespace ManPAD.ManPAD_API.Types
             this.screenPoint = screenPoint;
             this.box = box;
             this.color = color;
+            this.distance = distance;
         }
     }
 }

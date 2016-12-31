@@ -12,6 +12,8 @@ namespace ManPAD
 {
     public class Tools
     {
+        public static GUIStyle labelstyle = new GUIStyle();
+
         public static float getDistance(Vector3 point)
         {
             Vector3 firstPosition = MainCamera.instance.transform.position;
@@ -29,9 +31,11 @@ namespace ManPAD
             return distance;
         }
 
-        public static void DrawLabel(Vector3 point, string label, float fromY = 0f)
+        public static void DrawLabel(Vector3 point, string label, Color color, int size = 15, float fromY = 0f)
         {
-            GUI.Label(new Rect(point.x, point.y + fromY, Screen.width, Screen.height), label);
+            labelstyle.fontSize = size;
+            labelstyle.normal.textColor = color;
+            GUI.Label(new Rect(point.x, point.y + fromY, Screen.width, Screen.height), label, labelstyle);
         }
 
         public static void Outline(Rect r, Texture2D lineTex)

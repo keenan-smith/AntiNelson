@@ -65,10 +65,12 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
                         if (MP_ESP.ESP_Items_Types.filter.TryGetValue(item.asset.type, out on))
                         {
                             if (on)
+                            {
                                 if (IgnoreEmpty && item.item.amount > 0)
                                     item.use();
                                 else if (!IgnoreEmpty)
                                     item.use();
+                            }  
                         }
                     }
 
