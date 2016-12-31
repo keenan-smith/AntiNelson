@@ -31,15 +31,18 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             for (int i = 0; i < Provider.clients.Count; i++)
             {
-                if (GUILayout.Button(Provider.clients[i].playerID.characterName))
+                if (Provider.clients[i] != Variables.LocalSteamPlayer)
                 {
+                    if (GUILayout.Button(Provider.clients[i].playerID.characterName))
+                    {
+                        if (open.Contains(Provider.clients[i]))
+                            open.Remove(Provider.clients[i]);
+                        else
+                            open.Add(Provider.clients[i]);
+                    }
                     if (open.Contains(Provider.clients[i]))
-                        open.Remove(Provider.clients[i]);
-                    else
-                        open.Add(Provider.clients[i]);
+                        drawUI(Provider.clients[i]);
                 }
-                if (open.Contains(Provider.clients[i]))
-                    drawUI(Provider.clients[i]);
             }
         }
 
@@ -54,6 +57,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
 
                 MP_Config.instance.setFriends(friends.ToArray());
             }
+            GUILayout.Space(12f);
         }
         #endregion
 

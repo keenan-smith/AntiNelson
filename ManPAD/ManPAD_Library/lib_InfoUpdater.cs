@@ -146,6 +146,12 @@ namespace ManPAD.ManPAD_Library
                 if (!Variables.isInGame)
                     return;
 
+                if (Variables.LocalPlayer == null || Variables.LocalSteamPlayer == null)
+                {
+                    Variables.LocalPlayer = Player.player;
+                    Variables.LocalSteamPlayer = Player.player.channel.owner;
+                }
+
                 collections.Clear();
 
                 for (int i = 0; i < Provider.clients.Count; i++)
