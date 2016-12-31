@@ -18,8 +18,6 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             if (GUILayout.Button("White"))
                 MP_Config.instance.setTheme(EThemes.WHITE);
-            if (GUILayout.Button("Inverted"))
-                MP_Config.instance.setTheme(EThemes.INVERTED);
             if (GUILayout.Button("Aqua"))
                 MP_Config.instance.setTheme(EThemes.AQUA);
             if (GUILayout.Button("Magic"))

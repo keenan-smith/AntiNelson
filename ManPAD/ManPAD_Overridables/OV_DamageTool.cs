@@ -53,6 +53,9 @@ namespace ManPAD.ManPAD_Overridables
                     raycastInfo.material = DamageTool.getMaterial(hit.point, hit.transform, hit.collider);
                 }
 
+                if (MP_Weapons.alwaysHitHead) // idk if it should interfere with silentaim so i just put it above silent aim :\
+                    raycastInfo.limb = ELimb.SKULL;
+
                 #region SilentAim
                 if (MP_Aimbot.silentAim)
                 {

@@ -8,7 +8,6 @@ namespace ManPAD.ManPAD_API.GUI.Enumerables
     public enum EThemes
     {
         WHITE,
-        INVERTED,
         AQUA,
         MAGIC
     }

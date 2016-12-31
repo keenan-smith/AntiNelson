@@ -13,6 +13,8 @@ namespace ManPAD
         public static AssetBundle bundle;
         public static AssetBundle bundle_chams;
 
+        public static Player LocalPlayer;
+        public static SteamPlayer LocalSteamPlayer;
         public static bool isInGame = false;
         public static bool isSpying = false;
         public static GameObject LoadingUI_gameobject;
