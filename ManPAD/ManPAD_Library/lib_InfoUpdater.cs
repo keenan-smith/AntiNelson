@@ -167,11 +167,13 @@ namespace ManPAD.ManPAD_Library
                 for (int i = 0; i < VehicleManager.vehicles.Count; i++)
                     collections.Add(new GOUpdate(VehicleManager.vehicles[i]));
 
-                foreach (InteractableStorage storage in UnityEngine.Object.FindObjectsOfType(typeof(InteractableStorage)) as InteractableStorage[])
-                    collections.Add(new GOUpdate(storage));
+                InteractableStorage[] storages = UnityEngine.Object.FindObjectsOfType(typeof(InteractableStorage)) as InteractableStorage[];
+                for (int i = 0; i < storages.Count(); i++)
+                    collections.Add(new GOUpdate(storages[i]));
 
-                foreach (InteractableSentry sentry in UnityEngine.Object.FindObjectsOfType(typeof(InteractableSentry)) as InteractableSentry[])
-                    collections.Add(new GOUpdate(sentry));
+                InteractableSentry[] sentrys = UnityEngine.Object.FindObjectsOfType(typeof(InteractableSentry)) as InteractableSentry[];
+                for (int i = 0; i < sentrys.Count(); i++)
+                    collections.Add(new GOUpdate(sentrys[i]));
 
                 for (int i = 0; i < AnimalManager.animals.Count; i++)
                     collections.Add(new GOUpdate(AnimalManager.animals[i]));
