@@ -23,6 +23,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool nosway = true;
         public static bool attackThroughWalls = false;
         public static bool farReach = false;
+        public static bool alwaysHitHead = false;
         #endregion
 
         #region Mono Functions
@@ -91,6 +92,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             farReach = GUILayout.Toggle(farReach, "Far Reach");
 #if !FREE
             attackThroughWalls = GUILayout.Toggle(attackThroughWalls, "Attack Through Walls");
+            alwaysHitHead = GUILayout.Toggle(alwaysHitHead, "Always Hit Head");
 #endif
         }
 
