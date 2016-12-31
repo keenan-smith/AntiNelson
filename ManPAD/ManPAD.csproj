@@ -97,9 +97,6 @@
     <Compile Include="ManPAD_API\Types\ESPDraw.cs" />
     <Compile Include="ManPAD_API\Types\GOUpdate.cs" />
     <Compile Include="ManPAD_API\Types\WAssetSave.cs" />
-    <Compile Include="ManPAD_Hacks\MainMenu\MP_ic3ESP.cs" />
-    <Compile Include="ManPAD_Hacks\MainMenu\MP_iItemFilters.cs" />
-    <Compile Include="ManPAD_Library\iESP.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Achievements.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Aimbot.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_ESP.cs" />

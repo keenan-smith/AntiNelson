@@ -316,7 +316,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_ShowNames)
                                         updateObject.text += Tools.getZombieName((Zombie)updateObject.instance) + "\n";
                                     if (MP_ESP.ESP_ShowDistances)
-                                        updateObject.text += distance + "\n";
+                                        updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
@@ -352,7 +352,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_ShowNames)
                                         updateObject.text += animal.asset.animalName + "\n";
                                     if (MP_ESP.ESP_ShowDistances)
-                                        updateObject.text += distance + "\n";
+                                        updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
@@ -393,7 +393,7 @@ namespace ManPAD.ManPAD_Library
                                             if (MP_ESP.ESP_ShowNames)
                                                 updateObject.text += item.asset.itemName + "\n";
                                             if (MP_ESP.ESP_ShowDistances)
-                                                updateObject.text += distance + "\n";
+                                                updateObject.text += "Distance: " + distance + "\n";
                                             if (MP_ESP.ESP_Box && collider != null)
                                                 updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
@@ -435,7 +435,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_Vehicles_ShowLocked)
                                         updateObject.text += "Locked: " + (vehicle.isLocked ? "Yes" : "No") + "\n";
                                     if (MP_ESP.ESP_ShowDistances)
-                                        updateObject.text += distance + "\n";
+                                        updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
@@ -473,7 +473,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_Storages_ShowLocked)
                                         updateObject.text += "Locked: " + (storage.checkUseable() ? "Yes" : "No") + "\n";
                                     if (MP_ESP.ESP_ShowDistances)
-                                        updateObject.text += distance + "\n";
+                                        updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
@@ -509,7 +509,7 @@ namespace ManPAD.ManPAD_Library
                                     if (MP_ESP.ESP_ShowNames)
                                         updateObject.text += "Storage\n";
                                     if (MP_ESP.ESP_ShowDistances)
-                                        updateObject.text += distance + "\n";
+                                        updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
 
