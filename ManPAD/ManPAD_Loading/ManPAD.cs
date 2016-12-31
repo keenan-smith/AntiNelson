@@ -27,7 +27,6 @@ namespace ManPAD.ManPAD_Loading
             MP_GOLoader.library_addLibrary(typeof(lib_InfoUpdater));
 #if DEBUG
             MP_GOLoader.library_addLibrary(typeof(lib_GoldExploits));
-            MP_GOLoader.library_addLibrary(typeof(iESP));
 #endif
             MP_GOLoader.library_addLibrary(typeof(EBones));
 #if DEBUG

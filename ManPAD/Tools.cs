@@ -14,7 +14,19 @@ namespace ManPAD
     {
         public static float getDistance(Vector3 point)
         {
-            return Vector3.Distance(Camera.main.transform.position, point);
+            Vector3 firstPosition = MainCamera.instance.transform.position;
+            Vector3 heading;
+            float distanceSquared;
+            float distance;
+
+            heading.x = firstPosition.x - point.x;
+            heading.y = firstPosition.y - point.y;
+            heading.z = firstPosition.z - point.z;
+
+            distanceSquared = heading.x * heading.x + heading.y * heading.y + heading.z * heading.z;
+            distance = Mathf.Sqrt(distanceSquared);
+            
+            return distance;
         }
 
         public static void DrawLabel(Vector3 point, string label, float fromY = 0f)

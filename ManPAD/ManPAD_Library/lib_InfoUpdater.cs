@@ -318,6 +318,199 @@ namespace ManPAD.ManPAD_Library
                             #endregion
                         }
                         #endregion
+
+                        #region Animals
+                        if (updateObject.type == EGOUpdate.ANIMAL && !((Animal)updateObject.instance).isDead && MP_ESP.ESP_Enabled && MP_ESP.ESP_Animals_Enabled)
+                        {
+                            Animal animal = (Animal)updateObject.instance;
+                            int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
+
+                            #region ESP
+                            if (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance)
+                            {
+                                updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
+                                updateObject.text = "";
+                                updateObject.color = MP_ESP.ESP_Animals_Color.selectedColor;
+
+                                if (updateObject.screenPosition.z > 0)
+                                {
+                                    Collider collider = null;
+
+                                    if (MP_ESP.ESP_Box)
+                                        collider = updateObject.gameObject.GetComponent<Collider>();
+                                    updateObject.screenPosition.x -= 64f;
+                                    updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
+
+                                    if (MP_ESP.ESP_ShowNames)
+                                        updateObject.text += animal.asset.animalName + "\n";
+                                    if (MP_ESP.ESP_ShowDistances)
+                                        updateObject.text += distance + "\n";
+                                    if (MP_ESP.ESP_Box && collider != null)
+                                        updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
+
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ANIMAL, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                }
+                            }
+                            #endregion
+                        }
+                        #endregion
+
+                        #region Items
+                        if (updateObject.type == EGOUpdate.ITEM)
+                        {
+                            InteractableItem item = (InteractableItem)updateObject.instance;
+                            bool on = false;
+                            if (MP_ESP.ESP_Items_Types.filter.TryGetValue(item.asset.type, out on))
+                            {
+                                if (on)
+                                {
+                                    int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
+
+                                    #region ESP
+                                    if (MP_ESP.ESP_Enabled && MP_ESP.ESP_Items_Enabled && (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance))
+                                    {
+                                        updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
+                                        updateObject.text = "";
+                                        updateObject.color = MP_ESP.ESP_Items_Color.selectedColor;
+
+                                        if (updateObject.screenPosition.z > 0)
+                                        {
+                                            Collider collider = null;
+
+                                            if (MP_ESP.ESP_Box)
+                                                collider = updateObject.gameObject.GetComponent<Collider>();
+                                            updateObject.screenPosition.x -= 64f;
+                                            updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
+
+                                            if (MP_ESP.ESP_ShowNames)
+                                                updateObject.text += item.asset.itemName + "\n";
+                                            if (MP_ESP.ESP_ShowDistances)
+                                                updateObject.text += distance + "\n";
+                                            if (MP_ESP.ESP_Box && collider != null)
+                                                updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
+
+                                            MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.ITEM, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                        }
+                                    }
+                                    #endregion
+                                }
+                            }
+                        }
+                        #endregion
+
+                        #region Vehicles
+                        if (updateObject.type == EGOUpdate.VEHICLE && MP_ESP.ESP_Enabled && MP_ESP.ESP_Vehicles_Enabled)
+                        {
+                            InteractableVehicle vehicle = (InteractableVehicle)updateObject.instance;
+                            int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
+
+                            #region ESP
+                            if (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance)
+                            {
+                                updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
+                                updateObject.text = "";
+                                updateObject.color = MP_ESP.ESP_Vehicles_Color.selectedColor;
+
+                                if (updateObject.screenPosition.z > 0)
+                                {
+                                    Collider collider = null;
+
+                                    if (MP_ESP.ESP_Box)
+                                        collider = updateObject.gameObject.GetComponent<Collider>();
+                                    updateObject.screenPosition.x -= 64f;
+                                    updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
+
+                                    if (MP_ESP.ESP_ShowNames)
+                                        updateObject.text += vehicle.asset.vehicleName + "\n";
+                                    if (MP_ESP.ESP_Vehicles_ShowFuel)
+                                        updateObject.text += "Fuel: " + vehicle.fuel + "\n";
+                                    if (MP_ESP.ESP_Vehicles_ShowLocked)
+                                        updateObject.text += "Locked: " + (vehicle.isLocked ? "Yes" : "No") + "\n";
+                                    if (MP_ESP.ESP_ShowDistances)
+                                        updateObject.text += distance + "\n";
+                                    if (MP_ESP.ESP_Box && collider != null)
+                                        updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
+
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.VEHICLE, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                }
+                            }
+                            #endregion
+                        }
+                        #endregion
+
+                        #region Storages
+                        if (updateObject.type == EGOUpdate.STORAGE && MP_ESP.ESP_Enabled && MP_ESP.ESP_Storages_Enabled)
+                        {
+                            InteractableStorage storage = (InteractableStorage)updateObject.instance;
+                            int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
+
+                            #region ESP
+                            if (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance)
+                            {
+                                updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
+                                updateObject.text = "";
+                                updateObject.color = MP_ESP.ESP_Storages_Color.selectedColor;
+
+                                if (updateObject.screenPosition.z > 0)
+                                {
+                                    Collider collider = null;
+
+                                    if (MP_ESP.ESP_Box)
+                                        collider = updateObject.gameObject.GetComponent<Collider>();
+                                    updateObject.screenPosition.x -= 64f;
+                                    updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
+
+                                    if (MP_ESP.ESP_ShowNames)
+                                        updateObject.text += "Storage\n";
+                                    if (MP_ESP.ESP_Storages_ShowLocked)
+                                        updateObject.text += "Locked: " + (storage.checkUseable() ? "Yes" : "No") + "\n";
+                                    if (MP_ESP.ESP_ShowDistances)
+                                        updateObject.text += distance + "\n";
+                                    if (MP_ESP.ESP_Box && collider != null)
+                                        updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
+
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.STORAGE, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                }
+                            }
+                            #endregion
+                        }
+                        #endregion
+
+                        #region Sentries
+                        if (updateObject.type == EGOUpdate.SENTRY && MP_ESP.ESP_Enabled && MP_ESP.ESP_Sentrys_Enabled)
+                        {
+                            InteractableSentry sentry = (InteractableSentry)updateObject.instance;
+                            int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
+
+                            #region ESP
+                            if (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance)
+                            {
+                                updateObject.screenPosition = MainCamera.instance.WorldToScreenPoint(updateObject.gameObject.transform.position);
+                                updateObject.text = "";
+                                updateObject.color = MP_ESP.ESP_Sentrys_Color.selectedColor;
+
+                                if (updateObject.screenPosition.z > 0)
+                                {
+                                    Collider collider = null;
+
+                                    if (MP_ESP.ESP_Box)
+                                        collider = updateObject.gameObject.GetComponent<Collider>();
+                                    updateObject.screenPosition.x -= 64f;
+                                    updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
+
+                                    if (MP_ESP.ESP_ShowNames)
+                                        updateObject.text += "Storage\n";
+                                    if (MP_ESP.ESP_ShowDistances)
+                                        updateObject.text += distance + "\n";
+                                    if (MP_ESP.ESP_Box && collider != null)
+                                        updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
+
+                                    MP_ESP.draw.Add(new ESPDraw(updateObject.text, updateObject.gameObject, EESPItem.SENTRY, updateObject.screenPosition, updateObject.box, updateObject.color));
+                                }
+                            }
+                            #endregion
+                        }
+                        #endregion
                     }
                 }
 
