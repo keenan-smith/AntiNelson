@@ -196,8 +196,6 @@ namespace ManPAD.ManPAD_Overridables
             if(_logoImage == null)
                 _logoImage = Variables.bundle.LoadAsset("MANPADLOGO.png") as Texture;
             if (_theme == EThemes.WHITE)
-                _skin = Variables.bundle.LoadAsset("s_default.guiskin") as GUISkin;
-            else if (_theme == EThemes.INVERTED)
                 _skin = Variables.bundle.LoadAsset("s_dark.guiskin") as GUISkin;
             else if (_theme == EThemes.AQUA)
                 _skin = Variables.bundle.LoadAsset("s_aqua.guiskin") as GUISkin;
