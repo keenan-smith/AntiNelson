@@ -237,9 +237,9 @@ namespace ManPAD.ManPAD_Library
                                             updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
                                             SteamPlayer p = (SteamPlayer)updateObject.instance;
 
-                                            if (MP_ESP.ESP_ShowNames)
+                                            if (MP_ESP.ESP_Players_ShowNames)
                                                 updateObject.text += p.playerID.characterName + "\n";
-                                            if (MP_ESP.ESP_ShowDistances)
+                                            if (MP_ESP.ESP_Players_ShowDistances)
                                                 updateObject.text += "Distance: " + distance + "\n";
                                             if (MP_ESP.ESP_Players_ShowWeapons)
                                                 updateObject.text += "Weapon: " + (p.player.equipment.asset == null ? "None" : p.player.equipment.asset.itemName) + "\n";
@@ -313,9 +313,9 @@ namespace ManPAD.ManPAD_Library
                                     updateObject.screenPosition.x -= 64f;
                                     updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
 
-                                    if (MP_ESP.ESP_ShowNames)
+                                    if (MP_ESP.ESP_Zombies_ShowNames)
                                         updateObject.text += Tools.getZombieName((Zombie)updateObject.instance) + "\n";
-                                    if (MP_ESP.ESP_ShowDistances)
+                                    if (MP_ESP.ESP_Zombies_ShowDistances)
                                         updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
@@ -349,9 +349,9 @@ namespace ManPAD.ManPAD_Library
                                     updateObject.screenPosition.x -= 64f;
                                     updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
 
-                                    if (MP_ESP.ESP_ShowNames)
+                                    if (MP_ESP.ESP_Animals_ShowNames)
                                         updateObject.text += animal.asset.animalName + "\n";
-                                    if (MP_ESP.ESP_ShowDistances)
+                                    if (MP_ESP.ESP_Animals_ShowDistances)
                                         updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
@@ -390,9 +390,9 @@ namespace ManPAD.ManPAD_Library
                                             updateObject.screenPosition.x -= 64f;
                                             updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
 
-                                            if (MP_ESP.ESP_ShowNames)
+                                            if (MP_ESP.ESP_Items_ShowNames)
                                                 updateObject.text += item.asset.itemName + "\n";
-                                            if (MP_ESP.ESP_ShowDistances)
+                                            if (MP_ESP.ESP_Items_ShowDistances)
                                                 updateObject.text += "Distance: " + distance + "\n";
                                             if (MP_ESP.ESP_Box && collider != null)
                                                 updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
@@ -428,13 +428,13 @@ namespace ManPAD.ManPAD_Library
                                     updateObject.screenPosition.x -= 64f;
                                     updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
 
-                                    if (MP_ESP.ESP_ShowNames)
+                                    if (MP_ESP.ESP_Items_ShowNames)
                                         updateObject.text += vehicle.asset.vehicleName + "\n";
                                     if (MP_ESP.ESP_Vehicles_ShowFuel)
                                         updateObject.text += "Fuel: " + vehicle.fuel + "\n";
                                     if (MP_ESP.ESP_Vehicles_ShowLocked)
                                         updateObject.text += "Locked: " + (vehicle.isLocked ? "Yes" : "No") + "\n";
-                                    if (MP_ESP.ESP_ShowDistances)
+                                    if (MP_ESP.ESP_Vehicles_ShowDistances)
                                         updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
@@ -468,11 +468,11 @@ namespace ManPAD.ManPAD_Library
                                     updateObject.screenPosition.x -= 64f;
                                     updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
 
-                                    if (MP_ESP.ESP_ShowNames)
+                                    if (MP_ESP.ESP_Items_ShowNames)
                                         updateObject.text += "Storage\n";
                                     if (MP_ESP.ESP_Storages_ShowLocked)
                                         updateObject.text += "Locked: " + (storage.checkUseable() ? "Yes" : "No") + "\n";
-                                    if (MP_ESP.ESP_ShowDistances)
+                                    if (MP_ESP.ESP_Storages_ShowDistances)
                                         updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);
@@ -506,9 +506,9 @@ namespace ManPAD.ManPAD_Library
                                     updateObject.screenPosition.x -= 64f;
                                     updateObject.screenPosition.y = (Screen.height - (updateObject.screenPosition.y + 1f)) - 12f;
 
-                                    if (MP_ESP.ESP_ShowNames)
-                                        updateObject.text += "Storage\n";
-                                    if (MP_ESP.ESP_ShowDistances)
+                                    if (MP_ESP.ESP_Sentrys_ShowNames)
+                                        updateObject.text += "Sentry\n";
+                                    if (MP_ESP.ESP_Sentrys_ShowDistances)
                                         updateObject.text += "Distance: " + distance + "\n";
                                     if (MP_ESP.ESP_Box && collider != null)
                                         updateObject.box = Tools.BoundsToScreenRect(collider.bounds);

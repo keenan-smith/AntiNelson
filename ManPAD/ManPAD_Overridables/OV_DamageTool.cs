@@ -59,7 +59,7 @@ namespace ManPAD.ManPAD_Overridables
                 #region SilentAim
                 if (MP_Aimbot.silentAim)
                 {
-                    Player p = Tools.getNearestPlayer();
+                    Player p = ((SteamPlayer)MP_Aimbot.attackNext).player;
 
                     if (p == null)
                         return raycastInfo;

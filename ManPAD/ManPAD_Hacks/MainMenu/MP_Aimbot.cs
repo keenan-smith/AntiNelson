@@ -41,6 +41,9 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         public static bool aim_friends = false;
         public static bool aim_zombies = false;
         public static bool aim_animals = false;
+
+        public static bool drawTracer = false;
+        Material mat;
         #endregion
 
         #region Mono Functions
@@ -48,6 +51,40 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         {
             //StartCoroutine(getAttacking());
             aim();
+        }
+        public void OnGUI()
+        {
+            if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.attackNext != null && MP_Aimbot.drawTracer)
+            {
+                SteamPlayer sp = (SteamPlayer)MP_Aimbot.attackNext;
+                Player p = sp.player;
+                Vector3 player_pos = MainCamera.instance.WorldToScreenPoint(p.gameObject.transform.position);
+                player_pos.y = (Screen.height - player_pos.y);
+
+                if (mat == null)
+                {
+                    mat = new Material(Shader.Find("Hidden/Internal-Colored"));
+                    mat.hideFlags = HideFlags.HideAndDontSave;
+                    mat.SetInt("_SrcBlend", 5);
+                    mat.SetInt("_DstBlend", 10);
+                    mat.SetInt("_Cull", 0);
+                    mat.SetInt("_ZWrite", 0);
+                }
+
+                if (player_pos.z > 0)
+                {
+                    GL.PushMatrix();
+                    GL.Begin(1);
+                    mat.SetPass(0);
+                    GL.Color(Color.black);
+
+                    GL.Vertex3(Screen.width / 2, Screen.height / 2, 0);
+                    GL.Vertex3(player_pos.x, player_pos.y, 0);
+
+                    GL.End();
+                    GL.PopMatrix();
+                }
+            }
         }
         #endregion
 
@@ -93,33 +130,34 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             GUILayout.Space(10f);
             aim_players = GUILayout.Toggle(aim_players, "Attack Players");
             aim_friends = GUILayout.Toggle(aim_friends, "Attack Friends");
+
+            GUILayout.Space(10f);
+            drawTracer = GUILayout.Toggle(drawTracer, "Draw Tracer to Current Target");
         }
 
         public void aim()
         {
-            if ((aimbot || silentAim) && Variables.isInGame)
+            if (aimbot && Variables.isInGame)
             {
                 if (attackNext != null)
                 {
-                    if (attackNextType == typeof(Player))
+                    Player localplayer = Player.player;
+                    Vector3 skullPosition = getAimPosition(((SteamPlayer)attackNext).player.gameObject.transform);
+                    localplayer.transform.LookAt(skullPosition);
+                    localplayer.transform.eulerAngles = new Vector3(0f, localplayer.transform.rotation.eulerAngles.y, 0f);
+                    Camera.main.transform.LookAt(skullPosition);
+                    float num4 = Camera.main.transform.localRotation.eulerAngles.x;
+                    if (num4 <= 90f && num4 <= 270f)
                     {
-                        Player localplayer = Player.player;
-                        Vector3 skullPosition = getAimPosition(((SteamPlayer)attackNext).player.gameObject.transform);
-                        localplayer.transform.LookAt(skullPosition);
-                        localplayer.transform.eulerAngles = new Vector3(0f, localplayer.transform.rotation.eulerAngles.y, 0f);
-                        Camera.main.transform.LookAt(skullPosition);
-                        float num4 = Camera.main.transform.localRotation.eulerAngles.x;
-                        if (num4 <= 90f && num4 <= 270f)
-                        {
-                            num4 = Camera.main.transform.localRotation.eulerAngles.x + 90f;
-                        }
-                        else if (num4 >= 270f && num4 <= 360f)
-                        {
-                            num4 = Camera.main.transform.localRotation.eulerAngles.x - 270f;
-                        }
-                        localplayer.look.GetType().GetField("_pitch", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, num4);
-                        localplayer.look.GetType().GetField("_yaw", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, localplayer.transform.rotation.eulerAngles.y);
+                        num4 = Camera.main.transform.localRotation.eulerAngles.x + 90f;
                     }
+                    else if (num4 >= 270f && num4 <= 360f)
+                    {
+                        num4 = Camera.main.transform.localRotation.eulerAngles.x - 270f;
+                    }
+                    localplayer.look.GetType().GetField("_pitch", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, num4);
+                    localplayer.look.GetType().GetField("_yaw", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, localplayer.transform.rotation.eulerAngles.y);
+                 
                 }
             }
         }
