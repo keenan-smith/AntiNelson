@@ -211,7 +211,7 @@ namespace ManPAD.ManPAD_Library
                                 int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
 
                                 #region Aimbot & SilentAim
-                                if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players && !MP_Players.isFriend((SteamPlayer)updateObject.instance))
+                                if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players)
                                 {
                                     if (aim_distanceAway > distance && (distance <= MP_Aimbot.distance || MP_Aimbot.ignoreDistance))
                                     {
@@ -255,26 +255,21 @@ namespace ManPAD.ManPAD_Library
                                 #endregion
 
                                 #region Chams
-                                if (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance)
+                                Renderer[] renderers = ((SteamPlayer)updateObject.instance).player.gameObject.GetComponentsInChildren<Renderer>();
+
+                                for (int a = 0; a < renderers.Length; a++)
                                 {
-                                    Renderer[] renderers = ((SteamPlayer)updateObject.instance).player.gameObject.GetComponentsInChildren<Renderer>();
-
-                                    bool isFriend = MP_Players.isFriend((SteamPlayer)updateObject.instance);
-
-                                    for (int a = 0; a < renderers.Length; a++)
+                                    for (int b = 0; b < renderers[a].materials.Length; b++)
                                     {
-                                        for (int b = 0; b < renderers[a].materials.Length; b++)
+                                        if (Variables.isSpying || !MP_ESP.ESP_Enabled || !MP_ESP.ESP_Chams || !MP_ESP.ESP_Players_Enabled || (distance > MP_ESP.ESP_Distance && !MP_ESP.ESP_IgnoreDistance))
                                         {
-                                            if (Variables.isSpying || !MP_ESP.ESP_Enabled || !MP_ESP.ESP_Chams || !MP_ESP.ESP_Players_Enabled)
-                                            {
-                                                if (renderers[a].materials[b].shader == esp)
-                                                    renderers[a].materials[b].shader = normal;
-                                            }
-                                            else
-                                            {
-                                                if (renderers[a].materials[b].shader != esp)
-                                                    renderers[a].materials[b].shader = esp;
-                                            }
+                                            if (renderers[a].materials[b].shader == esp)
+                                                renderers[a].materials[b].shader = normal;
+                                        }
+                                        else
+                                        {
+                                            if (renderers[a].materials[b].shader != esp)
+                                                renderers[a].materials[b].shader = esp;
                                         }
                                     }
                                 }

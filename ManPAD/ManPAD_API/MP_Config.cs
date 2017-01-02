@@ -104,13 +104,33 @@ namespace ManPAD.ManPAD_API
             XmlElement keybinds = _doc.CreateElement("Keybinds");
             _root.AppendChild(keybinds);
 
+            XmlElement keybind_Aimbot = _doc.CreateElement("Aimbot");
+            keybind_Aimbot.InnerText = KeyCode.None.ToString();
+            keybinds.AppendChild(keybind_Aimbot);
+
+            XmlElement keybind_SilentAim = _doc.CreateElement("SilentAim");
+            keybind_SilentAim.InnerText = KeyCode.None.ToString();
+            keybinds.AppendChild(keybind_SilentAim);
+
             XmlElement keybind_menu = _doc.CreateElement("MainMenu");
             keybind_menu.InnerText = KeyCode.F1.ToString();
             keybinds.AppendChild(keybind_menu);
 
-            XmlElement Aim_Key = _doc.CreateElement("AimKey");
-            keybind_menu.InnerText = KeyCode.F.ToString();
-            keybinds.AppendChild(keybind_menu);
+            XmlElement keybind_AimKey = _doc.CreateElement("AimKey");
+            keybind_AimKey.InnerText = KeyCode.None.ToString();
+            keybinds.AppendChild(keybind_AimKey);
+
+            XmlElement keybind_ESP = _doc.CreateElement("ESP");
+            keybind_ESP.InnerText = KeyCode.None.ToString();
+            keybinds.AppendChild(keybind_ESP);
+
+            XmlElement keybind_InstantDisconnect = _doc.CreateElement("InstantDisconnect");
+            keybind_InstantDisconnect.InnerText = KeyCode.None.ToString();
+            keybinds.AppendChild(keybind_InstantDisconnect);
+
+            XmlElement keybind_Overlay = _doc.CreateElement("Overlay");
+            keybind_Overlay.InnerText = KeyCode.F2.ToString();
+            keybinds.AppendChild(keybind_Overlay);
 
             XmlElement friends = _doc.CreateElement("Friends");
             _root.AppendChild(friends);
