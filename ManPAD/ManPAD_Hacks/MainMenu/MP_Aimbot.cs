@@ -54,7 +54,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         }
         public void OnGUI()
         {
-            if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.attackNext != null && MP_Aimbot.drawTracer)
+            if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.attackNext != null && MP_Aimbot.drawTracer && !Variables.isSpying && Variables.isInGame)
             {
                 SteamPlayer sp = (SteamPlayer)MP_Aimbot.attackNext;
                 Player p = sp.player;
@@ -98,7 +98,7 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
          
             ignoreDistance = GUILayout.Toggle(ignoreDistance, "Ignore Distance");
             GUILayout.Label("Distance: " + distance);
-            distance = (float)Math.Round(GUILayout.HorizontalSlider(distance, 0f, 50000f));
+            distance = (float)Math.Round(GUILayout.HorizontalSlider(distance, 0f, 4000f));
             if (GUILayout.Button("Target: " + aimLocation.ToString()))
             {
                 if (Array.IndexOf(limbs, aimLocation) == limbs.Length - 1)
@@ -141,23 +141,26 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
             {
                 if (attackNext != null)
                 {
-                    Player localplayer = Player.player;
-                    Vector3 skullPosition = getAimPosition(((SteamPlayer)attackNext).player.gameObject.transform);
-                    localplayer.transform.LookAt(skullPosition);
-                    localplayer.transform.eulerAngles = new Vector3(0f, localplayer.transform.rotation.eulerAngles.y, 0f);
-                    Camera.main.transform.LookAt(skullPosition);
-                    float num4 = Camera.main.transform.localRotation.eulerAngles.x;
-                    if (num4 <= 90f && num4 <= 270f)
-                    {
-                        num4 = Camera.main.transform.localRotation.eulerAngles.x + 90f;
-                    }
-                    else if (num4 >= 270f && num4 <= 360f)
-                    {
-                        num4 = Camera.main.transform.localRotation.eulerAngles.x - 270f;
-                    }
-                    localplayer.look.GetType().GetField("_pitch", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, num4);
-                    localplayer.look.GetType().GetField("_yaw", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, localplayer.transform.rotation.eulerAngles.y);
-                 
+                    //if (Input.GetKey(KeyCode.F))
+                    //{
+
+                        Player localplayer = Player.player;
+                        Vector3 skullPosition = getAimPosition(((SteamPlayer)attackNext).player.gameObject.transform);
+                        localplayer.transform.LookAt(skullPosition);
+                        localplayer.transform.eulerAngles = new Vector3(0f, localplayer.transform.rotation.eulerAngles.y, 0f);
+                        Camera.main.transform.LookAt(skullPosition);
+                        float num4 = Camera.main.transform.localRotation.eulerAngles.x;
+                        if (num4 <= 90f && num4 <= 270f)
+                        {
+                            num4 = Camera.main.transform.localRotation.eulerAngles.x + 90f;
+                        }
+                        else if (num4 >= 270f && num4 <= 360f)
+                        {
+                            num4 = Camera.main.transform.localRotation.eulerAngles.x - 270f;
+                        }
+                        localplayer.look.GetType().GetField("_pitch", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, num4);
+                        localplayer.look.GetType().GetField("_yaw", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(localplayer.look, localplayer.transform.rotation.eulerAngles.y);
+                    //}
                 }
             }
         }

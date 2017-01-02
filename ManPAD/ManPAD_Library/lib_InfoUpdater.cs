@@ -211,7 +211,7 @@ namespace ManPAD.ManPAD_Library
                                 int distance = (int)Tools.getDistance(updateObject.gameObject.transform.position);
 
                                 #region Aimbot & SilentAim
-                                if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players)
+                                if ((MP_Aimbot.aimbot || MP_Aimbot.silentAim) && MP_Aimbot.aim_players && !MP_Players.isFriend((SteamPlayer)updateObject.instance))
                                 {
                                     if (aim_distanceAway > distance && (distance <= MP_Aimbot.distance || MP_Aimbot.ignoreDistance))
                                     {
@@ -258,6 +258,8 @@ namespace ManPAD.ManPAD_Library
                                 if (distance <= MP_ESP.ESP_Distance || MP_ESP.ESP_IgnoreDistance)
                                 {
                                     Renderer[] renderers = ((SteamPlayer)updateObject.instance).player.gameObject.GetComponentsInChildren<Renderer>();
+
+                                    bool isFriend = MP_Players.isFriend((SteamPlayer)updateObject.instance);
 
                                     for (int a = 0; a < renderers.Length; a++)
                                     {
