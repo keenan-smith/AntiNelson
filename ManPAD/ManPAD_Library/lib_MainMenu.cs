@@ -9,6 +9,7 @@ using ManPAD.ManPAD_API;
 using ManPAD.ManPAD_API.GUI;
 using ManPAD.ManPAD_API.GUI.Attributes;
 using ManPAD.ManPAD_API.GUI.Enumerables;
+using ManPAD.ManPAD_Hacks.MainMenu;
 
 namespace ManPAD.ManPAD_Library
 {
@@ -53,7 +54,7 @@ namespace ManPAD.ManPAD_Library
                         _skin = Variables.bundle.LoadAsset("s_magic.guiskin") as GUISkin;
                 }
             }
-            if (Input.GetKeyDown(MP_Config.instance.getKeybind("MainMenu")) || Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(MP_Keybinds.key_MainMenu) || Input.GetKeyDown(KeyCode.Escape))
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
