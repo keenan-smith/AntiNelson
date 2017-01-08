@@ -89,15 +89,15 @@
     file_put_contents($path_users, json_encode($json_users));
 
     $_returnData = array(
-      "loader" => base64_encode(file_get_contents($path_1_loader)),
-      "executor" => base64_encode(file_get_contents($path_1_executor)),
+      "loader" => file_get_contents($path_1_loader),
+      "executor" => file_get_contents($path_1_executor),
       "injection" => null
     );
 
     if($json_users[$HWID]["isPremium"] || $json_hacks["freeBypass"])
-      $_returnData["injection"] = base64_encode(file_get_contents($path_1_bypasser));
+      $_returnData["injection"] = file_get_contents($path_1_bypasser);
     else
-      $_returnData["injection"] = base64_encode(file_get_contents($path_1_injector));
+      $_returnData["injection"] = file_get_contents($path_1_injector);
 
     sendData($_returnData);
   }
@@ -127,9 +127,9 @@
     );
 
     if($json_users[$HWID]["isPremium"] || $json_hacks["freeHack"])
-      $_returnData["hack"] = base64_encode(file_get_contents($path_2_premium));
+      $_returnData["hack"] = file_get_contents($path_2_premium);
     else
-      $_returnData["hack"] = base64_encode(file_get_contents($path_2_free));
+      $_returnData["hack"] = file_get_contents($path_2_free);
 
     sendData($_returnData);
   }

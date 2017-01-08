@@ -67,9 +67,9 @@
   <body>
     <form action="user.php" method="post">
       <input type="hidden" name="HWID" <?php echo("value='" . $HWID . "'") ?> />
-      Steam Name: <?php echo(urldecode($json_users[$HWID]["steam_name"])); ?>
+      Steam Name: <?php echo(isset($json_users[$HWID]["steam_name"] ? urldecode($json_users[$HWID]["steam_name"]) : "None"); ?>
       <br /><br />
-      Steam 64: <?php echo($json_users[$HWID]["steam_64"]); ?>
+      Steam 64: <?php echo(isset($json_users[$HWID]["steam_64"] ? urldecode($json_users[$HWID]["steam_64"]) : "None"); ?>
       <br /><br />
       HWID: <?php echo($HWID); ?>
       <br /><br />
