@@ -66,7 +66,7 @@ char* curDir()
 
 }
 
-char* getFilePath(const char* fn)
+const char* getFilePath(const char* fn)
 {
 
 	char tPath[MAX_PATH * 4];
@@ -101,6 +101,19 @@ void setClipboard(const char* s)
 		SetClipboardData(CF_TEXT, clipbuffer);
 		CloseClipboard();
 	}
+
+}
+
+std::string getIP(const char* host)
+{
+
+	hostent* he = gethostbyname(host);
+	BYTE* ip = reinterpret_cast<BYTE*>(he->h_addr_list[0]);
+
+	std::ostringstream stream;
+	std::copy(ip, ip + 4, std::ostream_iterator<unsigned int>(stream, "."));
+
+	return stream.str().substr(0, stream.str().length() - 1);
 
 }
 
@@ -148,6 +161,113 @@ SOCKET getSocket(const char* ip, unsigned short port)
 	return sockDesc;
 
 }
+
+void removeString(std::string& parent, const std::string& r)
+{
+
+	size_t n = r.length();
+
+	for (size_t i = parent.find(r); i != std::string::npos; i = parent.find(r))
+		parent.erase(i, n);
+
+}
+
+std::string readSocketLine(int socket, bool includeEndl = false)
+{
+
+	int i;
+	std::string out = "";
+	char c = '\0';
+
+	while((i = recv(socket, &c, 1, 0)) > 0)
+	{
+
+		if (c == '\r')
+		{
+
+			if (includeEndl)
+				out += c;
+
+			i = recv(socket, &c, 1, MSG_PEEK);
+
+			if(i > 0 && c == '\n')
+			{
+
+				i = recv(socket, &c, 1, 0);
+				
+				if (includeEndl)
+					out += c;
+
+				break;
+
+			}
+
+		}
+
+		out += c;
+
+	}
+
+	return out;
+
+}
+
+std::string getPSN()
+{
+
+	int cpuinfo[4] = { -1 };
+	__cpuid(cpuinfo, 0);
+
+	std::string str = "";
+
+	for (int i = 0; i < 3; i++)
+		str += std::to_string(cpuinfo[i]);
+
+	return str;
+
+}
+
+std::string getHDDSN()
+{
+
+	DWORD sn;
+	GetVolumeInformationA("C:\\", NULL, NULL, &sn, NULL, NULL, NULL, NULL);
+
+	return std::to_string(sn);
+
+}
+
+std::string getOSID()
+{
+
+	char name[MAX_COMPUTERNAME_LENGTH + 1] = {};
+	DWORD len = sizeof name;
+
+	GetComputerNameA(name, &len);
+
+	std::stringstream ss;
+	for (int i = 0; i< strlen(name); ++i)
+		ss << std::hex << (int)name[i];
+
+	return ss.str();
+
+}
+
+std::string getID()
+{
+
+	std::string str = "";
+
+	str += getPSN().c_str();
+	str += "-";
+	str += getHDDSN().c_str();
+	str += "-";
+	str += getOSID().c_str();
+
+	return str;
+
+}
+
 
 /* Begin stolen shit functions */
 static const std::string base64_chars =

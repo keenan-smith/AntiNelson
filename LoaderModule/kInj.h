@@ -1,6 +1,8 @@
 #pragma once
 #pragma warning(disable:4800)
 
+#include <winsock2.h>
+#include <ws2tcpip.h>
 #include <Windows.h>
 #include <direct.h>
 #include <iostream>
@@ -10,6 +12,7 @@
 #include <strsafe.h>
 #include <iomanip>
 #include <sstream>
+#include <iterator>
 #include <vector>
 #include <fstream>
 
@@ -132,7 +135,7 @@ BYTE* readFileBytes(const char* name, size_t* length)
 
 }
 
-bool checkFile(char* fn)
+bool checkFile(const char* fn)
 {
 
 	if (!fn)
@@ -190,7 +193,7 @@ bool setDebugPriv(bool flag)
 
 }
 
-HANDLE getProc(char* name, DWORD security)
+HANDLE getProc(const char* name, DWORD security)
 {
 
 	HANDLE h32 = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
@@ -932,6 +935,114 @@ std::string getID()
 	str += getOSID().c_str();
 
 	return str;
+
+}
+
+std::string getIP(const char* host)
+{
+
+	hostent* he = gethostbyname(host);
+	BYTE* ip = reinterpret_cast<BYTE*>(he->h_addr_list[0]);
+
+	std::ostringstream stream;
+	std::copy(ip, ip + 4, std::ostream_iterator<unsigned int>(stream, "."));
+
+	return stream.str().substr(0, stream.str().length() - 1);
+
+}
+
+std::string getIP(char* host)
+{
+
+	hostent* he = gethostbyname(host);
+	BYTE* ip = reinterpret_cast<BYTE*>(he->h_addr_list[0]);
+
+	std::ostringstream stream;
+	std::copy(ip, ip + 4, std::ostream_iterator<unsigned int>(stream, "."));
+
+	return stream.str().substr(0, stream.str().length() - 1);
+
+}
+
+void removeString(std::string& parent, const std::string& r)
+{
+
+	size_t n = r.length();
+
+	for (size_t i = parent.find(r); i != std::string::npos; i = parent.find(r))
+		parent.erase(i, n);
+
+}
+
+SOCKET getSocket(const char* ip, unsigned short port)
+{
+
+	SOCKET sockDesc = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (sockDesc < 0)
+	{
+		log("Failed to open socket: %d", sockDesc);
+		std::cin.ignore();
+		return 0;
+	}
+
+	struct sockaddr_in serverAddress;
+	serverAddress.sin_family = AF_INET;
+	serverAddress.sin_port = htons(port);
+	serverAddress.sin_addr.s_addr = inet_addr(ip);
+
+	if (connect(sockDesc, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0)
+	{
+
+		log("Failed to connect");
+		std::cin.ignore();
+		return 0;
+
+	}
+
+	log("Connected to: %s:%d", ip, port);
+
+	return sockDesc;
+
+}
+
+std::string readSocketLine(int socket, bool includeEndl = false)
+{
+
+	int i;
+	std::string out = "";
+	char c = '\0';
+
+	while ((i = recv(socket, &c, 1, 0)) > 0)
+	{
+
+		if (c == '\r')
+		{
+
+			if (includeEndl)
+				out += c;
+
+			i = recv(socket, &c, 1, MSG_PEEK);
+
+			if (i > 0 && c == '\n')
+			{
+
+				i = recv(socket, &c, 1, 0);
+
+				if (includeEndl)
+					out += c;
+
+				break;
+
+			}
+
+		}
+
+		out += c;
+
+	}
+
+	return out;
 
 }
 

