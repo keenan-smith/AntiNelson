@@ -111,13 +111,12 @@ int main(int argc, char** args)
 	std::string success = str.substr(0, str.find("false") != -1 ? 5 : 4);
 	str = str.substr(str.find("\":\"") + 3);
 	std::string loader = str.substr(0, str.find("\",\""));
-
-	/*str = str.substr(str.find("\":\"") + 3);
+	str = str.substr(str.find("\":\"") + 3);
 	std::string executor = str.substr(0, str.find("\",\""));
 	str = str.substr(str.find("\":\"") + 3);
-	std::string injection = str.substr(0, str.find("\"}"));*/
+	std::string injection = str.substr(0, str.find("\"}"));
 
-	std::vector<BYTE> vec3 = base64_decode(loader);;
+	std::vector<BYTE> vec3 = base64_decode(injection);;
 	LoadModule(vec3.data(), vec3.size());
 
 	return 0;
