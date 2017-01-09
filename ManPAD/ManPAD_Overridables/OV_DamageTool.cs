@@ -61,7 +61,7 @@ namespace ManPAD.ManPAD_Overridables
                 {
                     Player p = ((SteamPlayer)MP_Aimbot.attackNext).player;
 
-                    if (p == null)
+                    if (p == null || raycastInfo.zombie != null)
                         return raycastInfo;
 
                     raycastInfo.player = p;

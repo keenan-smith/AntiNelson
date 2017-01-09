@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ManPAD")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TriFect, ic3w0lf, Kunii")]
+[assembly: AssemblyCompany("TriFect, zoomy, Kunii, ic3w0lf")]
 [assembly: AssemblyProduct("ManPAD")]
-[assembly: AssemblyCopyright("Copyright © TriFect, ic3w0lf, Kunii 2016")]
+[assembly: AssemblyCopyright("Copyright © TriFect, zoomy, Kunii, ic3w0lf 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -26,10 +26,10 @@ using System.Runtime.InteropServices;
 //
 //      Major Version
 //      Minor Version 
-//      Build Number
+//      Build number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers 
+// You can specify all the values or you can default the Build and Revision numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]

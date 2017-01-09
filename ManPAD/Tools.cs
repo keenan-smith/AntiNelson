@@ -157,5 +157,13 @@ namespace ManPAD
             }
             Debug.Log("Successfully increased stat: " + stat.ToString() + " " + amount + " times.");
         }
+
+        public static Vector2 RotatePoint(Vector2 pointToRotate, Vector2 centerPoint, double angleInDegrees)
+        {
+            double angleInRadians = angleInDegrees * (Math.PI / 180);
+            double cosTheta = Math.Cos(angleInRadians);
+            double sinTheta = Math.Sin(angleInRadians);
+            return new Vector2((int)(cosTheta * (pointToRotate.x - centerPoint.x) - sinTheta * (pointToRotate.y - centerPoint.y) + centerPoint.x), (int)(sinTheta * (pointToRotate.x - centerPoint.x) + cosTheta * (pointToRotate.y - centerPoint.y) + centerPoint.y));
+        }
     }
 }

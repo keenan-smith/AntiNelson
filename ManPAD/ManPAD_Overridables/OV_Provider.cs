@@ -30,7 +30,7 @@ namespace ManPAD.ManPAD_Overridables
 #endif
 
 #if DEBUG
-        [CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.Instance | BindingFlags.NonPublic)]
+        //[CodeReplace("onLevelLoaded", typeof(Provider), BindingFlags.Instance | BindingFlags.NonPublic)]
         public void OnApplicationQuit()
         {
             if (!Dedicator.isDedicated && Translator.language != "english")

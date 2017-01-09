@@ -161,8 +161,9 @@ namespace ManPAD.ManPAD_Library
                     for (int a = 0; a < ZombieManager.regions[i].zombies.Count; a++)
                         collections.Add(new GOUpdate(ZombieManager.regions[i].zombies[a]));
 
-                foreach (InteractableItem item in UnityEngine.Object.FindObjectsOfType(typeof(InteractableItem)) as InteractableItem[])
-                    collections.Add(new GOUpdate(item));
+                InteractableItem[] items = UnityEngine.Object.FindObjectsOfType(typeof(InteractableItem)) as InteractableItem[];
+                for (int i = 0; i < items.Count(); i++)
+                    collections.Add(new GOUpdate(items[i]));
 
                 for (int i = 0; i < VehicleManager.vehicles.Count; i++)
                     collections.Add(new GOUpdate(VehicleManager.vehicles[i]));
