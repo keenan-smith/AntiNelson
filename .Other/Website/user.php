@@ -37,6 +37,7 @@
     lock();
 
   $json_admins[$username]["lastonline"] = time();
+  file_put_contents($path_admins, json_encode($json_admins));
 ?>
 <?php
   if(isset($_POST["btn_Home"]))

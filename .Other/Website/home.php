@@ -30,6 +30,7 @@
     lock();
 
   $json_admins[$username]["lastonline"] = time();
+  file_put_contents($path_admins, json_encode($json_admins));
 ?>
 <?php
   if(isset($_POST["btn_Logout"])){
@@ -53,6 +54,10 @@
     readfile($path_users);
     die();
   }
+  if(isset($_POST["btn_changePassword"])){
+    header("Location: changePass.php");
+    die();
+  }
 ?>
 <html>
   <head>
@@ -66,6 +71,8 @@
       <input type="submit" name="btn_Hacks" value="Hack Manager" /><br />
       <br />
       <input type="submit" name="btn_DLUsers" value="Download Users" /><br />
+      <br />
+      <input type="submit" name="btn_changePassword" value="Change Password" /><br />
       <br />
       <input type="submit" name="btn_Logout" value="Logout" /><br />
     </form>
