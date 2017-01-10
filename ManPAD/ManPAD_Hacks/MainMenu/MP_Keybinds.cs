@@ -11,7 +11,6 @@ using SDG.Unturned;
 
 namespace ManPAD.ManPAD_Hacks.MainMenu
 {
-#if DEBUG
     [MenuOption(12, "Keybinds", 300f)]
     public class MP_Keybinds : MenuOption
     {
@@ -80,5 +79,4 @@ namespace ManPAD.ManPAD_Hacks.MainMenu
         }
         #endregion
     }
-#endif
 }

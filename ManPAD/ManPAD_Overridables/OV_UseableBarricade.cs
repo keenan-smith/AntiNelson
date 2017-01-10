@@ -23,12 +23,6 @@ namespace ManPAD.ManPAD_Overridables
             typeof(UseableBarricade).GetField("isUsing", BindingFlags.Instance | BindingFlags.NonPublic).SetValue((UseableBarricade)Player.player.equipment.useable, true);
             typeof(UseableBarricade).GetField("isBuilding", BindingFlags.Instance | BindingFlags.NonPublic).SetValue((UseableBarricade)Player.player.equipment.useable, true);
         }
-
-        public bool isBuildable =>
-            true;
-
-        public bool isUseable =>
-            true;
     }
     public class OV_UseableStructure : MonoBehaviour
     {
@@ -43,11 +37,5 @@ namespace ManPAD.ManPAD_Overridables
             typeof(UseableStructure).GetField("isUsing", BindingFlags.Instance | BindingFlags.NonPublic).SetValue((UseableStructure)Player.player.equipment.useable, true);
             typeof(UseableStructure).GetField("isConstructing", BindingFlags.Instance | BindingFlags.NonPublic).SetValue((UseableStructure)Player.player.equipment.useable, true);
         }
-
-        public bool isConstructable =>
-            true;
-
-        public bool isUseable =>
-            true;
     }
 }

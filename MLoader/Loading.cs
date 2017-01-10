@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 using Newtonsoft.Json;
+
 namespace MLoader
 {
     public class Data
@@ -84,7 +85,6 @@ namespace MLoader
                 if (www.bytes != null)
                 {
                     response = www.bytes;
-                    attach.logBytes(response);
                     try
                     {
                         RootObject ro = attach.getRO(attach.convertUTF8(response));
