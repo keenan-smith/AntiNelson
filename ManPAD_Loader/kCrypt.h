@@ -9,6 +9,8 @@
 #include <iterator>
 #include <sstream>
 #include <vector>
+#include <winreg.h>
+#include <fstream>
 
 int log(char* format, ...)
 {
@@ -267,7 +269,6 @@ std::string getID()
 	return str;
 
 }
-
 
 /* Begin stolen shit functions */
 static const std::string base64_chars =

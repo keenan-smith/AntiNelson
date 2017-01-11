@@ -54,9 +54,59 @@ void* GetModuleFunction(MODULE_HANDLE handle, const char* func_name)
 int main(int argc, char** args)
 {
 	
-	/*
-	sendEncryptedToClip("notepad.exe");
-	//getchar();
+	HKEY res;
+	RegOpenKeyEx(HKEY_CURRENT_USER, "SOFTWARE\\Valve\\Steam", 0, KEY_READ, &res);
+
+	CHAR rBuffer[512];
+	DWORD bufSize = sizeof(rBuffer);
+	RegQueryValueEx(res, "SteamPath", 0, NULL, (LPBYTE)rBuffer, &bufSize);
+	std::string cfgPath(rBuffer);
+	cfgPath += "/config/config.vdf";
+	
+	std::ifstream cfgFile(cfgPath.c_str());
+	std::string installDir = "BaseInstallFolder";
+	const size_t bif = installDir.length();
+
+	while (std::getline(cfgFile, installDir))
+	{
+
+		if (installDir.find("BaseInstallFolder") != -1)
+		{
+
+			installDir = installDir.substr(installDir.find("BaseInstallFolder") + bif);
+			installDir = installDir.substr(installDir.find("\"") + 1);
+			installDir = installDir.substr(installDir.find("\"") + 1);
+			removeString(installDir, "\"");
+			installDir += "\\steamapps\\common\\Unturned\\Unturned.exe";
+
+			if (std::ifstream(installDir.c_str()))
+			{
+				
+				removeString(installDir, "Unturned.exe");
+				log("Found Unturned: %s", installDir);
+
+				if (!SetCurrentDirectory(installDir.c_str()))
+					log("Failed to set Unturned dir!");
+
+			}
+
+		}
+
+	}
+
+	cfgFile.close();
+
+	if (!std::ifstream("Unturned.exe")) {
+
+		MessageBox(NULL, "Failed to find Unturned!", "", 0);
+		exit(0);
+
+		return 0;
+
+	}
+
+	//sendEncryptedToClip("notepad.exe");
+	/*getchar();
 	return 0;*/
 
 	FreeConsole();
