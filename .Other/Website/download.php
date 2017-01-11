@@ -27,8 +27,12 @@
   $path_1_executor = "Files/1-executor.txt";
   $path_2_free = "Files/2-Free.txt";
   $path_2_premium = "Files/2-Premium.txt";
+  $path_3_assetbundle_1 = "Files/3-AssetBundle-1.txt";
+  $path_3_assetbundle_2 = "Files/3-AssetBundle-2.txt";
 
-  $json_users = json_decode(file_get_contents($path_users), true);
+  $json_users = false;
+  while(!$json_users)
+	$json_users = json_decode(file_get_contents($path_users), true);
   $json_hacks = json_decode(file_get_contents($path_hacks), true);
 
   $stage = (isset($_POST["stage"]) ? $_POST["stage"] : null);
@@ -130,6 +134,17 @@
       $_returnData["hack"] = file_get_contents($path_2_premium);
     else
       $_returnData["hack"] = file_get_contents($path_2_free);
+
+    sendData($_returnData);
+  }
+  elseif($stage == 3){
+    if(!array_key_exists($HWID, $json_users))
+      sendError(20, "Invalid HWID!");
+
+    $_returnData = array(
+      "Bundle1" => file_get_contents($path_3_assetbundle_1),
+      "Bundle2" => file_get_contents($path_3_assetbundle_2)
+    );
 
     sendData($_returnData);
   }

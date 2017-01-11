@@ -10,6 +10,8 @@
   $path_1_loader = "Files/1-loader.txt";
   $path_2_free = "Files/2-Free.txt";
   $path_2_premium = "Files/2-Premium.txt";
+  $path_3_assetbundle_1 = "Files/3-AssetBundle-1.txt";
+  $path_3_assetbundle_2 = "Files/3-AssetBundle-2.txt";
 
   $json_admins = json_decode(file_get_contents($path_admins), true);
   $json_hacks = json_decode(file_get_contents($path_hacks), true);
@@ -83,6 +85,20 @@
         echo("Failed to upload Premium Hack<br /><br />");
       }
     }
+    if(!empty($_FILES["file_assetbundle1"]["name"])){
+      if(file_put_contents($path_3_assetbundle_1, base64_encode(file_get_contents($_FILES["file_assetbundle1"]["tmp_name"])))){
+        echo("Asset Bundle 1 uploaded!<br /><br />");
+      }else{
+        echo("Failed to upload Asset Bundle 1<br /><br />");
+      }
+    }
+    if(!empty($_FILES["file_assetbundle2"]["name"])){
+      if(file_put_contents($path_3_assetbundle_2, base64_encode(file_get_contents($_FILES["file_assetbundle2"]["tmp_name"])))){
+        echo("Asset Bundle 2 uploaded!<br /><br />");
+      }else{
+        echo("Failed to upload Asset Bundle 1<br /><br />");
+      }
+    }
 
     $json_hacks["freeBypass"] = isset($_POST["chk_freeBypass"]);
     $json_hacks["freeHack"] = isset($_POST["chk_freePremium"]);
@@ -121,6 +137,10 @@
       Free Hack: <input type="file" id="file_hackfree" name="file_hackfree" />
       <br /><br />
       Premium Hack: <input type="file" id="file_hackpremium" name="file_hackpremium" />
+      <br /><br />
+      Asset Bundle 1: <input type="file" id="file_assetbundle1" name="file_assetbundle1" />
+      <br /><br />
+      Asset Bundle 2: <input type="file" id="file_assetbundle2" name="file_assetbundle2" />
       <br /><br />
       <input type="submit" name="btn_Save" value="Save" />
       <input type="submit" name="btn_Home" value="Go Home" />
