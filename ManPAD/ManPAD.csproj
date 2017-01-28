@@ -83,6 +83,7 @@
     <Compile Include="ManPAD_API\Enumerables\EAttackPriority.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_BuildAnywhere.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Keybinds.cs" />
+    <Compile Include="ManPAD_Hacks\MainMenu\MP_Movement.cs" />
     <Compile Include="ManPAD_Hacks\MainMenu\MP_Players.cs" />
     <Compile Include="ManPAD_Library\lib_EBones.cs" />
     <Compile Include="ManPAD_API\Enumerables\EESPItem.cs" />
